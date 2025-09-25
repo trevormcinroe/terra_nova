@@ -1,0 +1,10 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- Triangle fill (Roman purple) -->
+  <path d="M128 240 L16 32 H240 Z" fill="#66023C" />
+
+  <!-- Triangle outline (Imperial gold) -->
+  <path d="M128 240 L16 32 H240 Z" fill="none" stroke="#FFD700" stroke-width="10" />
+
+  <!-- Flag symbol (Imperial gold) -->
+  <path d="M100 80 V160 H110 V140 Q135 145 135 120 Q135 95 110 100 V80 Z" fill="#FFD700" />
+</svg>
