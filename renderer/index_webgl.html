@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terra Nova Game Viewer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:wght@400;600&display=swap');
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body { 
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+      margin: 0; 
+      overflow: hidden; 
+      font-family: 'Crimson Text', serif;
+    }
+    
+    canvas { 
+      background-color: #111; 
+      display: block; 
+      margin: 0 auto; 
+    }
+
+    /* Shared panel styling */
+    .ui-panel {
+      background: linear-gradient(145deg, rgba(25, 28, 38, 0.95), rgba(15, 17, 26, 0.98));
+      backdrop-filter: blur(10px);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+      color: #e8d5b7;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 215, 140, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .ui-panel::before {
+      content: '';
+      position: absolute;
+      top: -2px; right: -2px; bottom: -2px; left: -2px;
+      background: linear-gradient(45deg, #B68F40, #CD853F);
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0.8;
+    }
+    
+
+    /* Panel headers */
+    .panel-header {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(182, 143, 64, 0.3);
+      color: #FFD700;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .panel-header::before {
+      content: '⬢';
+      font-size: 10px;
+      color: #B68F40;
+    }
+
+    .meta-header {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 1px;
+      padding-bottom: -10px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      color: #FFD700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .meta-icon-box {
+      position: absolute;
+      left: 18px;
+      color: #FFFFFF;
+      /* line-up children left-to-right */
+      display: flex;
+      gap: 20px;         /* space between circles */
+    }
+
+    .icon-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #444;          /* idle colour */
+      border: 2px solid #888;    /* optional outline */
+      cursor: pointer;
+      padding: 0;                /* fixes default <button> padding */
+
+      display: flex;               /* -- center the img */
+      justify-content: center;
+      align-items: center;
+    }
+    .icon-circle img {
+      width: 45px;                 /* size the icon */
+      height: 45px;
+      pointer-events: none;        /* so the button gets the click */
+    }
+
+    /* hover / active states */
+    
+    .meta-header::before {
+      content: '⬢';
+      font-size: 10px;
+      color: #B68F40;
+    }
+    /* Controls panel */
+    #controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      padding: 16px;
+      border-radius: 0px;
+      z-index: 100;
+      min-width: 180px;
+    }
+
+    /* Yield controls */
+    #yield-controls {
+      position: absolute;
+      bottom: 20px;
+      right: 220px;
+      padding: 16px;
+      border-radius: 0px;
+      z-index: 100;
+      min-width: 160px;
+    }
+    
+    #fow-controls {
+      position: absolute;
+      bottom: 20px;
+      right: 400px;
+      padding: 16px;
+      border-radius: 0px;
+      z-index: 100;
+      min-width: 160px;
+    }
+
+    /* Load game panel */
+    #loadgame {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 16px;
+      border-radius: 0px;
+      z-index: 100;
+      min-width: 180px;
+    }
+
+    /* Game scroller */
+    #gamescroller {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      border-radius: 0px;
+      gap: 12px;
+    }
+
+    /* City scroller */
+    #cityScroller {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      gap: 12px;
+      z-index: 1000;
+      padding: 12px 20px;
+      border-radius: 0px;
+    }
+
+    /* Styled checkboxes */
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 4px;
+      border-radius: 0px;
+    }
+    
+    .checkbox-wrapper:hover {
+      background: rgba(182, 143, 64, 0.1);
+    }
+    
+    .checkbox-wrapper input[type="checkbox"] {
+      display: none;
+    }
+    
+    .checkbox-custom {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #B68F40;
+      border-radius: 0px;
+      margin-right: 10px;
+      position: relative;
+      background: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .checkbox-wrapper input[type="checkbox"]:checked + .checkbox-custom {
+      background: linear-gradient(135deg, #B68F40, #FFD700);
+      border-color: #FFD700;
+      animation: checkPulse 0.3s ease;
+    }
+    
+    .checkbox-wrapper input[type="checkbox"]:checked + .checkbox-custom::after {
+      content: '✓';
+      position: absolute;
+      top: -2px;
+      left: 2px;
+      color: #1a1a2e;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    @keyframes checkPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    .checkbox-label {
+      font-size: 14px;
+      color: #e8d5b7;
+      user-select: none;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Styled dropdowns */
+    select {
+      width: 100%;
+      padding: 8px 12px;
+      background: linear-gradient(145deg, rgba(25, 28, 38, 0.9), rgba(15, 17, 26, 0.95));
+      border: 1px solid #B68F40;
+      border-radius: 0px;
+      color: #e8d5b7;
+      font-family: 'Crimson Text', serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+    
+    select:hover {
+      background: linear-gradient(145deg, rgba(35, 38, 48, 0.9), rgba(25, 27, 36, 0.95));
+      border-color: #FFD700;
+      box-shadow: 0 2px 8px rgba(182, 143, 64, 0.3);
+    }
+    
+    select:focus {
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(182, 143, 64, 0.2);
+    }
+    
+    select option {
+      background: #1a1a2e;
+      color: #e8d5b7;
+      padding: 8px;
+    }
+    
+    select option:hover {
+      background: #2a2a3e;
+    }
+    
+    select option:checked {
+      background: linear-gradient(145deg, rgba(35, 38, 48, 0.9), rgba(25, 27, 36, 0.95));
+    }
+
+    /* Styled buttons */
+    button {
+      background: linear-gradient(135deg, #B68F40, #CD853F);
+      border: 1px solid #8B6914;
+      color: #1a1a2e;
+      padding: 8px 16px;
+      border-radius: 0px;
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    button:hover {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      box-shadow: 
+        0 4px 8px rgba(182, 143, 64, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    button:active {
+      transform: translateY(0);
+      box-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    /* Number input */
+    input[type="number"] {
+      background: linear-gradient(145deg, rgba(25, 28, 38, 0.9), rgba(15, 17, 26, 0.95));
+      border: 1px solid #B68F40;
+      border-radius: 0px;
+      color: #FFD700;
+      padding: 8px;
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="number"]:focus {
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(182, 143, 64, 0.2);
+      background: linear-gradient(145deg, rgba(35, 38, 48, 0.9), rgba(25, 27, 36, 0.95));
+    }
+
+    /* Loading overlay */
+    #loadingOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, #2C363F 0%, #1a1a2e 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+
+    #loadingOverlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 80px;
+      height: 70px;
+      position: relative;
+      animation: spin 2s linear infinite;
+      filter: drop-shadow(0 0 20px rgba(182, 143, 64, 0.5));
+    }
+
+    .spinner::before {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 70px;
+      background: linear-gradient(135deg, #B68F40, #FFD700, #CD853F);
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    }
+
+    .spinner::after {
+      content: '';
+      position: absolute;
+      width: 64px;
+      height: 54px;
+      top: 8px;
+      left: 8px;
+      background: radial-gradient(ellipse at center, #2C363F 0%, #1a1a2e 100%);
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    }
+
+    .loading-text {
+      color: #FFD700;
+      margin-top: 30px;
+      font-size: 60px;
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 10px rgba(182, 143, 64, 0.5);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Tech/Policy/Religion canvases */
+    #techCanvas, #policyCanvas, #religionCanvas, #victoryCanvas, #demographicsCanvas {
+      border-radius: 0px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.0);
+    }
+    
+    /* Tooltip styles */
+    .tooltip {
+      position: absolute;
+      background: linear-gradient(145deg, rgba(25, 28, 38, 0.98), rgba(15, 17, 26, 0.98));
+      border: 1px solid #B68F40;
+      border-radius: 0px;
+      padding: 8px 12px;
+      color: #e8d5b7;
+      font-size: 16px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    
+    .tooltip.show {
+      opacity: 1;
+    }
+
+    /* NEW: Info Panel - Top Left */
+    #info-panel {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 33.33%;
+      max-width: 500px;
+      min-width: 300px;
+      padding: 16px;
+      border-radius: 0px;
+      z-index: 100;
+      max-height: calc(100vh - 40px);
+    }
+
+    .loading-logo {
+      width: clamp(300px, 40vmin, 620px);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 16px rgba(182, 143, 64, 0.45));
+      animation: logo-breathe 2.2s ease-in-out infinite;
+      /* keeps it crisp on transparent PNGs */
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+
+    @keyframes logo-breathe {
+      0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 14px rgba(182,143,64,0.45)); }
+      50%      { transform: scale(1.04); filter: drop-shadow(0 0 22px rgba(255,215,0,0.55));   }
+    }
+    .loading-logo { transition: opacity .25s ease; }
+    .loading-logo.is-swapping { opacity: 0; }
+
+
+  </style>
+</head>
+<body>
+  
+<!-- HTML -->
+<div id="loadingOverlay">
+  <img
+    id="loadingLogo"
+    class="loading-logo"
+    src="./icons/terra_nova_logo_daytime.png"/>
+  <div class="loading-text">Loading Viewer</div>
+</div>
+
+  <!-- Top-left control -->
+
+  <div id="info-panel" class="ui-panel">
+    <div class="meta-header">ENVIRONMENT OVERVIEW</div>
+    <div class="meta-icon-box">
+      <!-- each circle can be a link, button, or plain div -->
+      <button class="icon-circle" data-city="tech-tree-button" aria-pressed="false" id="tech-tree-button">
+        <img src="./icons/tech_tree_icon.png" alt="tech-tree"/>
+      </button>
+      <button class="icon-circle" data-city="1" aria-pressed="false" id="social-policy-button">
+        <img src="./icons/culture_overview_icon.png" alt="social-policies"/>
+      </button>
+      <button class="icon-circle" data-city="2" aria-pressed="false" id="religion-button">
+        <img src="./icons/rel_overview_icon.png" alt="religion-overview"/>
+      </button>
+      <button class="icon-circle" data-city="2" aria-pressed="false" id="cityview-button">
+        <img src="./icons/city_button_icon.png" alt="cityview"/>
+      </button>
+      <button class="icon-circle" data-city="2" aria-pressed="false" id="victory-button">
+        <img src="./icons/victory_icon.png" alt="victory-icon"/>
+      </button>
+      <button class="icon-circle" data-city="2" aria-pressed="false" id="trade-button">
+        <img src="./icons/trade_icon.png" alt="trade"/>
+      </button>
+      <button class="icon-circle" data-city="2" aria-pressed="false" id="demos-button">
+        <img src="./icons/demos_icon.png" alt="demos"/>
+      </button>
+      <!-- …add as many as you need -->
+    </div>
+    
+  </div>
+
+  <!-- Map Layer Controls -->
+  <div id="controls" class="ui-panel">
+    <div class="panel-header">MAP LAYERS</div>
+    
+    <label class="checkbox-wrapper">
+      <input type="checkbox" id="toggle-resources">
+      <span class="checkbox-custom"></span>
+      <span class="checkbox-label">Resources</span>
+    </label>
+    
+    <label class="checkbox-wrapper">
+      <input type="checkbox" id="toggle-improvements">
+      <span class="checkbox-custom"></span>
+      <span class="checkbox-label">Improvements</span>
+    </label>
+    
+    <label class="checkbox-wrapper">
+      <input type="checkbox" id="toggle-ownership">
+      <span class="checkbox-custom"></span>
+      <span class="checkbox-label">Ownership</span>
+    </label>
+  </div>
+  
+  <!-- Fog of War Controls -->
+  <div id="fow-controls" class="ui-panel">
+    <div class="panel-header">FOG OF WAR</div>
+    
+    <label class="checkbox-wrapper">
+      <input type="checkbox" id="toggle-fow">
+      <span class="checkbox-custom"></span>
+      <span class="checkbox-label">Show Fog of War</span>
+    </label>
+    
+    <select id="fowDropdown" style="margin-top: 8px;">
+      <option selected disabled>Select Player</option>
+    </select>
+  </div>
+
+  <!-- Yield Controls -->
+  <div id="yield-controls" class="ui-panel">
+    <div class="panel-header">YIELD MAP</div>
+    
+    <label class="checkbox-wrapper">
+      <input type="checkbox" id="toggle-yields">
+      <span class="checkbox-custom"></span>
+      <span class="checkbox-label">Show Yields</span>
+    </label>
+    
+    <select id="yieldTypeDropdown" style="margin-top: 8px;">
+      <option selected disabled>Select Player</option>
+    </select>
+  </div>
+
+  <!-- Load Game -->
+  <div id="loadgame" class="ui-panel">
+    <div class="panel-header">REPLAY LOADED</div>
+    <select id="jsonFileDropdown">
+      <option selected disabled>Select File</option>
+    </select>
+  </div>
+
+  <!-- Turn Navigator -->
+  <div id="gamescroller" class="ui-panel">
+    <button id="prevTurn" style="font-size: 18px;">◄</button>
+    <input id="turnInput" type="number" min="0" value="0" style="width: 80px;" />
+    <button id="nextTurn" style="font-size: 18px;">►</button>
+  </div>
+
+  <!-- City Navigator -->
+  <div id="cityScroller" class="ui-panel">
+    <button id="prevCity">◄ CITY</button>
+    <select id="playerDropdown" style="width: 100px;">
+      <option selected disabled>Player</option>
+    </select>
+    <button id="nextCity">CITY ►</button>
+  </div>
+
+  <!-- Canvas overlays -->
+  <canvas id="techCanvas" width="2400" height="1000" style="display:none; position:absolute; top:0; left:0; background: transparent;"></canvas>
+  <canvas id="policyCanvas" width="1800" height="1000" style="display:none; position:absolute; top:0; left:0; background: transparent;"></canvas>
+  <canvas id="religionCanvas" width="1800" height="1000" style="display:none; position:absolute; top:0; left:0; background: transparent;"></canvas>
+  <canvas id="victoryCanvas" width="1800" height="1000" style="display:none; position:absolute; top:0; left:0; pointer-events: auto; background: transparent;"></canvas>
+  <canvas id="tradeCanvas" width="1800" height="1000" style="display:none; position:absolute; top:0; left:0; pointer-events: auto; background: transparent;"></canvas>
+  <canvas id="demographicsCanvas" width="1800" height="1000" style="display:none; position:absolute; top:0; left:0; background: transparent;"></canvas>
+
+  <script type="module" src="TechTreeRendererPixi.js"></script>
+  <script type="module" src="PolicyScreenRendererPixi.js"></script>
+  <script type="module" src="ReligionScreenRendererPixi.js"></script>
+  <script type="module" src="VictoryScreenRendererPixi.js"></script>
+  <script type="module" src="TradeScreenRendererPixi.js"></script>
+  <script type="module" src="PerformanceMonitor.js"></script>
+  <script type="module" src="webgl_renderer.js"></script>
+  
+  <script>
+    // Populate yield dropdown
+    const yieldDropdown = document.getElementById("yieldTypeDropdown");
+    const yieldLabels = {
+      "0": "Food",
+      "1": "Production", 
+      "2": "Gold",
+      "3": "Science",
+      "4": "Culture",
+      "5": "Faith",
+      "GT": "Ground Truth"
+    };
+
+    for (const [value, label] of Object.entries(yieldLabels)) {
+      const option = document.createElement("option");
+      option.value = value;
+      if (value === "GT") {
+        option.textContent = `Player ${value}`;
+      } else {  
+        option.textContent = `Player ${Number(value) + 1}`;
+      }
+      yieldDropdown.appendChild(option);
+    }
+    yieldDropdown.value = "0";
+
+    // Populate player and fow dropdown
+    const playerDropdown = document.getElementById("playerDropdown");
+    for (let i = 0; i <= 5; i++) {
+      const option = document.createElement("option");
+      option.value = i.toString();
+      option.textContent = `Player ${i + 1}`;
+      playerDropdown.appendChild(option);
+    }
+    playerDropdown.value = "0";
+    
+    const fowDropdown = document.getElementById("fowDropdown");
+    for (let i = 0; i <= 5; i++) {
+      const option = document.createElement("option");
+      option.value = i.toString();
+      option.textContent = `Player ${i + 1}`;
+      fowDropdown.appendChild(option);
+    }
+    fowDropdown.value = "0";
+
+    // Add some interactivity feedback
+    document.querySelectorAll('.checkbox-wrapper').forEach(wrapper => {
+      wrapper.addEventListener('click', function() {
+        const checkbox = this.querySelector('input[type="checkbox"]');
+        // Let the click event bubble naturally
+      });
+    });
+
+    // Optional: Add tooltips on hover
+    const addTooltip = (element, text, bottom) => {
+      let tooltip = null;
+      
+      element.addEventListener('mouseenter', (e) => {
+        tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        tooltip.textContent = text;
+        document.body.appendChild(tooltip);
+        
+        const rect = element.getBoundingClientRect();
+        tooltip.style.left = rect.left + 'px';
+
+        if (bottom) {
+          tooltip.style.top = (rect.bottom + 6) + 'px';
+        } else {
+          tooltip.style.top = (rect.top - 30) + 'px';
+        }
+        
+        setTimeout(() => tooltip.classList.add('show'), 10);
+      });
+      
+      element.addEventListener('mouseleave', () => {
+        if (tooltip) {
+          tooltip.classList.remove('show');
+          setTimeout(() => tooltip?.remove(), 300);
+        }
+      });
+    };
+
+    // Add tooltips to buttons
+    addTooltip(document.getElementById('prevTurn'), 'Previous Turn');
+    addTooltip(document.getElementById('nextTurn'), 'Next Turn');
+    addTooltip(document.getElementById('prevCity'), 'Previous City', true);
+    addTooltip(document.getElementById('nextCity'), 'Next City', true);
+
+
+    addTooltip(document.getElementById('tech-tree-button'), 'Technology Tree', true);
+    addTooltip(document.getElementById('social-policy-button'), 'Social Policies', true);
+    addTooltip(document.getElementById('religion-button'), 'Religion Overview', true);
+    addTooltip(document.getElementById('cityview-button'), 'View Cities', true);
+    addTooltip(document.getElementById('victory-button'), 'Victory Overview', true);
+    addTooltip(document.getElementById('trade-button'), 'Trade Overview', true);
+    addTooltip(document.getElementById('demos-button'), 'Demographics', true);
+  </script>
+  <!-- Put near the end of the HTML, after the logo element exists -->
+<script>
+  (function swapLogoByClock() {
+    const logo = document.getElementById('loadingLogo');
+    if (!logo) return;
+
+    const hour = new Date().getHours(); // 0..23
+    // Tweak these bounds however you like
+    const isNight = (hour < 6) || (hour >= 18);
+
+    const daySrc  = './icons/terra_nova_logo_daytime.png';
+    const nightSrc= './icons/terra_nova_logo_nighttime.png';
+    const target  = isNight ? nightSrc : daySrc;
+
+    if (logo.src.endsWith(target)) return; // already correct
+
+    // Preload to avoid flicker, then swap
+    const img = new Image();
+    //img.onload = () => { logo.src = target; logo.alt = isNight ? 'Terra Nova (Night)' : 'Terra Nova (Day)'; };
+    // swap with fade (replace the onload line above with this)
+    img.onload = () => {
+      logo.classList.add('is-swapping');
+      requestAnimationFrame(() => {
+        logo.src = target;
+        logo.alt = isNight ? 'Terra Nova (Night)' : 'Terra Nova (Day)';
+        // allow the browser to paint the new src, then fade back in
+        requestAnimationFrame(() => logo.classList.remove('is-swapping'));
+      });
+    };
+
+    img.src = target;
+  })();
+</script>
+
+<!-- Add once in your HTML (hidden file picker) -->
+<input id="localJsonPicker" type="file" accept="application/json" style="display:none">
+</body>
+</html>
