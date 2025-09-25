@@ -495,7 +495,7 @@ export const religiousTenetCategories = ['pantheon', 'pantheon', 'pantheon', 'pa
 
 
 export const cityYieldsDef = [
-  { path: './icons/pop.png', s: 0.05 },
+  { path: './icons/pop.png', s: 0.17 },
   { path:'./icons/yield_food.png',      s:0.09 + 0.001 },
   { path:'./icons/yield_prod.png',      s:0.09 + 0.001 },
   { path:'./icons/yield_gold.png',      s:0.09 + 0.001 },
@@ -542,7 +542,7 @@ export const buildingNames = ['Courthouse', 'Seaport', 'Stable', 'Watermill', 'C
 
 export const buildingCosts = [50, 167, 67, 50, 50, 80, 167, 280, 333, 67, 133, -1, 80, 50, 80, 67, 120, 333, 27, 67, 133, 200, 333, 50, 107, 200, 200, 50, 107, 333, 40, 240, 333, 80, 240, 333, 240, 67, 133, 240, 50, 107, 200, 333, -1, 83, 83, 83, 83, 83, 83, 83, 83, 123, 123, 123, 123, 123, 167, 167, 167, 267, 200, 200, 200, 267, 417, 333, 333, 707, 333, 417, 500, 500, 500, 707, 802, 707, 802, 833, 67, 50, 123, 123, 123, 67, 27, 333, 200, 107, 200, 83, 267, 802, 833, 333, 167, 500, 167, 167, 833, -1, -1, -1, 83, 267, 67, 100, 133, 200, 60, 267, 417, 333, 707, 417, 707, 200, 167, -1, -1, -1, -1, -1, -1, 83, 200, 50, 67, 50, 67, 67, 133, 83, 707, -1, -1, -1, 200, 1005, 1005, 1005, 1005, 503, 503, 503, -1, -1, 49, 27, 32, 27, 50, 38, 60, 17, 38, 50, 50, 50, 50, 80, 80, 80, 80, 124, 124, 100, 100, 168, 151, 181, 151, 151, 201, 281, 261, 261, 241, 302, 342, 302, 342, 302, 342]
 
-export const palaceIconDef = { path: './icons/icon_palace.png', s: 0.045 };
+export const palaceIconDef = { path: './icons/icon_palace.png', s: 0.15 };
 
 export async function loadPalaceTexture() {
   return await PIXI.Assets.load(palaceIconDef.path);   // returns a PIXI.Texture
