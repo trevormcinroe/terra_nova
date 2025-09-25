@@ -3219,6 +3219,31 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
   const allResourceMapLocal = ISREPLAY ? allResourceMap[turn] : allResourceMap;
   const unitHealthLocal = unitHealth[turn];
 
+  // To allow for a clean map during switching between replays, we clear all of the children from each element
+  // Clear all existing content from all layers
+  mapLayer.removeChildren();
+  ownershipLayer.removeChildren();
+  riverLayer.clear();  // Graphics object uses clear()
+  elevationLayer.removeChildren();
+  featureLayer.removeChildren();
+  nwLayer.removeChildren();
+  borderLayer.clear();  // Graphics object uses clear()
+  resourceLayer.removeChildren();
+  improvementsLayer.removeChildren();
+  yieldLayer.removeChildren();
+  cityLayer.removeChildren();
+  workedTileLayer.clear();  // Graphics object uses clear()
+  traderouteLayer.removeChildren();
+  cityNameLayer.removeChildren();
+  unitsLayer.removeChildren();
+  fowLayer.removeChildren();
+  debugLayer.removeChildren();
+  cityUILayer.removeChildren();
+
+  globalMapState.previousFeatures = null;
+  globalMapState.previousImprovements = null;
+  globalMapState.previousYields = null;
+
   
   const use_textures = true;
   const clip_textures = false;
