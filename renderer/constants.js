@@ -153,23 +153,23 @@ export async function loadFeatureTextures() {
 
 export const nwDefs = [
   null,
-  { path: './icons/krakatoa.png',       scale: 0.065, yOff: -12 },
-  { path: './icons/gibraltar.png',      scale: 0.063, yOff: -10 },
-  { path: './icons/kailash.png',        scale: 0.064, yOff: -10 },
-  { path: './icons/kilimanjaro.png',    scale: 0.062, yOff:  -2 },
-  { path: './icons/sinai.png',          scale: 0.064, yOff:  -4 },
-  { path: './icons/sripada.png',        scale: 0.064, yOff: -10 },
-  { path: './icons/cerro.png',          scale: 0.064, yOff:  -5 },
-  { path: './icons/fuji.png',           scale: 0.062, yOff:  -5 },
-  { path: './icons/uluru.png',          scale: 0.064, yOff:  -1 },
-  { path: './icons/barringer.png',      scale: 0.064, yOff:  -1 },
-  { path: './icons/grand_mesa.png',     scale: 0.064, yOff:  -1 },
-  { path: './icons/oldfaithful.png',    scale: 0.064, yOff:  -8 },
-  { path: './icons/fountain.png',       scale: 0.062, yOff:  -1 },
-  { path: './icons/gbr.png',            scale: 0.064, yOff:  -1 },
-  { path: './icons/eldorado.png',       scale: 0.064, yOff:  -1 },
-  { path: './icons/solomon.png',        scale: 0.064, yOff:  -1 },
-  { path: './icons/lakevictoria.png',   scale: 0.064, yOff:  -1 },
+  { path: './icons/krakatoa.png',       scale: 0.24, yOff: -12 },
+  { path: './icons/gibraltar.png',      scale: 0.24, yOff: -10 },
+  { path: './icons/kailash.png',        scale: 0.24, yOff: -10 },
+  { path: './icons/kilimanjaro.png',    scale: 0.24, yOff:  -2 },
+  { path: './icons/sinai.png',          scale: 0.24, yOff:  -4 },
+  { path: './icons/sripada.png',        scale: 0.24, yOff: -10 },
+  { path: './icons/cerro.png',          scale: 0.24, yOff:  -5 },
+  { path: './icons/fuji.png',           scale: 0.24, yOff:  -5 },
+  { path: './icons/uluru.png',          scale: 0.24, yOff:  -1 },
+  { path: './icons/barringer.png',      scale: 0.24, yOff:  -1 },
+  { path: './icons/grand_mesa.png',     scale: 0.24, yOff:  -1 },
+  { path: './icons/oldfaithful.png',    scale: 0.24, yOff:  -8 },
+  { path: './icons/fountain.png',       scale: 0.24, yOff:  -1 },
+  { path: './icons/gbr.png',            scale: 0.24, yOff:  -1 },
+  { path: './icons/eldorado.png',       scale: 0.24, yOff:  -1 },
+  { path: './icons/solomon.png',        scale: 0.24, yOff:  -1 },
+  { path: './icons/lakevictoria.png',   scale: 0.24, yOff:  -1 },
 ];
 
 export async function loadNWTextures() {
@@ -477,13 +477,13 @@ export async function loadUnitTextures() {
   return textures;           // textures[id] ready for draw call
 }
 
-export const cityDef = { path: './icons/city_icon.png', s: 0.07 };
+export const cityDef = { path: './icons/city_icon.png', s: 0.27 };
 
 export async function loadCityTexture() {
   return await PIXI.Assets.load(cityDef.path);   // returns a PIXI.Texture
 }
 
-export const capDef = { path: './icons/cap_city.png', s: 0.015 };
+export const capDef = { path: './icons/cap_city.png', s: 0.05 };
 
 export async function loadCapTexture() {
   return await PIXI.Assets.load(capDef.path);   // returns a PIXI.Texture
