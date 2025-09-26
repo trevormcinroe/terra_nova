@@ -3268,7 +3268,7 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
       const tile = drawHex(cx, cy, config?.fillColor, texture);
       //app.stage.addChild(tile);
       mapLayer.addChild(tile);
-      drawHexCoords(cx, cy, row, col);
+      //drawHexCoords(cx, cy, row, col);
 
       /* --- elevation overlay --- */
       let elevID = elevationMapLocal[row][col];    // 0-3
