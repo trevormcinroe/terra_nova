@@ -678,7 +678,7 @@ export class VictoryScreenRendererPixi {
     container.addChild(reqTitle);
 
     const requirements = [
-      '• Generate tourism from other players via Great Works, Wonders, Religion, and more.'
+      '• Generate more tourism than the culture of every other civilization.'
     ];
 
     let yOffset = y + 70;
@@ -840,7 +840,7 @@ renderCulturalOverview(container, x, y, w, h) {
   const rowLabels = ['PLAYER 1','PLAYER 2','PLAYER 3','PLAYER 4','PLAYER 5','PLAYER 6'];
   const colLabels = rowLabels;
   const headerH = 26;
-  const rowH = 28;
+  const rowH = 30;
   const headerW = 140;
   const cellW = Math.floor((innerW - headerW) / 6);
   const tableW = headerW + cellW * 6;
@@ -865,7 +865,8 @@ renderCulturalOverview(container, x, y, w, h) {
 
   // Column headers
   colLabels.forEach((lbl, j) => {
-    const tx = new PIXI.Text(lbl, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    //const tx = new PIXI.Text(lbl, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    const tx = new PIXI.Text(lbl, statusStyle);
     tx.roundPixels = true;
     tx.anchor.set(0.5, 0.5);
     const cx = Math.round(tableX + headerW + j * cellW + cellW / 2);
@@ -873,15 +874,23 @@ renderCulturalOverview(container, x, y, w, h) {
     tx.position.set(cx, cy);
     container.addChild(tx);
   });
+  
+  // underline
+  const headerLine = new PIXI.Graphics();
+  headerLine.lineStyle(1, COLORS.goldDark, 0.5);
+  headerLine.moveTo(Math.round(x + leftPad + 2), Math.round(top + headerH - 2));
+  headerLine.lineTo(Math.round(x + leftPad + tableW + 2), Math.round(top + headerH - 2));
+  headerLine.stroke();
+  container.addChild(headerLine);
 
   // Rows
   for (let i = 0; i < 6; i++) {
     // Row header
-    const rh = new PIXI.Text(rowLabels[i], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    const rh = new PIXI.Text(rowLabels[i], statusStyle);
     rh.roundPixels = true;
     rh.anchor.set(0, 0.5);
     const ry = Math.round(tableY + headerH + i * rowH + rowH / 2);
-    rh.position.set(Math.round(tableX + 10), ry);
+    rh.position.set(Math.round(tableX + 32), ry);
     container.addChild(rh);
 
     for (let j = 0; j < 6; j++) {
@@ -889,24 +898,24 @@ renderCulturalOverview(container, x, y, w, h) {
       const cellY = Math.round(tableY + headerH + i * rowH);
 
       // Cell background (zebra)
-      const cellBg = new PIXI.Graphics();
-      const baseAlpha = (i % 2 === 0) ? 0.10 : 0.06;
-      cellBg.beginFill(COLORS.stoneBg, baseAlpha);
-      cellBg.drawRect(cellX, cellY, cellW, rowH);
-      cellBg.endFill();
+      //const cellBg = new PIXI.Graphics();
+      //const baseAlpha = (i % 2 === 0) ? 0.10 : 0.06;
+      //cellBg.beginFill(COLORS.stoneBg, baseAlpha);
+      //cellBg.drawRect(cellX, cellY, cellW, rowH);
+      //cellBg.endFill();
 
-      // Diagonal highlight
-      if (i === j) {
-        cellBg.beginFill(COLORS.stoneBg, 0.18);
-        cellBg.drawRect(cellX, cellY, cellW, rowH);
-        cellBg.endFill();
-      }
+      //// Diagonal highlight
+      //if (i === j) {
+      //  cellBg.beginFill(COLORS.stoneBg, 0.18);
+      //  cellBg.drawRect(cellX, cellY, cellW, rowH);
+      //  cellBg.endFill();
+      //}
 
-      // Cell border
-      cellBg.lineStyle(1, COLORS.goldDark, 0.25);
-      cellBg.drawRect(cellX, cellY, cellW, rowH);
-      cellBg.stroke();
-      container.addChild(cellBg);
+      //// Cell border
+      //cellBg.lineStyle(1, COLORS.goldDark, 0.25);
+      //cellBg.drawRect(cellX, cellY, cellW, rowH);
+      //cellBg.stroke();
+      //container.addChild(cellBg);
 
       // Off-diagonal: progress bar like the City-States view
       if (i !== j) {
@@ -945,7 +954,7 @@ renderCulturalOverview(container, x, y, w, h) {
           bar.endFill();
         }
 
-        // Border
+        // Border for progress bar
         bar.lineStyle(1, COLORS.goldDark, 0.3);
         bar.drawRect(barX, barY, barW, barH);
         bar.stroke();
@@ -983,16 +992,18 @@ renderCulturalOverview(container, x, y, w, h) {
   }
 
   // Axis hints
-  const axisLeft = new PIXI.Text('FROM (Rows)', { ...statusStyle, fontSize: 12 });
+  const axisLeft = new PIXI.Text('FROM', { ...statusStyle, fontSize: 18 });
   axisLeft.roundPixels = true;
-  axisLeft.position.set(Math.round(tableX), Math.round(tableY - 18));
+  axisLeft.anchor.set(0, 0.5);  // left-center as the pivot
+  axisLeft.rotation = -Math.PI / 2  // then rotate 90' counter-clockwise
+  axisLeft.position.set(Math.round(tableX) - 12, Math.round(tableY - 18) + 140);
   axisLeft.alpha = 0.8;
   container.addChild(axisLeft);
 
-  const axisTop = new PIXI.Text('TO (Columns)', { ...statusStyle, fontSize: 12 });
+  const axisTop = new PIXI.Text('TO', { ...statusStyle, fontSize: 12 });
   axisTop.roundPixels = true;
   axisTop.anchor.set(1, 0);
-  axisTop.position.set(Math.round(tableX + tableW), Math.round(tableY - 18));
+  axisTop.position.set(Math.round(tableX + tableW) - 520, Math.round(tableY - 22));
   axisTop.alpha = 0.8;
   container.addChild(axisTop);
 }
@@ -1046,10 +1057,19 @@ renderGreatWorks(container, x, y, w, h) {
   box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
   box.stroke();
   container.addChild(box);
+  
+  // underline
+  const headerLine = new PIXI.Graphics();
+  headerLine.lineStyle(1, COLORS.goldDark, 0.5);
+  headerLine.moveTo(Math.round(x + leftPad + 1), Math.round(top + headerH - 1));
+  headerLine.lineTo(Math.round(x + leftPad + tableW + 1), Math.round(top + headerH - 1));
+  headerLine.stroke();
+  container.addChild(headerLine);
 
   // Column headers
   for (let j = 0; j < numPlayers; j++) {
-    const tx = new PIXI.Text(colLabels[j], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    //const tx = new PIXI.Text(colLabels[j], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    const tx = new PIXI.Text(colLabels[j], statusStyle);
     tx.roundPixels = true;
     tx.anchor.set(0.5, 0.5);
     const cx = Math.round(tableX + nameColW + j * cellW + cellW / 2);
@@ -1063,10 +1083,11 @@ renderGreatWorks(container, x, y, w, h) {
     const ry = Math.round(tableY + headerH + i * rowH + rowH / 2);
 
     // Row header
-    const rh = new PIXI.Text(rowLabels[i], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    //const rh = new PIXI.Text(rowLabels[i], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    const rh = new PIXI.Text(rowLabels[i], statusStyle);
     rh.roundPixels = true;
     rh.anchor.set(0, 0.5);
-    rh.position.set(Math.round(tableX + 10), ry);
+    rh.position.set(Math.round(tableX + 40), ry);
     container.addChild(rh);
 
     // Cells
@@ -1093,7 +1114,7 @@ renderGreatWorks(container, x, y, w, h) {
         ...statusStyle,
         fontSize: 16,
         fontWeight: 700,
-        fill: v > 0 ? 0xffffff : COLORS.goldDark,
+        //fill: v > 0 ? 0xffffff : COLORS.goldDark,
         dropShadow: v > 0,
         dropShadowColor: 0x000000,
         dropShadowDistance: 1,
@@ -1106,38 +1127,17 @@ renderGreatWorks(container, x, y, w, h) {
   }
 
   // Optional outer frame
-  const frame = new PIXI.Graphics();
-  frame.lineStyle(1, COLORS.goldDark, 0.25);
-  frame.drawRect(
-    Math.round(tableX - 8),
-    Math.round(tableY - 8),
-    Math.round(tableW + 16),
-    Math.round(tableH + 16)
-  );
-  frame.stroke();
-  container.addChild(frame);
+  //const frame = new PIXI.Graphics();
+  //frame.lineStyle(1, COLORS.goldDark, 0.25);
+  //frame.drawRect(
+  //  Math.round(tableX - 8),
+  //  Math.round(tableY - 8),
+  //  Math.round(tableW + 16),
+  //  Math.round(tableH + 16)
+  //);
+  //frame.stroke();
+  //container.addChild(frame);
 }
-  renderGreatWorks2(container, x, y, w, h) {
-    const title = new PIXI.Text('GREAT WORKS', requirementStyle);
-    title.position.set(Math.round(x), Math.round(y));
-    title.roundPixels = true;
-    container.addChild(title);
-
-    // Placeholder card
-    const card = new PIXI.Graphics();
-    const pad = 20;
-    card.beginFill(COLORS.stoneBg, 0.2);
-    card.drawRoundedRect(Math.round(x + pad), Math.round(y + 40), Math.round(w - pad * 2), 120, 0);
-    card.endFill();
-    card.lineStyle(1, COLORS.goldDark, 0.5);
-    card.drawRoundedRect(Math.round(x + pad), Math.round(y + 40), Math.round(w - pad * 2), 120, 0);
-    card.stroke();
-    container.addChild(card);
-
-    const hint = new PIXI.Text('Layout coming next… (slots, theming, yields)', statusStyle);
-    hint.position.set(Math.round(x + pad + 12), Math.round(y + 40 + 12));
-    container.addChild(hint);
-  }
 
   /* =======================
      Great People (stub)
@@ -1163,6 +1163,20 @@ renderGreatWorks(container, x, y, w, h) {
     const innerW = Math.max(0, w - leftPad - rightPad);
     const cellW = Math.floor((innerW - nameColW) / gpTypes.length);
     const tableW = nameColW + cellW * gpTypes.length;
+    const tableH = headerH + rowH * 6;
+
+    const tableX = Math.round(x + leftPad + Math.floor((innerW - tableW) / 2));
+    const tableY = top;
+  
+    // Table background + border
+    const box = new PIXI.Graphics();
+    box.beginFill(COLORS.stoneBg, 0.20);
+    box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
+    box.endFill();
+    box.lineStyle(1, COLORS.goldDark, 0.5);
+    box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
+    box.stroke();
+    container.addChild(box);
 
     // ---- headers ----
     //const nameHeader = new PIXI.Text('PLAYER', {
@@ -1171,13 +1185,27 @@ renderGreatWorks(container, x, y, w, h) {
     //nameHeader.position.set(Math.round(x + leftPad), Math.round(top));
     //container.addChild(nameHeader);
 
+    //gpTypes.forEach((label, j) => {
+    //  const tx = new PIXI.Text(label, {
+    //    ...statusStyle, fontSize: 14, fill: COLORS.goldDark
+    //  });
+    //  const hx = Math.round(x + leftPad + nameColW + j * cellW + cellW / 2);
+    //  tx.anchor.set(0.5, 0); // center over column
+    //  tx.position.set(hx, Math.round(top));
+    //  container.addChild(tx);
+    //});
+
     gpTypes.forEach((label, j) => {
       const tx = new PIXI.Text(label, {
-        ...statusStyle, fontSize: 14, fill: COLORS.goldDark
+        ...statusStyle,
+        fontSize: 14,
+        fill: COLORS.goldDark,
+        fontWeight: 700            // avoid faux 600 which blurs
       });
+      tx.roundPixels = true;
+      tx.anchor.set(0.5, 0);
       const hx = Math.round(x + leftPad + nameColW + j * cellW + cellW / 2);
-      tx.anchor.set(0.5, 0); // center over column
-      tx.position.set(hx, Math.round(top));
+      tx.position.set(hx, Math.round(top));    // whole pixels
       container.addChild(tx);
     });
 
@@ -1254,34 +1282,50 @@ renderGreatWorks(container, x, y, w, h) {
         g.stroke();
         container.addChild(g);
 
-        // value text "pts / thresh"
+        //const cy = Math.round(barY + barHeight / 2);
+        
         const txt = new PIXI.Text(`${pts}/${thresh}`, {
           fontFamily: 'Crimson Text',
           fontSize: 14,
-          fontWeight: ratio >= 1 ? 'bold' : '600',
+          fontWeight: ratio >= 1 ? 700 : 600, // prefer 700 over 600 for crisp
           fill: 0xffffff,
           dropShadow: ratio >= 0.75,
           dropShadowColor: 0x000000,
           dropShadowDistance: 1,
           dropShadowAlpha: 0.85
         });
+        txt.roundPixels = true;
         txt.anchor.set(0.5, 0.5);
-        txt.position.set(barX + barW / 2, barY + barHeight / 2);
+        txt.position.set(Math.round(barX + barW / 2), Math.round(barY + barHeight / 2));                  
         container.addChild(txt);
+        // value text "pts / thresh"
+        //const txt = new PIXI.Text(`${pts}/${thresh}`, {
+        //  fontFamily: 'Crimson Text',
+        //  fontSize: 14,
+        //  fontWeight: ratio >= 1 ? 'bold' : '600',
+        //  fill: 0xffffff,
+        //  dropShadow: ratio >= 0.75,
+        //  dropShadowColor: 0x000000,
+        //  dropShadowDistance: 1,
+        //  dropShadowAlpha: 0.85
+        //});
+        //txt.anchor.set(0.5, 0.5);
+        //txt.position.set(barX + barW / 2, barY + barHeight / 2);
+        //container.addChild(txt);
       }
     }
 
     // optional outer border (subtle)
-    const frame = new PIXI.Graphics();
-    frame.lineStyle(1, COLORS.goldDark, 0.25);
-    frame.drawRect(
-      Math.round(x + leftPad - 10),
-      Math.round(top - 6),
-      Math.round(tableW + 20),
-      Math.round(headerH + rowH * 6 + 10)
-    );
-    frame.stroke();
-    container.addChild(frame);
+    //const frame = new PIXI.Graphics();
+    //frame.lineStyle(1, COLORS.goldDark, 0.25);
+    //frame.drawRect(
+    //  Math.round(x + leftPad - 10),
+    //  Math.round(top - 6),
+    //  Math.round(tableW + 20),
+    //  Math.round(headerH + rowH * 6 + 10)
+    //);
+    //frame.stroke();
+    //container.addChild(frame);
   }
 
 
@@ -1302,7 +1346,7 @@ renderGreatWorks(container, x, y, w, h) {
     container.addChild(reqTitle);
     
     const requirements = [
-      '• Control a majority of delegates during a World Congress Vote',
+      '• Control a majority of delegates during a World Congress Vote.',
     ];
     
     let yOffset = y + 70;
@@ -1470,7 +1514,7 @@ renderDiplomaticOverview(container, x, y, w, h) {
   }
 
   // Totals and ratios (cap at 10)
-  const TOTAL_CAP = 10;
+  const TOTAL_CAP = 12;
   const totals = Array.from({ length: 6 }, (_, p) => (Number(delegates[p] || 0) + allies[p]));
   const ratios = totals.map(v => Math.min(1, v / TOTAL_CAP));
 
@@ -1507,7 +1551,8 @@ renderDiplomaticOverview(container, x, y, w, h) {
 
   // ---------- Column headers ----------
   for (let j = 0; j < cols; j++) {
-    const tx = new PIXI.Text(`PLAYER ${j + 1}`, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    //const tx = new PIXI.Text(`PLAYER ${j + 1}`, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    const tx = new PIXI.Text(`PLAYER ${j + 1}`, statusStyle);
     tx.roundPixels = true;
     tx.anchor.set(0.5, 0.5);
     const cx = Math.round(tableX + j * cellW + cellW / 2);
@@ -1994,11 +2039,7 @@ renderDiplomaticOverview(container, x, y, w, h) {
 
         // Header row: "Player N"
         for (let p = 0; p < 6; p++) {
-          const hdr = new PIXI.Text(`Player ${p + 1}`, {
-            ...requirementStyle,
-            fontSize: 12,
-            fontWeight: 700,
-          });
+          const hdr = new PIXI.Text(`Player ${p + 1}`, statusStyle);
           hdr.roundPixels = true;
           hdr.anchor.set(0.5, 0.5);
           hdr.position.set(centers[p], Math.round(rowY + 18)); // in header band
@@ -2010,7 +2051,7 @@ renderDiplomaticOverview(container, x, y, w, h) {
           const v = values[p] ?? 0;
           const isLeader = (v === maxVal && maxVal !== Number.NEGATIVE_INFINITY && haveMetThisTurn[p][i + 6] === 1);
 
-          const valText = new PIXI.Text(String(v), {
+          const valText = new PIXI.Text(String(Math.round(v)), {
             ...statusStyle,
             fontSize: 14,
             fontWeight: isLeader ? 800 : 600,
@@ -2129,8 +2170,8 @@ renderDiplomaticOverview(container, x, y, w, h) {
     container.addChild(reqTitle);
     
     const requirements = [
-      '• Research all required technologies',
-      '• Build and launch all spaceship parts'
+      '• Research all required technologies.',
+      '• Build and launch all spaceship parts.'
     ];
     
     let yOffset = y + 70;
@@ -2206,7 +2247,7 @@ renderDiplomaticOverview(container, x, y, w, h) {
 
   // ---------- Column headers ----------
   for (let j = 0; j < numPlayers; j++) {
-    const tx = new PIXI.Text(`PLAYER ${j + 1}`, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    const tx = new PIXI.Text(`PLAYER ${j + 1}`, statusStyle);
     tx.roundPixels = true;
     tx.anchor.set(0.5, 0.5);
     const cx = Math.round(tableX + nameColW + j * colW + colW / 2);
@@ -2238,7 +2279,7 @@ renderDiplomaticOverview(container, x, y, w, h) {
     const rowY = Math.round(tableY + headerH + i * rowH);
 
     // Row label
-    const label = new PIXI.Text(rows[i].name, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+    const label = new PIXI.Text(rows[i].name, statusStyle);
     label.roundPixels = true;
     label.anchor.set(0, 0.5);
     label.position.set(Math.round(tableX + 10), Math.round(rowY + rowH / 2));
@@ -2307,98 +2348,7 @@ renderDiplomaticOverview(container, x, y, w, h) {
       container.addChild(icon);
     }
   }
-
-
-
-
-
-    // Spaceship Parts
-    //const partsTitle = new PIXI.Text('SPACESHIP COMPONENTS', requirementStyle);
-    //partsTitle.position.set(x, yOffset + 30);
-    //container.addChild(partsTitle);
-    //
-    //yOffset += 60;
-    //
-    //const parts = [
-    //  { name: 'SS Booster', built: true, qty: '3/3' },
-    //  { name: 'SS Cockpit', built: false, qty: '0/1' },
-    //  { name: 'SS Engine', built: false, qty: '0/1' },
-    //  { name: 'SS Stasis Chamber', built: false, qty: '0/1' }
-    //];
-    //
-    //parts.forEach(part => {
-    //  // Icon frame
-    //  const iconFrame = new PIXI.Graphics();
-    //  const iconColor = part.built ? COLORS.success : COLORS.failed;
-    //  iconFrame.lineStyle(2, iconColor);
-    //  iconFrame.drawCircle(x + 30, yOffset + 10, 10);
-    //  iconFrame.stroke();
-    //  
-    //  // Checkmark or X
-    //  if (part.built) {
-    //    iconFrame.lineStyle(3, COLORS.success);
-    //    iconFrame.moveTo(x + 25, yOffset + 10);
-    //    iconFrame.lineTo(x + 28, yOffset + 13);
-    //    iconFrame.lineTo(x + 35, yOffset + 6);
-    //    iconFrame.stroke();
-    //  } else {
-    //    iconFrame.lineStyle(2, COLORS.failed);
-    //    iconFrame.moveTo(x + 25, yOffset + 5);
-    //    iconFrame.lineTo(x + 35, yOffset + 15);
-    //    iconFrame.moveTo(x + 35, yOffset + 5);
-    //    iconFrame.lineTo(x + 25, yOffset + 15);
-    //    iconFrame.stroke();
-    //  }
-    //  container.addChild(iconFrame);
-    //  
-    //  // Part name
-    //  const partText = new PIXI.Text(part.name, {
-    //    ...statusStyle,
-    //    fill: part.built ? COLORS.goldBright : COLORS.goldDark
-    //  });
-    //  partText.position.set(x + 50, yOffset);
-    //  container.addChild(partText);
-    //  
-    //  // Quantity
-    //  const qtyText = new PIXI.Text(part.qty, {
-    //    ...statusStyle,
-    //    fontWeight: 600,
-    //    fill: part.built ? COLORS.success : COLORS.pending
-    //  });
-    //  qtyText.anchor.set(1, 0);
-    //  qtyText.position.set(x + w - 40, yOffset);
-    //  container.addChild(qtyText);
-    //  
-    //  yOffset += 35;
-    //});
-    //
-    //// Technologies Progress
-    //yOffset += 20;
-    //const techTitle = new PIXI.Text('TECHNOLOGY PROGRESS', requirementStyle);
-    //techTitle.position.set(x, yOffset);
-    //container.addChild(techTitle);
-    //
-    //yOffset += 30;
-    //const techProgress = new PIXI.Text('Technologies Discovered: 87/95', statusStyle);
-    //techProgress.position.set(x + 20, yOffset);
-    //container.addChild(techProgress);
-    //
-    //// Progress bar
-    //const techBarBg = new PIXI.Graphics();
-    //techBarBg.beginFill(COLORS.divider, 0.3);
-    //techBarBg.drawRect(x + 20, yOffset + 25, w - 60, 20);
-    //techBarBg.endFill();
-    //
-    //techBarBg.beginFill(COLORS.pending, 0.8);
-    //techBarBg.drawRect(x + 20, yOffset + 25, (w - 60) * (87/95), 20);
-    //techBarBg.endFill();
-    //
-    //techBarBg.lineStyle(1, COLORS.goldDark, 0.5);
-    //techBarBg.drawRect(x + 20, yOffset + 25, w - 60, 20);
-    //techBarBg.stroke();
-    //container.addChild(techBarBg);
-    
-    this.lContent.addChild(container);
+  this.lContent.addChild(container);
   }
 
   renderDominationVictory(x, y, w, h) {
@@ -2418,7 +2368,7 @@ renderDiplomaticOverview(container, x, y, w, h) {
     container.addChild(reqTitle);
     
     const requirements = [
-      '• Sack every capital city in the game',
+      '• Sack every capital city in the game.',
     ];
     
     let yOffset = y + 70;
@@ -2718,37 +2668,6 @@ renderDominationOverview(container, x, y, w, h) {
       }
     }
   }
-  
-  // Legend at bottom
-  //const legendY = gridStartY + 6 * cellSize + 30;
-  //
-  //const legendItems = [
-  //  { color: COLORS.success, label: 'Capital Captured', icon: 'check' },
-  //  { color: COLORS.failed, label: 'Not Captured', icon: 'x' },
-  //  { color: COLORS.stoneBg, label: 'Own Capital', icon: 'dash' }
-  //];
-  //
-  //legendItems.forEach((item, idx) => {
-  //  const legendX = x + 40 + idx * 150;
-  //  
-  //  // Icon box
-  //  const box = new PIXI.Graphics();
-  //  box.beginFill(item.color, item.color === COLORS.stoneBg ? 0.3 : 0.4);
-  //  box.lineStyle(1, item.color === COLORS.stoneBg ? COLORS.goldDark : item.color);
-  //  box.drawRect(legendX, legendY, 16, 16);
-  //  box.endFill();
-  //  box.stroke();
-  //  container.addChild(box);
-  //  
-  //  // Label
-  //  const label = new PIXI.Text(item.label, {
-  //    fontFamily: 'Cinzel',
-  //    fontSize: 12,
-  //    fill: COLORS.goldDark
-  //  });
-  //  label.position.set(legendX + 20, legendY);
-  //  container.addChild(label);
-  //});
 }
 
   renderDominationRelationships(container, x, y, w, h) {
@@ -3029,7 +2948,6 @@ renderDominationOverview(container, x, y, w, h) {
       { key: 'loc',  label: 'Location',    width: 160, align: 'center' },
       { key: 'hp',   label: 'Health',      width: 140, align: 'right'  },
       { key: 'mult', label: 'Combat Mult', width: 180, align: 'right'  },
-      //{ key: 'xp',   label: 'XP',          width: 100, align: 'right'  },
     ];
 
     const colXs = [];
@@ -3037,10 +2955,9 @@ renderDominationOverview(container, x, y, w, h) {
 
     cols.forEach((c, i) => {
       const hdr = new PIXI.Text(c.label.toUpperCase(), {
-        ...requirementStyle,
+        ...statusStyle,
         fontSize: 12,
         fontWeight: 700,
-        fill: COLORS.goldDark
       });
       hdr.roundPixels = true;
 

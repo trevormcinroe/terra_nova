@@ -197,7 +197,7 @@ export class DemographicsScreenRendererPixi {
     // Dropdown background
     const dropdownBg = new PIXI.Graphics();
     dropdownBg.beginFill(0x2a2a2a)
-      .drawRect(0, 0, 200, 30)
+      .drawRect(0, 0, 230, 30)
       .endFill();
     dropdownBg.lineStyle(1, 0x4a8a8a)
       .drawRect(0, 0, 200, 30);
