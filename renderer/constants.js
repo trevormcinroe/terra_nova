@@ -349,7 +349,7 @@ export const yieldDefs = [
   { path:'./icons/yield_prod2.png',     s:0.085 + 0.001 },
   { path:'./icons/yield_prod3.png',     s:0.085 + 0.001 },
   { path:'./icons/yield_prod4.png',     s:0.085 + 0.001 },
-  { path:'./icons/yield_prod5.png',     s:0.083 + 0.001 },
+  { path:'./icons/yield_prod5.png',     s:0.043 + 0.001 },
 
   /* GOLD (k=2) */
   { path:'./icons/yield_gold.png',      s:0.024 + 0.001 },
@@ -399,7 +399,7 @@ export const unitBGDefs = [
   /* triangles (shape 0) */
   { path:'./icons/units/bg_triangle_1.png', s:0.1 },
   { path:'./icons/units/bg_triangle_2.png', s:0.1 },
-  { path:'./icons/units/bg_triangle_3.png', s:0.1 },
+  { path:'./icons/units/bg_triangle_3_new.png', s:0.1 },
   { path:'./icons/units/bg_triangle_4.png', s:0.1 },
   { path:'./icons/units/bg_triangle_5.png', s:0.1 },
   { path:'./icons/units/bg_triangle_6.png', s:0.1 },
@@ -407,7 +407,7 @@ export const unitBGDefs = [
   /* circles (shape 1) */
   { path:'./icons/units/bg_circle_1.png',   s:0.1 },
   { path:'./icons/units/bg_circle_2.png',   s:0.1 },
-  { path:'./icons/units/bg_circle_3.png',   s:0.1 },
+  { path:'./icons/units/bg_circle_3_new.png',   s:0.1 },
   { path:'./icons/units/bg_circle_4.png',   s:0.1 },
   { path:'./icons/units/bg_circle_5.png',   s:0.1 },
   { path:'./icons/units/bg_circle_6.png',   s:0.1 },
@@ -430,7 +430,7 @@ export const unitDefs = [
   null,
   { path:'./icons/units/settler.png', s:0.05 },
   { path:'./icons/units/warrior.png', s:0.05 },
-  { path:'./icons/units/worker.png',  s:0.05 },
+  { path:'./icons/units/worker.png',  s:0.04 },
   { path:'./icons/units/archer.png',  s:0.05 },
   { path:'./icons/units/caravan.png',  s:0.04 },
   { path:'./icons/units/chariot_archer.png',  s:0.05 },
