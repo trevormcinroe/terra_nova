@@ -89,21 +89,22 @@ export class PolicyScreenRendererPixi {
     this.baseOffsetX = (viewWidth - totalWidth) / 2;
     this.baseOffsetY = (viewHeight - totalHeight) / 2 - 50;  // Move up by 50 pixels
 
-    /* ---------- camera (horizontal pan) ---------- */
-    this.offsetX=0; this.drag=false;
-    this.stage.interactive=true;
-    this.stage.on('pointerdown',e=>{
-      this.drag=true; this.dragStart=e.data.global.x+this.offsetX;});
-    this.stage.on('pointerup',_=>this.drag=false)
-              .on('pointerupoutside',_=>this.drag=false)
-              .on('pointermove',e=>{
-                if(!this.drag)return;
-                this.offsetX=this.dragStart-e.data.global.x;
-                this.updateStagePosition();});
-    this.stage.on('wheel',e=>{
-      this.offsetX+=e.deltaY; 
-      this.updateStagePosition(); 
-      e.preventDefault();});
+    /* ---------- camera (horizontal pan // removed for now) ---------- */
+    this.offsetX=0; 
+    //this.drag=false;
+    //this.stage.interactive=true;
+    //this.stage.on('pointerdown',e=>{
+    //  this.drag=true; this.dragStart=e.data.global.x+this.offsetX;});
+    //this.stage.on('pointerup',_=>this.drag=false)
+    //          .on('pointerupoutside',_=>this.drag=false)
+    //          .on('pointermove',e=>{
+    //            if(!this.drag)return;
+    //            this.offsetX=this.dragStart-e.data.global.x;
+    //            this.updateStagePosition();});
+    //this.stage.on('wheel',e=>{
+    //  this.offsetX+=e.deltaY; 
+    //  this.updateStagePosition(); 
+    //  e.preventDefault();});
 
     /* ---------- pre-compute slot positions ---------- */
     this.nodePos=new Map();      // id → {x,y,isOpener}
@@ -156,10 +157,10 @@ export class PolicyScreenRendererPixi {
 
     /* ---------- static layers ---------- */
     this.lBackground = new PIXI.Graphics();  // Background frame
-    this.lCards   = new PIXI.Container();
+    this.lCards = new PIXI.Container();
     this.lConnect = new PIXI.Graphics();
-    this.lNodes   = new PIXI.Container();
-    this.lPlayer  = new PIXI.Container();
+    this.lNodes = new PIXI.Container();
+    this.lPlayer = new PIXI.Container();
     this.stage.addChild(this.lBackground,this.lCards,this.lConnect,this.lNodes,this.lPlayer);
 
     this.drawBackground(totalWidth, totalHeight);

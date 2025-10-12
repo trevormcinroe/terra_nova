@@ -11,7 +11,7 @@ function loadGoogleFonts() {
     });
     document.head.appendChild(link);
   }
-  return document.fonts.ready;          // resolves when fonts are usable
+  return document.fonts.ready;  // resolves when fonts are usable
 }
 
 await loadGoogleFonts();
@@ -50,17 +50,17 @@ const detailStylePID = new PIXI.TextStyle({
 let religionIcons = await constants.loadReligionIcons();
 
 /* =========================================================
-   ReligionScreenRendererPixi — GPU overlay (Pixi v8)
+   ReligionScreenRendererPixi
    ========================================================= */
 
 /* ───────────────────────── helpers ───────────────────────── */
 const TENET_LABELS  = ['Pantheon','Founder','Follower','Enhancer','Reformation'];
-const ICON_SIZE     = 48;
-const ICON_PAD      = 12;
-const ROW_HEIGHT    = 42;
-const COL_PAD       = 18;
-const HEADER_H      = 45;
-const Y_OFFSET      = 30;
+const ICON_SIZE = 48;
+const ICON_PAD = 12;
+const ROW_HEIGHT = 42;
+const COL_PAD = 18;
+const HEADER_H = 45;
+const Y_OFFSET = 30;
 
 // Civilization-style color palette
 const COLORS = {
@@ -85,29 +85,28 @@ const COLORS = {
 export class ReligionScreenRendererPixi {
   constructor(app, tenetNames, tenetCategories) {
     /* ------------- scene graph ---------------- */
-    this.app   = app;
+    this.app = app;
     this.stage = new PIXI.Container();
     this.app.stage.addChild(this.stage);
 
-    this.tenetNames      = tenetNames;
+    this.tenetNames = tenetNames;
     this.tenetCategories = tenetCategories;
-    this.players         = [0, 1, 2, 3, 4, 5];
+    this.players = [0, 1, 2, 3, 4, 5];
 
     /* ------------- geometry ------------------- */
     const { width: W, height: H } = app.renderer;
-    this.rows    = 2;
-    this.cols    = 3;
+    this.rows = 2;
+    this.cols = 3;
     this.padding = 20;
-    this.cellW   = W / this.cols;
-    this.cellH   = H / this.rows / 1.25;
+    this.cellW = W / this.cols;
+    this.cellH = H / this.rows / 1.25;
 
     /* ------------- layers --------------------- */
     this.lBackground = new PIXI.Container();  // background effects
-    this.lStatic  = new PIXI.Container();     // boxes, headers, labels
-    this.lIcons   = new PIXI.Container();
+    this.lStatic = new PIXI.Container();     // boxes, headers, labels
+    this.lIcons = new PIXI.Container();
     this.lDynamic = new PIXI.Container();     // per-turn tenets
     this.stage.addChild(this.lBackground, this.lStatic, this.lDynamic, this.lIcons);
-
     this.buildBackground();
     this.buildStaticLayout();
   }
@@ -116,9 +115,9 @@ export class ReligionScreenRendererPixi {
        PUBLIC API
      ========================================================= */
   setPlayerReligion(rel) { this.playerReligion = rel; }
-  setTurn(turn)         { this.turn = turn; this.redraw(); }
-  start()               { this.redraw(); }
-  stop()                { /* nothing to detach */ }
+  setTurn(turn) { this.turn = turn; this.redraw(); }
+  start() { this.redraw(); }
+  stop() { /* nothing to detach */ }
 
   /* =========================================================
        BACKGROUND
@@ -254,8 +253,6 @@ export class ReligionScreenRendererPixi {
       G.drawRect(boxX + 4, boxY + 4, boxW - 8, boxH - 8);
       G.stroke();
 
-      /* ── icon frame - circular style ──────────── */
-
       // Draw circular frame with double border
       const circleRadius = (ICON_SIZE + 50) / 2;
       
@@ -265,16 +262,6 @@ export class ReligionScreenRendererPixi {
       G.drawCircle(iconX  - 35 + boxW / 2, iconY + 20, circleRadius);
       G.endFill();
       G.stroke();
-
-      // Inner decorative circle
-      //G.lineStyle(2, COLORS.playerColors[i]);
-      //G.drawCircle(iconX, iconY, circleRadius - 6);
-      //G.stroke();
-      //
-      //// Small inner circle for additional detail
-      //G.lineStyle(1, COLORS.goldDark, 0.5);
-      //G.drawCircle(iconX, iconY, circleRadius - 10);
-      //G.stroke();
 
       /* ── Roman numeral in icon ───────────────── */
       const romanNumerals = ['1', '2', '3', '4', '5', '6'];
@@ -299,13 +286,7 @@ export class ReligionScreenRendererPixi {
         const diamondSize = 3;
         G.beginFill(COLORS.goldDark);
         G.lineStyle(0);
-        // Left diamond
-        //G.drawPolygon([
-        //  boxX + COL_PAD + ICON_SIZE + 20, lineY,
-        //  boxX + COL_PAD + ICON_SIZE + 20 - diamondSize, lineY - diamondSize,
-        //  boxX + COL_PAD + ICON_SIZE + 20, lineY - diamondSize * 2,
-        //  boxX + COL_PAD + ICON_SIZE + 20 + diamondSize, lineY - diamondSize
-        //]);
+
         // Right diamond
         G.drawPolygon([
           boxX + boxW - COL_PAD + 5, lineY,
@@ -407,10 +388,10 @@ export class ReligionScreenRendererPixi {
       this.tenetNames.forEach((name, id) => {
         if (turnVec[pIdx]?.[id]) {
           const cat = this.tenetCategories[id];
-          const dst = cat === 'pantheon'   ? 0
-                    : cat === 'founder'    ? 1
-                    : cat === 'follower'   ? 2
-                    : cat === 'enhancer'   ? 3
+          const dst = cat === 'pantheon' ? 0
+                    : cat === 'founder' ? 1
+                    : cat === 'follower' ? 2
+                    : cat === 'enhancer' ? 3
                     : cat === 'reformation'? 4 : -1;
           if (dst >= 0) entries[dst].push(name);
         }
@@ -419,23 +400,6 @@ export class ReligionScreenRendererPixi {
       /* create Text nodes for each row */
       for (let r = 0; r < TENET_LABELS.length; r++) {
         if (!entries[r].length) continue;
-
-        // Text with shadow for depth
-        //const shadowTxt = new PIXI.Text(entries[r].join(' · '), detailStyleTenet)
-        ////const shadowTxt = new PIXI.Text(entries[r].join(' · '), {
-        ////  fontSize: 12,
-        ////  fill: COLORS.shadow,
-        ////  fontWeight: '500',
-        ////  align: 'right',
-        ////  wordWrap: true,
-        ////  wordWrapWidth: boxW - COL_PAD * 2 - 120,
-        ////});
-        //shadowTxt.anchor.set(1, 0.5);
-        //shadowTxt.position.set(
-        //  cellX + boxW - COL_PAD + 1,
-        //  cellY + r * ROW_HEIGHT + ROW_HEIGHT / 2 + 1
-        //);
-        //this.lDynamic.addChild(shadowTxt);
 
         const txt = new PIXI.Text(entries[r].join(', '), detailStyleTenet);
         txt.anchor.set(1, 0.5);

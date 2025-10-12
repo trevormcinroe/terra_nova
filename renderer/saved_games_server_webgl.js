@@ -1,10 +1,9 @@
-
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
 const ROOT_DIR = __dirname;  // Serve files relative to project folder
-const GAMESTATE_DIR = path.join(ROOT_DIR, './saved_games/');  // Your .json files live here
+const GAMESTATE_DIR = path.join(ROOT_DIR, './saved_games/');  // .json files live here
 const PORT = 3001;
 
 const server = http.createServer((req, res) => {
@@ -21,7 +20,6 @@ const server = http.createServer((req, res) => {
     });
   } else {
     // Serve static files
-    //let filePath = path.join(ROOT_DIR, req.url === '/' ? '/index.html' : req.url);
     // Normalize the path to prevent directory traversal attacks
     let safePath = path.normalize(req.url).replace(/^(\.\.[\/\\])+/, '');
     let filePath = path.join(ROOT_DIR, safePath === '/' ? '/index_webgl.html' : safePath);

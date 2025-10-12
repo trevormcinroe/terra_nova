@@ -148,7 +148,6 @@ const monitor = new PerformanceMonitor(app, {
   container: fpsLayer  // pass the layer
 });
 
-// Add the canvas to your webpage
 document.body.appendChild(app.canvas);
 
 
@@ -589,7 +588,6 @@ async function fetchNDJSONGzipBatched(url) {
     return gamestate;
 }
 
-// Your modified dropdown handler with both approaches
 document.getElementById("jsonFileDropdown").addEventListener("change", async function () {
     const filename = this.value;
     
@@ -611,7 +609,6 @@ document.getElementById("jsonFileDropdown").addEventListener("change", async fun
                 data = await fetchNDJSONGzipBatched(filename.replace(/\.ndjson$/, '.ndjson.gz'));
             }
         } else {
-            // Your existing code for regular JSON files
             let gzUrl = filename;
             if (!/\.gzip$/i.test(filename)) {
                 gzUrl = filename.replace(/\.json$/i, '.json.gzip');
@@ -633,7 +630,6 @@ document.getElementById("jsonFileDropdown").addEventListener("change", async fun
             }
         }
         
-        // --- The rest of your code is EXACTLY THE SAME ---
         terrainMap = data.terrain;
         riverMap = data.rivers;
         lakeMap = data.lakes;
@@ -1107,7 +1103,7 @@ function updateTurn(newTurn) {
   currentTurn = Math.max(0, Math.min(newTurn, maxTurn));
   document.getElementById("turnInput").value = currentTurn;
   viewState.turn = currentTurn;
-  renderMapDynamic(getLayerToggleStates());  // <- pass currentTurn to your rendering logic
+  renderMapDynamic(getLayerToggleStates()); 
 }
 
 // Click left arrow
@@ -2892,10 +2888,7 @@ function isOverBuildPanel(x, y) {
   const panelH = 180;
   return x >= panelX && x <= panelX + panelW && y >= panelY && y <= panelY + panelH;
 }
-/* ==========================================================
-   (optional) helper to change scroll inside your wheel
-   or button-scroll handlers
-   ========================================================== */
+
 export function clampBuildingScroll(visibleRows) {
   const maxScroll = Math.max(0, (visibleRows - 1) * 18);
   viewState.buildPanelScroll = Math.max(
@@ -3268,7 +3261,7 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
       const tile = drawHex(cx, cy, config?.fillColor, texture);
       //app.stage.addChild(tile);
       mapLayer.addChild(tile);
-      //drawHexCoords(cx, cy, row, col);
+      drawHexCoords(cx, cy, row, col);
 
       /* --- elevation overlay --- */
       let elevID = elevationMapLocal[row][col];    // 0-3

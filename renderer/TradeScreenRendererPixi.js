@@ -235,11 +235,6 @@ export class TradeScreenRendererPixi {
     this.resourcesOwned = resourcesOwned;
     this.precomputeResourceTotals();
   }
-  //setData(tradeRoutes, tradeDeals, resourceData) {
-  //  this.tradeRoutes = tradeRoutes;
-  //  this.tradeDeals = tradeDeals;
-  //  this.resourceData = resourceData;
-  //}
   
   start() { 
     this.stage.visible = true;
@@ -249,7 +244,6 @@ export class TradeScreenRendererPixi {
   stop() { 
     this.stage.visible = false;
   }
-
 
   /* =========================================================
        BUILD INTERFACE
@@ -645,7 +639,6 @@ export class TradeScreenRendererPixi {
               receiver = constants.csNames?.[csIdx] || `City-State ${csIdx + 1}`;
             }
           }
-
           
           routes.push({
             sender,
@@ -807,9 +800,6 @@ export class TradeScreenRendererPixi {
 
     } else {
       routes.forEach((route, idx) => {
-        
-        // TODO: THIS NEEDS TO BE REPLACED WITH NTURNSENGAGED
-        //console.log("ENGAGED: ", this.unitsEngaged[this.turn]);
         const turnsRemaining = route.turnsRemaining;
         const rowY = listY + 35 + idx * rowHeight - this.routesScrollY;
         
@@ -959,8 +949,6 @@ export class TradeScreenRendererPixi {
         for (let dealIdx = 0; dealIdx < ledger[fromPlayerIdx][toPlayerIdx].length; dealIdx++) {
           // Early exit if no deal in this slot
           if (ledger[fromPlayerIdx][toPlayerIdx][dealIdx][0] === 0) continue;
-          //console.log("from/to: ", fromPlayerIdx, toPlayerIdx, dealIdx);
-          //console.log(ledger[fromPlayerIdx][toPlayerIdx]);
 
           deals.push({
             party1: `Player ${fromPlayerIdx + 1}`,
@@ -976,8 +964,8 @@ export class TradeScreenRendererPixi {
   const headerHeight = 35;
   const cardHeight = 100;
   const cardGap = 10;
-  const S_ARROW = '\u27A1\uFE0E'; // ➡︎ text-style
-  const R_ARROW = '\u2B05\uFE0E'; // ⬅︎ text-style
+  const S_ARROW = '\u27A1\uFE0E'; 
+  const R_ARROW = '\u2B05\uFE0E';
   
   // Calculate scrolling parameters
   const visibleHeight = h - headerHeight - 20; // Leave some padding
@@ -1184,31 +1172,7 @@ renderResources(x, y, w, h) {
   const container = new PIXI.Container();
 
   const playerResourceTotals = this.getResourceTotalsForTurn(this.turn); // (6, R)
-  // ===== Compute (6, num_resources) totals from (6, max_cities, num_resources) =====
-  //const resourcesOwnedLocal = this.resourcesOwned?.[this.turn];
-  //let playerResourceTotals = null; // shape (6, R)
 
-  //if (resourcesOwnedLocal && resourcesOwnedLocal.length) {
-  //  const P = Math.min(6, resourcesOwnedLocal.length);
-  //  // try to infer R safely
-  //  const firstPlayerCities = resourcesOwnedLocal[0] || [];
-  //  const R = (firstPlayerCities[0]?.length) ?? 0;
-
-  //  playerResourceTotals = new Array(P);
-  //  for (let p = 0; p < P; p++) {
-  //    const cities = resourcesOwnedLocal[p] || [];
-  //    const sums = new Array(R).fill(0);
-  //    for (let c = 0; c < cities.length; c++) {
-  //      const row = cities[c] || [];
-  //      for (let r = 0; r < R; r++) {
-  //        sums[r] += row[r] || 0;
-  //      }
-  //    }
-  //    playerResourceTotals[p] = sums;
-  //  }
-  //}
-
-  // ===== Table metrics & resource rows (skip index 0 per your note) =====
   const headerH = 32;
   const rowH    = 28;
   const leftPad = 10;
@@ -1380,5 +1344,4 @@ function toTitleCase(str) {
 
   this.lContent.addChild(container);
 }
-
 }

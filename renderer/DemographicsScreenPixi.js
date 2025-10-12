@@ -1,4 +1,3 @@
-
 import * as PIXI from 'https://cdn.jsdelivr.net/npm/pixi.js@8.x/dist/pixi.mjs';
 import * as constants from "./constants.js";
 
@@ -12,7 +11,7 @@ function loadGoogleFonts() {
     });
     document.head.appendChild(link);
   }
-  return document.fonts.ready;          // resolves when fonts are usable
+  return document.fonts.ready;  // resolves when fonts are usable
 }
 
 await loadGoogleFonts();
@@ -44,17 +43,17 @@ const detailStyleSmall = new PIXI.TextStyle({
 /* ───────────────────────── constants ───────────────────────── */
 const METRICS = [
   { id: 'population', label: 'Population', color: 0x71C837 },
-  { id: 'land',       label: 'Land',   color: 0x8B4513 },
-  { id: 'literacy',   label: 'Literacy',    color: 0x9370DB },
+  { id: 'land', label: 'Land', color: 0x8B4513 },
+  { id: 'literacy', label: 'Literacy', color: 0x9370DB },
   // yields-based metrics
-  { id: 'food',       label: 'Food',        color: 0x32CD32 },
+  { id: 'food', label: 'Food', color: 0x32CD32 },
   { id: 'production', label: 'Production',  color: 0xFF8C00 },
-  { id: 'gold',       label: 'Gold',        color: 0xFFD700 },
-  { id: 'faith',      label: 'Faith',       color: 0xF0E68C },
-  { id: 'culture',    label: 'Culture',     color: 0xDA70D6 },
-  { id: 'science',    label: 'Science',     color: 0x00CED1 },
-  { id: 'happiness',  label: 'Happiness',   color: 0xFF69B4 },
-  { id: 'tourism',    label: 'Tourism',     color: 0x40E0D0 },
+  { id: 'gold', label: 'Gold', color: 0xFFD700 },
+  { id: 'faith', label: 'Faith', color: 0xF0E68C },
+  { id: 'culture', label: 'Culture', color: 0xDA70D6 },
+  { id: 'science', label: 'Science', color: 0x00CED1 },
+  { id: 'happiness', label: 'Happiness', color: 0xFF69B4 },
+  { id: 'tourism', label: 'Tourism', color: 0x40E0D0 },
   { id: "treasury", label: "Treasury", color: 0x32CD32 },
   { id: "netHappiness", label: "Net Happiness", color: 0x32CD32 },
   { id: "goldenAgeTurns", label: "Golden Age Turns", color: 0x32CD32 },
@@ -73,12 +72,10 @@ const YIELD_METRIC_INDEX = {
 };
 
 
-//const PLAYER_COLORS = [0x141B51, 0x66023C, 0x4A92D9, 0x71C837, 0xAAAAAA, 0x706f1f];
-//const PLAYER_COLORS = ["#FF2A2F", "#FFD700", "#0A63BA", "#286B32", "#FFFFFF", "#91A1D6"]
 const PLAYER_COLORS = constants.playerColorsScreens;
 const GRAPH_LINE_WIDTH = 2;
 const POINT_RADIUS = 3;
-const MAX_X_LABELS = 8; // keep axis readable
+const MAX_X_LABELS = 8;  // keep axis readable
 
 /* ========================================================= */
 export class DemographicsScreenRendererPixi {
@@ -92,8 +89,8 @@ export class DemographicsScreenRendererPixi {
     this.currentMetric = 'population'; // Default metric
     this.turn = 0;
     this.maxTurn = 0;
-    this.demographicsData = {}; // Raw data sources
-    this.timeSeriesData = [];   // Processed data for active metric
+    this.demographicsData = {};  // Raw data sources
+    this.timeSeriesData = [];  // Processed data for active metric
 
     /* ------------- geometry ------------------- */
     const { width: W, height: H } = app.renderer;
@@ -110,12 +107,12 @@ export class DemographicsScreenRendererPixi {
 
     /* ------------- layers --------------------- */
     this.lBackground = new PIXI.Container();
-    this.lGrid       = new PIXI.Graphics();
-    this.lAxes       = new PIXI.Graphics();
-    this.lLines      = new PIXI.Graphics();
-    this.lPoints     = new PIXI.Container();
-    this.lLabels     = new PIXI.Container();
-    this.lUI         = new PIXI.Container();
+    this.lGrid = new PIXI.Graphics();
+    this.lAxes = new PIXI.Graphics();
+    this.lLines = new PIXI.Graphics();
+    this.lPoints = new PIXI.Container();
+    this.lLabels = new PIXI.Container();
+    this.lUI = new PIXI.Container();
 
     this.stage.addChild(
       this.lBackground,
@@ -176,13 +173,7 @@ export class DemographicsScreenRendererPixi {
     this.lBackground.addChild(this.titleText);
 
     this.createMetricSelector();
-
-    //this.turnLabel = new PIXI.Text('Turn: 0', { fontSize: 18, fill: 0xffffff });
-    //this.turnLabel.position.set(this.boxX + this.boxWidth - 100, this.boxY + 25);
-    //this.lBackground.addChild(this.turnLabel);
-
     this.createLegend();
-
     this.drawStaticGrid();
     this.drawAxes();
   }
@@ -218,7 +209,7 @@ export class DemographicsScreenRendererPixi {
 
     // Make dropdown interactive
     dropdownBg.eventMode = 'static';
-    dropdownBg.cursor    = 'pointer';
+    dropdownBg.cursor = 'pointer';
 
     // Dropdown menu (initially hidden)
     this.dropdownMenu = new PIXI.Container();
@@ -238,13 +229,13 @@ export class DemographicsScreenRendererPixi {
       itemText.position.set(10, idx * 25 + 5);
 
       itemBg.eventMode = 'static';
-      itemBg.cursor    = 'pointer';
+      itemBg.cursor = 'pointer';
 
       // Select metric (no hover effects to minimise listeners)
       itemBg.on('pointerdown', () => {
-        this.currentMetric      = metric.id;
+        this.currentMetric = metric.id;
         this.currentMetricText.text = metric.label;
-        this.dropdownMenu.visible   = false;
+        this.dropdownMenu.visible = false;
         this.processTimeSeriesData();
         this.redraw();
       });
@@ -377,7 +368,7 @@ export class DemographicsScreenRendererPixi {
   }
 
   /* =========================================================
-       DATA PROCESSING (unchanged)
+       DATA PROCESSING
      ========================================================= */
   processTimeSeriesData() {
     this.timeSeriesData = [];
@@ -392,12 +383,12 @@ export class DemographicsScreenRendererPixi {
     if (!src) return;
 
     switch (this.currentMetric) {
-      case 'land':       this.aggregateLandData(src);       break;
+      case 'land': this.aggregateLandData(src); break;
       case 'population': this.aggregatePopulationData(src); break;
       case 'literacy': this.aggregateLiteracyData(src); break;
-      case 'tourism':   this.aggregateTourismData(src);   break;
+      case 'tourism': this.aggregateTourismData(src); break;
       // fallback for other per‑player arrays
-      default:           this.aggregateSimpleData(src);
+      default: this.aggregateSimpleData(src);
     }
   }
 
@@ -490,57 +481,46 @@ export class DemographicsScreenRendererPixi {
 
     /* ----- update labels ----- */
     //this.turnLabel.text    = `Turn: ${this.turn}`;
-    const metricObj        = METRICS.find(m => m.id === this.currentMetric);
-    this.yAxisLabel.text   = metricObj?.label || 'Value';
+    const metricObj = METRICS.find(m => m.id === this.currentMetric);
+    this.yAxisLabel.text = metricObj?.label || 'Value';
 
-    /* ----- calc value range (min always 0) ----- */
-    //let maxVal = -Infinity;
-    //let numPlayers = 0;
-    //this.timeSeriesData.forEach(td => {
-    //  numPlayers = Math.max(numPlayers, td.length);
-    //  td.forEach(v => { if (v !== null && v !== undefined) maxVal = Math.max(maxVal, v); });
-    //});
-    //if (maxVal === -Infinity) maxVal = 100;
-    //const padding = maxVal * 0.1 || 1;
-    //const minVal  = 0;
-    //maxVal += padding;
-let minVal = +Infinity;
-let maxVal = -Infinity;
-let numPlayers = 0;
+    let minVal = +Infinity;
+    let maxVal = -Infinity;
+    let numPlayers = 0;
 
-this.timeSeriesData.forEach(td => {
-  numPlayers = Math.max(numPlayers, td.length);
-  td.forEach(v => {
-    if (v !== null && v !== undefined) {
-      if (v < minVal) minVal = v;
-      if (v > maxVal) maxVal = v;
+    this.timeSeriesData.forEach(td => {
+      numPlayers = Math.max(numPlayers, td.length);
+      td.forEach(v => {
+        if (v !== null && v !== undefined) {
+          if (v < minVal) minVal = v;
+          if (v > maxVal) maxVal = v;
+        }
+      });
+    });
+
+    // Fallback if no finite data
+    if (!isFinite(minVal) || !isFinite(maxVal)) {
+      minVal = 0;
+      maxVal = 100;
     }
-  });
-});
 
-// Fallback if no finite data
-if (!isFinite(minVal) || !isFinite(maxVal)) {
-  minVal = 0;
-  maxVal = 100;
-}
-
-// Add padding; handle flat series
-let span = maxVal - minVal;
-if (span === 0) {
-  const pad = (Math.abs(maxVal) || 1) * 0.1; // give a little breathing room
-  minVal -= pad;
-  maxVal += pad;
-  span = maxVal - minVal;
-} else {
-  const pad = span * 0.1;
-  minVal -= pad;
-  maxVal += pad;
-  span = maxVal - minVal;
-}
+    // Add padding; handle flat series
+    let span = maxVal - minVal;
+    if (span === 0) {
+      const pad = (Math.abs(maxVal) || 1) * 0.1; // give a little breathing room
+      minVal -= pad;
+      maxVal += pad;
+      span = maxVal - minVal;
+    } else {
+      const pad = span * 0.1;
+      minVal -= pad;
+      maxVal += pad;
+      span = maxVal - minVal;
+    }
 
     /* ----- X‑axis grid/labels step ----- */
     const numLabels = Math.min(MAX_X_LABELS, this.timeSeriesData.length);
-    const xStep     = Math.max(1, Math.floor(this.timeSeriesData.length / numLabels));
+    const xStep = Math.max(1, Math.floor(this.timeSeriesData.length / numLabels));
 
     /* ----- redraw grid aligned to step ----- */
     this.drawDynamicGrid(xStep);

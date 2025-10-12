@@ -137,7 +137,6 @@ export class VictoryScreenRendererPixi {
 
     /* ------------- interaction ---------------- */
     this.tabButtons = [];
-
     this.buildInterface();
   }
 
@@ -390,7 +389,6 @@ export class VictoryScreenRendererPixi {
     this.lMain.addChild(tabBg);
 
     /* ── Create tabs ──────────────────────────── */
-
     const tabWidth = this.boxWidth / VICTORY_TYPES.length;
     
     VICTORY_TYPES.forEach((type, idx) => {
@@ -519,7 +517,6 @@ export class VictoryScreenRendererPixi {
     graphics.clear();
 
     if (isActive) {
-      // Active tab: keep your header color + gold accent
       graphics.beginFill(COLORS.headerBg, 1);
       graphics.drawRect(x, y, tabWidth, h);
       graphics.endFill();
@@ -543,7 +540,6 @@ export class VictoryScreenRendererPixi {
       }
 
     } else {
-      // Inactive tab: solid background gray (from your palette)
       graphics.beginFill(COLORS.tabInactive, 1.0);
       graphics.drawRect(x, y, tabWidth, h);
       graphics.endFill();
@@ -605,19 +601,6 @@ export class VictoryScreenRendererPixi {
     // Content header with shadow
     const headerY = this.boxY + TAB_HEIGHT + 45;
     
-    //const shadowHeader = new PIXI.Text(
-    //  `${victoryType.toUpperCase()} VICTORY · TURN ${this.turn}`,
-    //  contentHeaderStyle
-    //);
-    //shadowHeader.anchor.set(0.5, 0);
-    //shadowHeader.position.set(
-    //  this.boxX + this.boxWidth / 2 + 1,
-    //  headerY + 1
-    //);
-    //shadowHeader.tint = 0x000000;
-    //shadowHeader.alpha = 0.5;
-    //this.lContent.addChild(shadowHeader);
-    
     const contentHeader = new PIXI.Text(
       `${victoryType.toUpperCase()} VICTORY · TURN ${this.turn}`,
       contentHeaderStyle
@@ -627,11 +610,6 @@ export class VictoryScreenRendererPixi {
     const centerX = Math.round(this.boxX + this.boxWidth / 2);
     contentHeader.x = Math.round(centerX - contentHeader.width / 2);
     contentHeader.y = headerY;
-    //contentHeader.anchor.set(0.0, 0);
-    //contentHeader.position.set(
-    //  this.boxX + this.boxWidth / 2 - 50,
-    //  headerY
-    //);
     this.lContent.addChild(contentHeader);
     
     // Content area bounds
@@ -826,187 +804,161 @@ export class VictoryScreenRendererPixi {
   /* ========================================
      Cultural Overview — 6×6 Player Matrix
      ======================================== */
-renderCulturalOverview(container, x, y, w, h) {
-  //const title = new PIXI.Text('CULTURE INFLUENCE MATRIX', requirementStyle);
-  //title.position.set(Math.round(x), Math.round(y));
-  //title.roundPixels = true;
-  //container.addChild(title);
+  renderCulturalOverview(container, x, y, w, h) {
 
-  const top = Math.round(y + 30);
-  const leftPad = 20, rightPad = 20;
-  const innerW = Math.max(0, w - leftPad - rightPad);
+    const top = Math.round(y + 30);
+    const leftPad = 20, rightPad = 20;
+    const innerW = Math.max(0, w - leftPad - rightPad);
 
-  // Table geometry
-  const rowLabels = ['PLAYER 1','PLAYER 2','PLAYER 3','PLAYER 4','PLAYER 5','PLAYER 6'];
-  const colLabels = rowLabels;
-  const headerH = 26;
-  const rowH = 30;
-  const headerW = 140;
-  const cellW = Math.floor((innerW - headerW) / 6);
-  const tableW = headerW + cellW * 6;
-  const tableH = headerH + rowH * 6;
+    // Table geometry
+    const rowLabels = ['PLAYER 1','PLAYER 2','PLAYER 3','PLAYER 4','PLAYER 5','PLAYER 6'];
+    const colLabels = rowLabels;
+    const headerH = 26;
+    const rowH = 30;
+    const headerW = 140;
+    const cellW = Math.floor((innerW - headerW) / 6);
+    const tableW = headerW + cellW * 6;
+    const tableH = headerH + rowH * 6;
 
-  const tableX = Math.round(x + leftPad + Math.floor((innerW - tableW) / 2));
-  const tableY = top;
+    const tableX = Math.round(x + leftPad + Math.floor((innerW - tableW) / 2));
+    const tableY = top;
 
-  // Data (assumes setData() already ran)
-  const tourism = this.tourismTotal[this.turn];
-  const culture = this.cultureTotal[this.turn];
+    // Data (assumes setData() already ran)
+    const tourism = this.tourismTotal[this.turn];
+    const culture = this.cultureTotal[this.turn];
 
-  // Table background + border
-  const box = new PIXI.Graphics();
-  box.beginFill(COLORS.stoneBg, 0.20);
-  box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
-  box.endFill();
-  box.lineStyle(1, COLORS.goldDark, 0.5);
-  box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
-  box.stroke();
-  container.addChild(box);
+    // Table background + border
+    const box = new PIXI.Graphics();
+    box.beginFill(COLORS.stoneBg, 0.20);
+    box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
+    box.endFill();
+    box.lineStyle(1, COLORS.goldDark, 0.5);
+    box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
+    box.stroke();
+    container.addChild(box);
 
-  // Column headers
-  colLabels.forEach((lbl, j) => {
-    //const tx = new PIXI.Text(lbl, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
-    const tx = new PIXI.Text(lbl, statusStyle);
-    tx.roundPixels = true;
-    tx.anchor.set(0.5, 0.5);
-    const cx = Math.round(tableX + headerW + j * cellW + cellW / 2);
-    const cy = Math.round(tableY + headerH / 2);
-    tx.position.set(cx, cy);
-    container.addChild(tx);
-  });
-  
-  // underline
-  const headerLine = new PIXI.Graphics();
-  headerLine.lineStyle(1, COLORS.goldDark, 0.5);
-  headerLine.moveTo(Math.round(x + leftPad + 2), Math.round(top + headerH - 2));
-  headerLine.lineTo(Math.round(x + leftPad + tableW + 2), Math.round(top + headerH - 2));
-  headerLine.stroke();
-  container.addChild(headerLine);
+    // Column headers
+    colLabels.forEach((lbl, j) => {
+      const tx = new PIXI.Text(lbl, statusStyle);
+      tx.roundPixels = true;
+      tx.anchor.set(0.5, 0.5);
+      const cx = Math.round(tableX + headerW + j * cellW + cellW / 2);
+      const cy = Math.round(tableY + headerH / 2);
+      tx.position.set(cx, cy);
+      container.addChild(tx);
+    });
+    
+    // underline
+    const headerLine = new PIXI.Graphics();
+    headerLine.lineStyle(1, COLORS.goldDark, 0.5);
+    headerLine.moveTo(Math.round(x + leftPad + 2), Math.round(top + headerH - 2));
+    headerLine.lineTo(Math.round(x + leftPad + tableW + 2), Math.round(top + headerH - 2));
+    headerLine.stroke();
+    container.addChild(headerLine);
 
-  // Rows
-  for (let i = 0; i < 6; i++) {
-    // Row header
-    const rh = new PIXI.Text(rowLabels[i], statusStyle);
-    rh.roundPixels = true;
-    rh.anchor.set(0, 0.5);
-    const ry = Math.round(tableY + headerH + i * rowH + rowH / 2);
-    rh.position.set(Math.round(tableX + 32), ry);
-    container.addChild(rh);
+    // Rows
+    for (let i = 0; i < 6; i++) {
+      // Row header
+      const rh = new PIXI.Text(rowLabels[i], statusStyle);
+      rh.roundPixels = true;
+      rh.anchor.set(0, 0.5);
+      const ry = Math.round(tableY + headerH + i * rowH + rowH / 2);
+      rh.position.set(Math.round(tableX + 32), ry);
+      container.addChild(rh);
 
-    for (let j = 0; j < 6; j++) {
-      const cellX = Math.round(tableX + headerW + j * cellW);
-      const cellY = Math.round(tableY + headerH + i * rowH);
+      for (let j = 0; j < 6; j++) {
+        const cellX = Math.round(tableX + headerW + j * cellW);
+        const cellY = Math.round(tableY + headerH + i * rowH);
 
-      // Cell background (zebra)
-      //const cellBg = new PIXI.Graphics();
-      //const baseAlpha = (i % 2 === 0) ? 0.10 : 0.06;
-      //cellBg.beginFill(COLORS.stoneBg, baseAlpha);
-      //cellBg.drawRect(cellX, cellY, cellW, rowH);
-      //cellBg.endFill();
+        // Off-diagonal: progress bar like the City-States view
+        if (i !== j) {
+          const num = tourism[i][j];
+          const den = culture[j];
 
-      //// Diagonal highlight
-      //if (i === j) {
-      //  cellBg.beginFill(COLORS.stoneBg, 0.18);
-      //  cellBg.drawRect(cellX, cellY, cellW, rowH);
-      //  cellBg.endFill();
-      //}
+          // Compute ratio and percentage text
+          const progress = den > 0 ? (num / den) : 0; // may exceed 1
+          const pct = Math.round(progress * 100);
 
-      //// Cell border
-      //cellBg.lineStyle(1, COLORS.goldDark, 0.25);
-      //cellBg.drawRect(cellX, cellY, cellW, rowH);
-      //cellBg.stroke();
-      //container.addChild(cellBg);
+          // Bar geometry inside the cell
+          const insetX = 6;
+          const insetY = 5;
+          const barX = cellX + insetX;
+          const barY = cellY + insetY;
+          const barW = cellW - insetX * 2;
+          const barH = rowH - insetY * 2;
 
-      // Off-diagonal: progress bar like the City-States view
-      if (i !== j) {
-        const num = tourism[i][j];
-        const den = culture[j];
-
-        // Compute ratio and percentage text
-        const progress = den > 0 ? (num / den) : 0; // may exceed 1
-        const pct = Math.round(progress * 100);
-
-        // Bar geometry inside the cell
-        const insetX = 6;
-        const insetY = 5;
-        const barX = cellX + insetX;
-        const barY = cellY + insetY;
-        const barW = cellW - insetX * 2;
-        const barH = rowH - insetY * 2;
-
-        // Background
-        const bar = new PIXI.Graphics();
-        bar.beginFill(COLORS.divider, 0.2);
-        bar.drawRect(barX, barY, barW, barH);
-        bar.endFill();
-
-        // Color thresholds (same vibe as your CS bars)
-        const color =
-          progress >= 1.0 ? COLORS.success :
-          progress >= 0.5 ? COLORS.pending :
-                            COLORS.failed;
-
-        // Fill (clamped to width)
-        const fillW = Math.max(0, Math.min(barW, Math.floor(barW * progress)));
-        if (fillW > 0) {
-          bar.beginFill(color, 0.6);
-          bar.drawRect(barX, barY, fillW, barH);
+          // Background
+          const bar = new PIXI.Graphics();
+          bar.beginFill(COLORS.divider, 0.2);
+          bar.drawRect(barX, barY, barW, barH);
           bar.endFill();
+
+          const color =
+            progress >= 1.0 ? COLORS.success :
+            progress >= 0.5 ? COLORS.pending :
+                              COLORS.failed;
+
+          // Fill (clamped to width)
+          const fillW = Math.max(0, Math.min(barW, Math.floor(barW * progress)));
+          if (fillW > 0) {
+            bar.beginFill(color, 0.6);
+            bar.drawRect(barX, barY, fillW, barH);
+            bar.endFill();
+          }
+
+          // Border for progress bar
+          bar.lineStyle(1, COLORS.goldDark, 0.3);
+          bar.drawRect(barX, barY, barW, barH);
+          bar.stroke();
+
+          container.addChild(bar);
+
+          // Percentage text overlay (mirrors CS value label style)
+          const valueText = new PIXI.Text(`${pct}%`, {
+            fontFamily: 'Crimson Text',
+            fontSize: 16,
+            fontWeight: pct >= 100 ? 'bold' : '600',
+            fill: 0xffffff,
+            dropShadow: progress >= 0.5,
+            dropShadowColor: 0x000000,
+            dropShadowDistance: 1,
+            dropShadowAlpha: 0.8
+          });
+          valueText.anchor.set(0.5, 0.5);
+          valueText.position.set(Math.round(barX + barW / 2), Math.round(barY + barH / 2));
+          container.addChild(valueText);
+
+        } else {
+          // Diagonal — show dash to indicate N/A
+          const na = new PIXI.Text('—', {
+            fontFamily: 'Cinzel',
+            fontSize: 14,
+            fontWeight: 600,
+            fill: COLORS.goldDark
+          });
+          na.anchor.set(0.5, 0.5);
+          na.position.set(Math.round(cellX + cellW / 2), Math.round(cellY + rowH / 2));
+          container.addChild(na);
         }
-
-        // Border for progress bar
-        bar.lineStyle(1, COLORS.goldDark, 0.3);
-        bar.drawRect(barX, barY, barW, barH);
-        bar.stroke();
-
-        container.addChild(bar);
-
-        // Percentage text overlay (mirrors CS value label style)
-        const valueText = new PIXI.Text(`${pct}%`, {
-          fontFamily: 'Crimson Text',
-          fontSize: 16,
-          fontWeight: pct >= 100 ? 'bold' : '600',
-          fill: 0xffffff,
-          dropShadow: progress >= 0.5,
-          dropShadowColor: 0x000000,
-          dropShadowDistance: 1,
-          dropShadowAlpha: 0.8
-        });
-        valueText.anchor.set(0.5, 0.5);
-        valueText.position.set(Math.round(barX + barW / 2), Math.round(barY + barH / 2));
-        container.addChild(valueText);
-
-      } else {
-        // Diagonal — show dash to indicate N/A
-        const na = new PIXI.Text('—', {
-          fontFamily: 'Cinzel',
-          fontSize: 14,
-          fontWeight: 600,
-          fill: COLORS.goldDark
-        });
-        na.anchor.set(0.5, 0.5);
-        na.position.set(Math.round(cellX + cellW / 2), Math.round(cellY + rowH / 2));
-        container.addChild(na);
       }
     }
+
+    // Axis hints
+    const axisLeft = new PIXI.Text('FROM', { ...statusStyle, fontSize: 18 });
+    axisLeft.roundPixels = true;
+    axisLeft.anchor.set(0, 0.5);  // left-center as the pivot
+    axisLeft.rotation = -Math.PI / 2  // then rotate 90' counter-clockwise
+    axisLeft.position.set(Math.round(tableX) - 12, Math.round(tableY - 18) + 140);
+    axisLeft.alpha = 0.8;
+    container.addChild(axisLeft);
+
+    const axisTop = new PIXI.Text('TO', { ...statusStyle, fontSize: 12 });
+    axisTop.roundPixels = true;
+    axisTop.anchor.set(1, 0);
+    axisTop.position.set(Math.round(tableX + tableW) - 520, Math.round(tableY - 22));
+    axisTop.alpha = 0.8;
+    container.addChild(axisTop);
   }
-
-  // Axis hints
-  const axisLeft = new PIXI.Text('FROM', { ...statusStyle, fontSize: 18 });
-  axisLeft.roundPixels = true;
-  axisLeft.anchor.set(0, 0.5);  // left-center as the pivot
-  axisLeft.rotation = -Math.PI / 2  // then rotate 90' counter-clockwise
-  axisLeft.position.set(Math.round(tableX) - 12, Math.round(tableY - 18) + 140);
-  axisLeft.alpha = 0.8;
-  container.addChild(axisLeft);
-
-  const axisTop = new PIXI.Text('TO', { ...statusStyle, fontSize: 12 });
-  axisTop.roundPixels = true;
-  axisTop.anchor.set(1, 0);
-  axisTop.position.set(Math.round(tableX + tableW) - 520, Math.round(tableY - 22));
-  axisTop.alpha = 0.8;
-  container.addChild(axisTop);
-}
   
 
 
@@ -1015,139 +967,122 @@ renderCulturalOverview(container, x, y, w, h) {
      Great Works (stub)
      ======================= */
 
-renderGreatWorks(container, x, y, w, h) {
-  // Build data on demand
-  const countsP4 = this._getGWCountsForTurn(this.turn);   // shape (P, 4)
-  console.log(countsP4);
-  const numPlayers = countsP4.length || 6;
+  renderGreatWorks(container, x, y, w, h) {
+    // Build data on demand
+    const countsP4 = this._getGWCountsForTurn(this.turn);   // shape (P, 4)
+    console.log(countsP4);
+    const numPlayers = countsP4.length || 6;
 
-  // Guard: no data yet
-  if (!countsP4.length) {
-    const msg = new PIXI.Text('No Great Works data available.', statusStyle);
-    msg.position.set(Math.round(x), Math.round(y));
-    container.addChild(msg);
-    return;
-  }
+    // Guard: no data yet
+    if (!countsP4.length) {
+      const msg = new PIXI.Text('No Great Works data available.', statusStyle);
+      msg.position.set(Math.round(x), Math.round(y));
+      container.addChild(msg);
+      return;
+    }
 
-  // Labels
-  const rowLabels = ['WRITING', 'ART', 'MUSIC']; // ignore index 3 (unused)
-  const colLabels = Array.from({ length: numPlayers }, (_, i) => `PLAYER ${i + 1}`);
+    // Labels
+    const rowLabels = ['WRITING', 'ART', 'MUSIC']; // ignore index 3 (unused)
+    const colLabels = Array.from({ length: numPlayers }, (_, i) => `PLAYER ${i + 1}`);
 
-  // Geometry
-  const top = Math.round(y + 30);
-  const leftPad = 20, rightPad = 20;
-  const innerW = Math.max(0, w - leftPad - rightPad);
+    // Geometry
+    const top = Math.round(y + 30);
+    const leftPad = 20, rightPad = 20;
+    const innerW = Math.max(0, w - leftPad - rightPad);
 
-  const headerH = 26;
-  const rowH = 32;
-  const nameColW = 150;
-  const cellW = Math.floor((innerW - nameColW) / numPlayers);
-  const tableW = nameColW + cellW * numPlayers;
-  const tableH = headerH + rowH * rowLabels.length;
+    const headerH = 26;
+    const rowH = 32;
+    const nameColW = 150;
+    const cellW = Math.floor((innerW - nameColW) / numPlayers);
+    const tableW = nameColW + cellW * numPlayers;
+    const tableH = headerH + rowH * rowLabels.length;
 
-  const tableX = Math.round(x + leftPad + Math.floor((innerW - tableW) / 2));
-  const tableY = top;
+    const tableX = Math.round(x + leftPad + Math.floor((innerW - tableW) / 2));
+    const tableY = top;
 
-  // Background + frame
-  const box = new PIXI.Graphics();
-  box.beginFill(COLORS.stoneBg, 0.20);
-  box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
-  box.endFill();
-  box.lineStyle(1, COLORS.goldDark, 0.5);
-  box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
-  box.stroke();
-  container.addChild(box);
-  
-  // underline
-  const headerLine = new PIXI.Graphics();
-  headerLine.lineStyle(1, COLORS.goldDark, 0.5);
-  headerLine.moveTo(Math.round(x + leftPad + 1), Math.round(top + headerH - 1));
-  headerLine.lineTo(Math.round(x + leftPad + tableW + 1), Math.round(top + headerH - 1));
-  headerLine.stroke();
-  container.addChild(headerLine);
+    // Background + frame
+    const box = new PIXI.Graphics();
+    box.beginFill(COLORS.stoneBg, 0.20);
+    box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
+    box.endFill();
+    box.lineStyle(1, COLORS.goldDark, 0.5);
+    box.drawRoundedRect(tableX, tableY, tableW, tableH, 0);
+    box.stroke();
+    container.addChild(box);
+    
+    // underline
+    const headerLine = new PIXI.Graphics();
+    headerLine.lineStyle(1, COLORS.goldDark, 0.5);
+    headerLine.moveTo(Math.round(x + leftPad + 1), Math.round(top + headerH - 1));
+    headerLine.lineTo(Math.round(x + leftPad + tableW + 1), Math.round(top + headerH - 1));
+    headerLine.stroke();
+    container.addChild(headerLine);
 
-  // Column headers
-  for (let j = 0; j < numPlayers; j++) {
-    //const tx = new PIXI.Text(colLabels[j], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
-    const tx = new PIXI.Text(colLabels[j], statusStyle);
-    tx.roundPixels = true;
-    tx.anchor.set(0.5, 0.5);
-    const cx = Math.round(tableX + nameColW + j * cellW + cellW / 2);
-    const cy = Math.round(tableY + headerH / 2);
-    tx.position.set(cx, cy);
-    container.addChild(tx);
-  }
-
-  // Rows
-  for (let i = 0; i < rowLabels.length; i++) {
-    const ry = Math.round(tableY + headerH + i * rowH + rowH / 2);
-
-    // Row header
-    //const rh = new PIXI.Text(rowLabels[i], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
-    const rh = new PIXI.Text(rowLabels[i], statusStyle);
-    rh.roundPixels = true;
-    rh.anchor.set(0, 0.5);
-    rh.position.set(Math.round(tableX + 40), ry);
-    container.addChild(rh);
-
-    // Cells
+    // Column headers
     for (let j = 0; j < numPlayers; j++) {
-      const cellX = Math.round(tableX + nameColW + j * cellW);
-      const cellY = Math.round(tableY + headerH + i * rowH);
+      //const tx = new PIXI.Text(colLabels[j], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+      const tx = new PIXI.Text(colLabels[j], statusStyle);
+      tx.roundPixels = true;
+      tx.anchor.set(0.5, 0.5);
+      const cx = Math.round(tableX + nameColW + j * cellW + cellW / 2);
+      const cy = Math.round(tableY + headerH / 2);
+      tx.position.set(cx, cy);
+      container.addChild(tx);
+    }
 
-      // Background (zebra)
-      const cellBg = new PIXI.Graphics();
-      const baseAlpha = (i % 2 === 0) ? 0.10 : 0.06;
-      cellBg.beginFill(COLORS.stoneBg, baseAlpha);
-      cellBg.drawRect(cellX, cellY, cellW, rowH);
-      cellBg.endFill();
+    // Rows
+    for (let i = 0; i < rowLabels.length; i++) {
+      const ry = Math.round(tableY + headerH + i * rowH + rowH / 2);
 
-      // Border
-      cellBg.lineStyle(1, COLORS.goldDark, 0.25);
-      cellBg.drawRect(cellX, cellY, cellW, rowH);
-      cellBg.stroke();
-      container.addChild(cellBg);
+      // Row header
+      //const rh = new PIXI.Text(rowLabels[i], { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+      const rh = new PIXI.Text(rowLabels[i], statusStyle);
+      rh.roundPixels = true;
+      rh.anchor.set(0, 0.5);
+      rh.position.set(Math.round(tableX + 40), ry);
+      container.addChild(rh);
 
-      // Value: countsP4[j][i]
-      const v = (countsP4[j] && countsP4[j][i]) ? countsP4[j][i] : 0;
-      const txt = new PIXI.Text(String(v), {
-        ...statusStyle,
-        fontSize: 16,
-        fontWeight: 700,
-        //fill: v > 0 ? 0xffffff : COLORS.goldDark,
-        dropShadow: v > 0,
-        dropShadowColor: 0x000000,
-        dropShadowDistance: 1,
-        dropShadowAlpha: 0.8
-      });
-      txt.anchor.set(0.5, 0.5);
-      txt.position.set(Math.round(cellX + cellW / 2), Math.round(cellY + rowH / 2));
-      container.addChild(txt);
+      // Cells
+      for (let j = 0; j < numPlayers; j++) {
+        const cellX = Math.round(tableX + nameColW + j * cellW);
+        const cellY = Math.round(tableY + headerH + i * rowH);
+
+        // Background (zebra)
+        const cellBg = new PIXI.Graphics();
+        const baseAlpha = (i % 2 === 0) ? 0.10 : 0.06;
+        cellBg.beginFill(COLORS.stoneBg, baseAlpha);
+        cellBg.drawRect(cellX, cellY, cellW, rowH);
+        cellBg.endFill();
+
+        // Border
+        cellBg.lineStyle(1, COLORS.goldDark, 0.25);
+        cellBg.drawRect(cellX, cellY, cellW, rowH);
+        cellBg.stroke();
+        container.addChild(cellBg);
+
+        // Value: countsP4[j][i]
+        const v = (countsP4[j] && countsP4[j][i]) ? countsP4[j][i] : 0;
+        const txt = new PIXI.Text(String(v), {
+          ...statusStyle,
+          fontSize: 16,
+          fontWeight: 700,
+          //fill: v > 0 ? 0xffffff : COLORS.goldDark,
+          dropShadow: v > 0,
+          dropShadowColor: 0x000000,
+          dropShadowDistance: 1,
+          dropShadowAlpha: 0.8
+        });
+        txt.anchor.set(0.5, 0.5);
+        txt.position.set(Math.round(cellX + cellW / 2), Math.round(cellY + rowH / 2));
+        container.addChild(txt);
+      }
     }
   }
-
-  // Optional outer frame
-  //const frame = new PIXI.Graphics();
-  //frame.lineStyle(1, COLORS.goldDark, 0.25);
-  //frame.drawRect(
-  //  Math.round(tableX - 8),
-  //  Math.round(tableY - 8),
-  //  Math.round(tableW + 16),
-  //  Math.round(tableH + 16)
-  //);
-  //frame.stroke();
-  //container.addChild(frame);
-}
 
   /* =======================
      Great People (stub)
      ======================= */
   renderGreatPeople(container, x, y, w, h) {
-    //const title = new PIXI.Text('GREAT PEOPLE', requirementStyle);
-    //title.position.set(Math.round(x), Math.round(y));
-    //title.roundPixels = true;
-    //container.addChild(title);
-
     const gppsThisTurn = this.gpps[this.turn];
     const gpThresholdThisTurn = this.gpThreshold[this.turn];
 
@@ -1178,34 +1113,17 @@ renderGreatWorks(container, x, y, w, h) {
     box.stroke();
     container.addChild(box);
 
-    // ---- headers ----
-    //const nameHeader = new PIXI.Text('PLAYER', {
-    //  ...statusStyle, fontSize: 14, fill: COLORS.goldDark
-    //});
-    //nameHeader.position.set(Math.round(x + leftPad), Math.round(top));
-    //container.addChild(nameHeader);
-
-    //gpTypes.forEach((label, j) => {
-    //  const tx = new PIXI.Text(label, {
-    //    ...statusStyle, fontSize: 14, fill: COLORS.goldDark
-    //  });
-    //  const hx = Math.round(x + leftPad + nameColW + j * cellW + cellW / 2);
-    //  tx.anchor.set(0.5, 0); // center over column
-    //  tx.position.set(hx, Math.round(top));
-    //  container.addChild(tx);
-    //});
-
     gpTypes.forEach((label, j) => {
       const tx = new PIXI.Text(label, {
         ...statusStyle,
         fontSize: 14,
         fill: COLORS.goldDark,
-        fontWeight: 700            // avoid faux 600 which blurs
+        fontWeight: 700  // avoid faux 600 which blurs
       });
       tx.roundPixels = true;
       tx.anchor.set(0.5, 0);
       const hx = Math.round(x + leftPad + nameColW + j * cellW + cellW / 2);
-      tx.position.set(hx, Math.round(top));    // whole pixels
+      tx.position.set(hx, Math.round(top));  // whole pixels
       container.addChild(tx);
     });
 
@@ -1220,7 +1138,7 @@ renderGreatWorks(container, x, y, w, h) {
     // ---- rows ----
     const rowsY0 = top + headerH;
     const barHeight = 18;
-    const barSidePad = 6; // inside each cell
+    const barSidePad = 6;  // inside each cell
 
     for (let p = 0; p < 6; p++) {
       const rowY = Math.round(rowsY0 + p * rowH);
@@ -1298,36 +1216,9 @@ renderGreatWorks(container, x, y, w, h) {
         txt.anchor.set(0.5, 0.5);
         txt.position.set(Math.round(barX + barW / 2), Math.round(barY + barHeight / 2));                  
         container.addChild(txt);
-        // value text "pts / thresh"
-        //const txt = new PIXI.Text(`${pts}/${thresh}`, {
-        //  fontFamily: 'Crimson Text',
-        //  fontSize: 14,
-        //  fontWeight: ratio >= 1 ? 'bold' : '600',
-        //  fill: 0xffffff,
-        //  dropShadow: ratio >= 0.75,
-        //  dropShadowColor: 0x000000,
-        //  dropShadowDistance: 1,
-        //  dropShadowAlpha: 0.85
-        //});
-        //txt.anchor.set(0.5, 0.5);
-        //txt.position.set(barX + barW / 2, barY + barHeight / 2);
-        //container.addChild(txt);
       }
     }
-
-    // optional outer border (subtle)
-    //const frame = new PIXI.Graphics();
-    //frame.lineStyle(1, COLORS.goldDark, 0.25);
-    //frame.drawRect(
-    //  Math.round(x + leftPad - 10),
-    //  Math.round(top - 6),
-    //  Math.round(tableW + 20),
-    //  Math.round(headerH + rowH * 6 + 10)
-    //);
-    //frame.stroke();
-    //container.addChild(frame);
   }
-
 
   renderDiplomaticVictory(x, y, w, h) {
     const container = new PIXI.Container();
@@ -1498,138 +1389,137 @@ renderGreatWorks(container, x, y, w, h) {
     this.lContent.addChild(container);
   }
  
-renderDiplomaticOverview(container, x, y, w, h) {
-  // ---------- Data ----------
-  const turn = this.turn ?? 0;
-  const delegates = (this.numDelegates && this.numDelegates[turn]) ? this.numDelegates[turn] : Array(6).fill(0);
-  const csRelTurn = (this.csRelationships && this.csRelationships[turn]) ? this.csRelationships[turn] : []; // shape (numCS, 6)
+  renderDiplomaticOverview(container, x, y, w, h) {
+    // ---------- Data ----------
+    const turn = this.turn ?? 0;
+    const delegates = (this.numDelegates && this.numDelegates[turn]) ? this.numDelegates[turn] : Array(6).fill(0);
+    const csRelTurn = (this.csRelationships && this.csRelationships[turn]) ? this.csRelationships[turn] : []; // shape (numCS, 6)
 
-  // Count city-state allies per player (relationship level === 2)
-  const allies = new Array(6).fill(0);
-  for (let i = 0; i < csRelTurn.length; i++) {
-    const row = csRelTurn[i] || [];
-    for (let p = 0; p < 6; p++) {
-      if ((row[p] | 0) === 2) allies[p]++;
+    // Count city-state allies per player (relationship level === 2)
+    const allies = new Array(6).fill(0);
+    for (let i = 0; i < csRelTurn.length; i++) {
+      const row = csRelTurn[i] || [];
+      for (let p = 0; p < 6; p++) {
+        if ((row[p] | 0) === 2) allies[p]++;
+      }
     }
-  }
 
-  // Totals and ratios (cap at 10)
-  const TOTAL_CAP = 12;
-  const totals = Array.from({ length: 6 }, (_, p) => (Number(delegates[p] || 0) + allies[p]));
-  const ratios = totals.map(v => Math.min(1, v / TOTAL_CAP));
+    // Totals and ratios (cap at 10)
+    const TOTAL_CAP = 12;
+    const totals = Array.from({ length: 6 }, (_, p) => (Number(delegates[p] || 0) + allies[p]));
+    const ratios = totals.map(v => Math.min(1, v / TOTAL_CAP));
 
-  // ---------- Geometry ----------
-  const top = Math.round(y);
-  const leftPad = 20, rightPad = 20;
-  const innerW = Math.max(0, w - leftPad - rightPad);
+    // ---------- Geometry ----------
+    const top = Math.round(y);
+    const leftPad = 20, rightPad = 20;
+    const innerW = Math.max(0, w - leftPad - rightPad);
 
-  const headerH = 28;        // header row height
-  const rowH    = 42;        // content row height
-  const cols    = 6;
-  const cellW   = Math.floor(innerW / cols);
-  const tableW  = cellW * cols;
-  const tableX  = Math.round(x + leftPad + Math.floor((innerW - tableW) / 2));
-  const tableY  = top + 6;
+    const headerH = 28;        // header row height
+    const rowH    = 42;        // content row height
+    const cols    = 6;
+    const cellW   = Math.floor(innerW / cols);
+    const tableW  = cellW * cols;
+    const tableX  = Math.round(x + leftPad + Math.floor((innerW - tableW) / 2));
+    const tableY  = top + 6;
 
-  // ---------- Table background & frame ----------
-  const box = new PIXI.Graphics();
-  box.beginFill(COLORS.stoneBg, 0.20);
-  box.drawRoundedRect(tableX, tableY, tableW, headerH + rowH, 0);
-  box.endFill();
-  box.lineStyle(1, COLORS.goldDark, 0.5);
-  box.drawRoundedRect(tableX, tableY, tableW, headerH + rowH, 0);
-  box.stroke();
-  container.addChild(box);
+    // ---------- Table background & frame ----------
+    const box = new PIXI.Graphics();
+    box.beginFill(COLORS.stoneBg, 0.20);
+    box.drawRoundedRect(tableX, tableY, tableW, headerH + rowH, 0);
+    box.endFill();
+    box.lineStyle(1, COLORS.goldDark, 0.5);
+    box.drawRoundedRect(tableX, tableY, tableW, headerH + rowH, 0);
+    box.stroke();
+    container.addChild(box);
 
-  // Header underline
-  const headerLine = new PIXI.Graphics();
-  headerLine.lineStyle(1, COLORS.goldDark, 0.35);
-  headerLine.moveTo(tableX, Math.round(tableY + headerH));
-  headerLine.lineTo(tableX + tableW, Math.round(tableY + headerH));
-  headerLine.stroke();
-  container.addChild(headerLine);
+    // Header underline
+    const headerLine = new PIXI.Graphics();
+    headerLine.lineStyle(1, COLORS.goldDark, 0.35);
+    headerLine.moveTo(tableX, Math.round(tableY + headerH));
+    headerLine.lineTo(tableX + tableW, Math.round(tableY + headerH));
+    headerLine.stroke();
+    container.addChild(headerLine);
 
-  // ---------- Column headers ----------
-  for (let j = 0; j < cols; j++) {
-    //const tx = new PIXI.Text(`PLAYER ${j + 1}`, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
-    const tx = new PIXI.Text(`PLAYER ${j + 1}`, statusStyle);
-    tx.roundPixels = true;
-    tx.anchor.set(0.5, 0.5);
-    const cx = Math.round(tableX + j * cellW + cellW / 2);
-    const cy = Math.round(tableY + headerH / 2);
-    tx.position.set(cx, cy);
-    container.addChild(tx);
-  }
+    // ---------- Column headers ----------
+    for (let j = 0; j < cols; j++) {
+      //const tx = new PIXI.Text(`PLAYER ${j + 1}`, { ...requirementStyle, fontSize: 14, fill: COLORS.goldDark });
+      const tx = new PIXI.Text(`PLAYER ${j + 1}`, statusStyle);
+      tx.roundPixels = true;
+      tx.anchor.set(0.5, 0.5);
+      const cx = Math.round(tableX + j * cellW + cellW / 2);
+      const cy = Math.round(tableY + headerH / 2);
+      tx.position.set(cx, cy);
+      container.addChild(tx);
+    }
 
-  // ---------- Content row: progress bars ----------
-  for (let j = 0; j < cols; j++) {
-    const cellX = Math.round(tableX + j * cellW);
-    const cellY = Math.round(tableY + headerH);
+    // ---------- Content row: progress bars ----------
+    for (let j = 0; j < cols; j++) {
+      const cellX = Math.round(tableX + j * cellW);
+      const cellY = Math.round(tableY + headerH);
 
-    // Cell background (subtle zebra not needed with one row; keep a faint base)
-    const cellBg = new PIXI.Graphics();
-    cellBg.beginFill(COLORS.stoneBg, 0.08);
-    cellBg.drawRect(cellX, cellY, cellW, rowH);
-    cellBg.endFill();
-    cellBg.lineStyle(1, COLORS.goldDark, 0.25);
-    cellBg.drawRect(cellX, cellY, cellW, rowH);
-    cellBg.stroke();
-    container.addChild(cellBg);
+      // Cell background (subtle zebra not needed with one row; keep a faint base)
+      const cellBg = new PIXI.Graphics();
+      cellBg.beginFill(COLORS.stoneBg, 0.08);
+      cellBg.drawRect(cellX, cellY, cellW, rowH);
+      cellBg.endFill();
+      cellBg.lineStyle(1, COLORS.goldDark, 0.25);
+      cellBg.drawRect(cellX, cellY, cellW, rowH);
+      cellBg.stroke();
+      container.addChild(cellBg);
 
-    // Bar geometry inside the cell
-    const insetX = 8;
-    const insetY = 8;
-    const barX = cellX + insetX;
-    const barY = cellY + insetY;
-    const barW = cellW - insetX * 2;
-    const barH = rowH - insetY * 2;
+      // Bar geometry inside the cell
+      const insetX = 8;
+      const insetY = 8;
+      const barX = cellX + insetX;
+      const barY = cellY + insetY;
+      const barW = cellW - insetX * 2;
+      const barH = rowH - insetY * 2;
 
-    // Background
-    const bar = new PIXI.Graphics();
-    bar.beginFill(COLORS.divider, 0.22);
-    bar.drawRect(barX, barY, barW, barH);
-    bar.endFill();
-
-    // Fill color thresholds (mirror CS style)
-    const r = ratios[j];
-    const color =
-      r >= 1.0 ? COLORS.success :
-      r >= 0.5 ? COLORS.pending :
-                 COLORS.failed;
-
-    // Fill
-    const fillW = Math.max(0, Math.min(barW, Math.floor(barW * r)));
-    if (fillW > 0) {
-      bar.beginFill(color, 0.65);
-      bar.drawRect(barX, barY, fillW, barH);
+      // Background
+      const bar = new PIXI.Graphics();
+      bar.beginFill(COLORS.divider, 0.22);
+      bar.drawRect(barX, barY, barW, barH);
       bar.endFill();
+
+      // Fill color thresholds (mirror CS style)
+      const r = ratios[j];
+      const color =
+        r >= 1.0 ? COLORS.success :
+        r >= 0.5 ? COLORS.pending :
+                   COLORS.failed;
+
+      // Fill
+      const fillW = Math.max(0, Math.min(barW, Math.floor(barW * r)));
+      if (fillW > 0) {
+        bar.beginFill(color, 0.65);
+        bar.drawRect(barX, barY, fillW, barH);
+        bar.endFill();
+      }
+
+      // Border
+      bar.lineStyle(1, COLORS.goldDark, 0.35);
+      bar.drawRect(barX, barY, barW, barH);
+      bar.stroke();
+      container.addChild(bar);
+
+      // Value text overlay: "<total>/10  (D + A)"
+      const D = Number(delegates[j] || 0);
+      const A = allies[j];
+      const valText = new PIXI.Text(`${totals[j]}/${TOTAL_CAP}  (${D} + ${A})`, {
+        fontFamily: 'Crimson Text',
+        fontSize: 16,
+        fontWeight: r >= 1 ? 'bold' : '600',
+        fill: 0xffffff,
+        dropShadow: r >= 0.5,
+        dropShadowColor: 0x000000,
+        dropShadowDistance: 1,
+        dropShadowAlpha: 0.85
+      });
+      valText.anchor.set(0.5, 0.5);
+      valText.position.set(Math.round(barX + barW / 2), Math.round(barY + barH / 2));
+      container.addChild(valText);
     }
-
-    // Border
-    bar.lineStyle(1, COLORS.goldDark, 0.35);
-    bar.drawRect(barX, barY, barW, barH);
-    bar.stroke();
-    container.addChild(bar);
-
-    // Value text overlay: "<total>/10  (D + A)"
-    const D = Number(delegates[j] || 0);
-    const A = allies[j];
-    const valText = new PIXI.Text(`${totals[j]}/${TOTAL_CAP}  (${D} + ${A})`, {
-      fontFamily: 'Crimson Text',
-      fontSize: 16,
-      fontWeight: r >= 1 ? 'bold' : '600',
-      fill: 0xffffff,
-      dropShadow: r >= 0.5,
-      dropShadowColor: 0x000000,
-      dropShadowDistance: 1,
-      dropShadowAlpha: 0.85
-    });
-    valText.anchor.set(0.5, 0.5);
-    valText.position.set(Math.round(barX + barW / 2), Math.round(barY + barH / 2));
-    container.addChild(valText);
   }
-}
-
 
   renderCityStateRelations(container, x, y, w, h) {
     const title = new PIXI.Text('CITY STATE RELATIONSHIPS', requirementStyle);
@@ -2513,169 +2403,130 @@ renderDiplomaticOverview(container, x, y, w, h) {
     
     this.lContent.addChild(container);
   }
-renderDominationOverview(container, x, y, w, h) {
-  // Title
-  //const capitalTitle = new PIXI.Text('CAPITAL CONTROL STATUS', requirementStyle);
-  //capitalTitle.position.set(x, y);
-  //container.addChild(capitalTitle);
-  
-  let yOffset = y + 1;
-  let xOffset = x + 20;
-  
-  // Summary box
-  //const summaryBox = new PIXI.Graphics();
-  //summaryBox.beginFill(COLORS.stoneBg, 0.3);
-  //summaryBox.drawRect(x + 20, yOffset, w - 40, 60);
-  //summaryBox.endFill();
-  //summaryBox.lineStyle(1, COLORS.goldDark);
-  //summaryBox.drawRect(x + 20, yOffset, w - 40, 60);
-  //summaryBox.stroke();
-  //container.addChild(summaryBox);
-  
-  // Count how many capitals controlled (sum of all green cells)
-  let controlledCount = 0;
-  for (let i = 0; i < 6; i++) {
-    for (let j = 0; j < 6; j++) {
-      if (i !== j && this.hasSacked[this.turn][i][j] === 1) {
-        controlledCount++;
-      }
-    }
-  }
-  
-  //const summaryText = new PIXI.Text('CAPITALS CONTROLLED', {
-  //  ...requirementStyle,
-  //  fontSize: 20
-  //});
-  //summaryText.anchor.set(0.5, 0.5);
-  //summaryText.position.set(x + w/2 - 80, yOffset + 30);
-  //container.addChild(summaryText);
-  
-  //const controlCount = new PIXI.Text(`${controlledCount} / 30`, {
-  //  fontFamily: 'Cinzel',
-  //  fontSize: 28,
-  //  fontWeight: 600,
-  //  fill: controlledCount >= 15 ? COLORS.success : COLORS.failed
-  //});
-  //controlCount.anchor.set(0.5, 0.5);
-  //controlCount.position.set(x + w/2 + 80, yOffset + 30);
-  //container.addChild(controlCount);
-  
-  //yOffset += 80;
-  
-  // 6x6 Grid
-  const gridStartX = x + 60 + xOffset;
-  const gridStartY = yOffset + 30;
-  const cellSize = Math.min((w - 120) / 6, 50); // Responsive sizing
-  const cellPadding = 2;
-  
-  // Column headers
-  for (let col = 0; col < 6; col++) {
-    const colLabel = new PIXI.Text(`P${col + 1}`, {
-      fontFamily: 'Cinzel',
-      fontSize: 14,
-      fontWeight: 600,
-      fill: COLORS.goldDark
-    });
-    colLabel.anchor.set(0.5, 1);
-    colLabel.position.set(
-      gridStartX + col * cellSize + cellSize/2,
-      gridStartY - 5
-    );
-    container.addChild(colLabel);
-  }
-  
-  // Row headers and grid cells
-  for (let row = 0; row < 6; row++) {
-    // Row label
-    const rowLabel = new PIXI.Text(`Player ${row + 1}`, {
-      fontFamily: 'Cinzel',
-      fontSize: 14,
-      fontWeight: 600,
-      fill: COLORS.goldDark
-    });
-    rowLabel.anchor.set(1, 0.5);
-    rowLabel.position.set(
-      gridStartX - 10,
-      gridStartY + row * cellSize + cellSize/2
-    );
-    container.addChild(rowLabel);
+
+  renderDominationOverview(container, x, y, w, h) {
+    let yOffset = y + 1;
+    let xOffset = x + 20;
     
-    // Grid cells
-    for (let col = 0; col < 6; col++) {
-      const cellX = gridStartX + col * cellSize;
-      const cellY = gridStartY + row * cellSize;
-      
-      const cell = new PIXI.Graphics();
-      
-      // Determine cell appearance
-      if (row === col) {
-        // Diagonal - player's own capital
-        cell.beginFill(COLORS.stoneBg, 0.3);
-        cell.lineStyle(1, COLORS.goldDark, 0.5);
-      } else if (this.hasSacked[this.turn][row][col] === 1) {
-        // Captured
-        cell.beginFill(COLORS.success, 0.4);
-        cell.lineStyle(2, COLORS.success);
-      } else {
-        // Not captured
-        cell.beginFill(COLORS.failed, 0.2);
-        cell.lineStyle(1, COLORS.failed, 0.6);
-      }
-      
-      cell.drawRect(
-        cellX + cellPadding,
-        cellY + cellPadding,
-        cellSize - cellPadding * 2,
-        cellSize - cellPadding * 2
-      );
-      cell.endFill();
-      cell.stroke();
-      container.addChild(cell);
-      
-      // Add icon in cell
-      if (row !== col) {
-        const icon = new PIXI.Graphics();
-        icon.lineStyle(2, this.hasSacked[this.turn][row][col] === 1 ? COLORS.success : COLORS.failed);
-        
-        if (this.hasSacked[this.turn][row][col] === 1) {
-          // Checkmark for captured
-          icon.moveTo(cellX + cellSize * 0.3, cellY + cellSize * 0.5);
-          icon.lineTo(cellX + cellSize * 0.45, cellY + cellSize * 0.65);
-          icon.lineTo(cellX + cellSize * 0.7, cellY + cellSize * 0.35);
-        } else {
-          // X for not captured
-          icon.moveTo(cellX + cellSize * 0.3, cellY + cellSize * 0.3);
-          icon.lineTo(cellX + cellSize * 0.7, cellY + cellSize * 0.7);
-          icon.moveTo(cellX + cellSize * 0.7, cellY + cellSize * 0.3);
-          icon.lineTo(cellX + cellSize * 0.3, cellY + cellSize * 0.7);
+    // Count how many capitals controlled (sum of all green cells)
+    let controlledCount = 0;
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 6; j++) {
+        if (i !== j && this.hasSacked[this.turn][i][j] === 1) {
+          controlledCount++;
         }
-        icon.stroke();
-        container.addChild(icon);
-      } else {
-        // Add dash or "N/A" text for diagonal
-        const naText = new PIXI.Text('—', {
-          fontFamily: 'Cinzel',
-          fontSize: 18,
-          fill: COLORS.goldDark,
-          fontWeight: 600
-        });
-        naText.anchor.set(0.5, 0.5);
-        naText.position.set(
-          cellX + cellSize/2,
-          cellY + cellSize/2
+      }
+    }
+    
+    // 6x6 Grid
+    const gridStartX = x + 60 + xOffset;
+    const gridStartY = yOffset + 30;
+    const cellSize = Math.min((w - 120) / 6, 50); // Responsive sizing
+    const cellPadding = 2;
+    
+    // Column headers
+    for (let col = 0; col < 6; col++) {
+      const colLabel = new PIXI.Text(`P${col + 1}`, {
+        fontFamily: 'Cinzel',
+        fontSize: 14,
+        fontWeight: 600,
+        fill: COLORS.goldDark
+      });
+      colLabel.anchor.set(0.5, 1);
+      colLabel.position.set(
+        gridStartX + col * cellSize + cellSize/2,
+        gridStartY - 5
+      );
+      container.addChild(colLabel);
+    }
+    
+    // Row headers and grid cells
+    for (let row = 0; row < 6; row++) {
+      // Row label
+      const rowLabel = new PIXI.Text(`Player ${row + 1}`, {
+        fontFamily: 'Cinzel',
+        fontSize: 14,
+        fontWeight: 600,
+        fill: COLORS.goldDark
+      });
+      rowLabel.anchor.set(1, 0.5);
+      rowLabel.position.set(
+        gridStartX - 10,
+        gridStartY + row * cellSize + cellSize/2
+      );
+      container.addChild(rowLabel);
+      
+      // Grid cells
+      for (let col = 0; col < 6; col++) {
+        const cellX = gridStartX + col * cellSize;
+        const cellY = gridStartY + row * cellSize;
+        
+        const cell = new PIXI.Graphics();
+        
+        // Determine cell appearance
+        if (row === col) {
+          // Diagonal - player's own capital
+          cell.beginFill(COLORS.stoneBg, 0.3);
+          cell.lineStyle(1, COLORS.goldDark, 0.5);
+        } else if (this.hasSacked[this.turn][row][col] === 1) {
+          // Captured
+          cell.beginFill(COLORS.success, 0.4);
+          cell.lineStyle(2, COLORS.success);
+        } else {
+          // Not captured
+          cell.beginFill(COLORS.failed, 0.2);
+          cell.lineStyle(1, COLORS.failed, 0.6);
+        }
+        
+        cell.drawRect(
+          cellX + cellPadding,
+          cellY + cellPadding,
+          cellSize - cellPadding * 2,
+          cellSize - cellPadding * 2
         );
-        container.addChild(naText);
+        cell.endFill();
+        cell.stroke();
+        container.addChild(cell);
+        
+        // Add icon in cell
+        if (row !== col) {
+          const icon = new PIXI.Graphics();
+          icon.lineStyle(2, this.hasSacked[this.turn][row][col] === 1 ? COLORS.success : COLORS.failed);
+          
+          if (this.hasSacked[this.turn][row][col] === 1) {
+            // Checkmark for captured
+            icon.moveTo(cellX + cellSize * 0.3, cellY + cellSize * 0.5);
+            icon.lineTo(cellX + cellSize * 0.45, cellY + cellSize * 0.65);
+            icon.lineTo(cellX + cellSize * 0.7, cellY + cellSize * 0.35);
+          } else {
+            // X for not captured
+            icon.moveTo(cellX + cellSize * 0.3, cellY + cellSize * 0.3);
+            icon.lineTo(cellX + cellSize * 0.7, cellY + cellSize * 0.7);
+            icon.moveTo(cellX + cellSize * 0.7, cellY + cellSize * 0.3);
+            icon.lineTo(cellX + cellSize * 0.3, cellY + cellSize * 0.7);
+          }
+          icon.stroke();
+          container.addChild(icon);
+        } else {
+          // Add dash or "N/A" text for diagonal
+          const naText = new PIXI.Text('—', {
+            fontFamily: 'Cinzel',
+            fontSize: 18,
+            fill: COLORS.goldDark,
+            fontWeight: 600
+          });
+          naText.anchor.set(0.5, 0.5);
+          naText.position.set(
+            cellX + cellSize/2,
+            cellY + cellSize/2
+          );
+          container.addChild(naText);
+        }
       }
     }
   }
-}
 
   renderDominationRelationships(container, x, y, w, h) {
-    // Title
-    //const title = new PIXI.Text('PLAYER RELATIONSHIPS', requirementStyle);
-    //title.position.set(x, y);
-    //container.addChild(title);
-    
     // Calculate center and radius for hexagon
     const centerX = x + w / 2;
     const centerY = y + h / 2 + 10; // Slight offset down to account for title
@@ -2767,41 +2618,6 @@ renderDominationOverview(container, x, y, w, h) {
       playerNum.position.set(player.x, player.y);
       container.addChild(playerNum);
       
-      // Player label below number
-      //const playerLabel = new PIXI.Text(idx === 0 ? 'YOU' : `AI ${idx}`, {
-      //  fontFamily: 'Crimson Text',
-      //  fontSize: 14,
-      //  fontWeight: 400,
-      //  fill: COLORS.goldDark
-      //});
-      //playerLabel.anchor.set(0.5, 0.5);
-      //playerLabel.position.set(player.x, player.y + 10);
-      //container.addChild(playerLabel);
-      
-      // Make circles interactive (for future use)
-      //circle.eventMode = 'static';
-      //circle.cursor = 'pointer';
-      //
-      //// Hover effect
-      //circle.on('pointerover', () => {
-      //  circle.clear();
-      //  circle.beginFill(COLORS.stoneLight, 0.95);
-      //  circle.drawCircle(player.x, player.y, 40);
-      //  circle.endFill();
-      //  circle.lineStyle(3, borderColor);
-      //  circle.drawCircle(player.x, player.y, 40);
-      //  circle.stroke();
-      //});
-      //
-      //circle.on('pointerout', () => {
-      //  circle.clear();
-      //  circle.beginFill(COLORS.stoneBg, 0.95);
-      //  circle.drawCircle(player.x, player.y, 40);
-      //  circle.endFill();
-      //  circle.lineStyle(2, borderColor);
-      //  circle.drawCircle(player.x, player.y, 40);
-      //  circle.stroke();
-      //});
     });
     
     // Legend at bottom
@@ -2975,13 +2791,10 @@ renderDominationOverview(container, x, y, w, h) {
     });
 
     // ---------- Rows for selected player ----------
-    // Plug your real data source here:
-    // Define this.getDominationUnitRows = (playerIndex) => [{type, loc, hp, mult, xp}, ...]
     let rows;
     if (typeof this.getDominationUnitRows === 'function') {
       rows = this.getDominationUnitRows(this.dominationUnitsPlayerIndex) ?? [];
     } else {
-      // Fallback dummy rows (same as your original)
       const unitTypes = ['Warrior', 'Archer', 'Spearman', 'Horseman', 'Catapult', 'Scout', 'Swordsman', 'Pikeman'];
       rows = [];
       for (let i = 0; i < 40; i++) {
