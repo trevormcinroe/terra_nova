@@ -150,8 +150,6 @@ const monitor = new PerformanceMonitor(app, {
 
 document.body.appendChild(app.canvas);
 
-
-
 const rows = 42;
 const cols = 66;
 
@@ -414,7 +412,6 @@ const Loader = (() => {
   };
 })();
 
-
 const jsonFolderEndpoint = "/list-saved-games";
 
 function populateDropdown() {
@@ -424,7 +421,6 @@ function populateDropdown() {
       const dropdown = document.getElementById("jsonFileDropdown");
       files.forEach(file => {
         const option = document.createElement("option");
-        console.log(file);
         option.value = file;
         option.textContent = file.split('/').pop().split('.')[0];
         //option.textContent = file;
@@ -646,7 +642,6 @@ document.getElementById("jsonFileDropdown").addEventListener("change", async fun
         unitsTradeYield = data.units_trade_yields;
         unitsEngaged = data.units_engaged;
         unitsCombatBonus = data.combat_bonus_accel;
-        
         cs_cities = data.cs_rowcols;
         csOwnership = data.cs_ownership;
         playerCities = data.player_rowcols;
@@ -664,7 +659,6 @@ document.getElementById("jsonFileDropdown").addEventListener("change", async fun
         playerReligion = data.religious_tenets;
         workedSlots = data.player_worked_slots;
         playerYields = data.player_yields;
-        
         playerPops = data.player_pops;
         playerBuildings = data.player_buildings;
         playerWonderAccel = data.wonder_accel;
@@ -722,7 +716,6 @@ document.getElementById("jsonFileDropdown").addEventListener("change", async fun
         csReligionTracker = data.cs_religion_tracker;
         csWonderTracker = data.cs_wonder_tracker;
         csResourceTracker = data.cs_resource_tracker;
-        
         playerReligiousPop = data.city_religious_pop;
         fow = data.fog_of_war;
         tradeLedger = data.trade_ledger;
@@ -732,7 +725,6 @@ document.getElementById("jsonFileDropdown").addEventListener("change", async fun
         haveMet = data.have_met;
         atWar = data.at_war;
         unitHealth = data.unit_health;
-        
         cityHP = data.hp;
         cityDefense = data.defense;
         hasSacked = data.has_sacked;
@@ -742,7 +734,6 @@ document.getElementById("jsonFileDropdown").addEventListener("change", async fun
         gpps = data.gpps;
         gpThreshold = data.gpp_threshold;
         goldenAgeTurns = data.golden_age_turns;
-        
         renderMapStatic();
         await Loader.hide();
         await new Promise(requestAnimationFrame);
@@ -755,284 +746,6 @@ document.getElementById("jsonFileDropdown").addEventListener("change", async fun
     }
 });
 
-//document.getElementById("jsonFileDropdown").addEventListener("change", async function () {
-//  const filename = this.value;
-//  try {
-//    Loader.show('Fetching game state…');
-//    const response = await fetch(filename);
-//    Loader.text('Parsing game data…');
-//
-//    const data = await response.json();
-//
-//    terrainMap = data.terrain;
-//    riverMap = data.rivers;
-//    lakeMap = data.lakes;
-//    elevationMap = data.elevation;
-//    featureMap = data.features;
-//    nwMap = data.nw;
-//
-//    unitsType = data.units_type;
-//    unitsMilitary = data.units_military;
-//    unitsRowCol = data.units_rowcol;
-//    unitsTradePlayerTo = data.units_trade_player_to;
-//    unitsTradeCityTo = data.units_trade_city_to;
-//    unitsTradeCityFrom = data.units_trade_city_from;
-//    unitsTradeYield = data.units_trade_yields;
-//    unitsEngaged = data.units_engaged;
-//    unitsCombatBonus = data.combat_bonus_accel;
-//
-//    cs_cities = data.cs_rowcols;
-//    csOwnership = data.cs_ownership;
-//    playerCities = data.player_rowcols;
-//    playerOwnership = data.player_ownership;
-//    csOwnershipBorders = data.cs_ownership_borders;
-//    playerOwnershipBorders = data.player_ownership_borders;
-//    allResourceMap = data.all_resource_map;
-//    gtYieldMap = data.gt_yield_map;
-//    playerYieldMap = data.player_yield_map;
-//    movementCostMap = data.movement_cost_map;
-//    numDelegates = data.num_delegates;
-//    ISREPLAY = true;
-//    playerTechs = data.techs;
-//    playerPolicies = data.policies;
-//    playerReligion = data.religious_tenets;
-//    workedSlots = data.player_worked_slots;
-//    playerYields = data.player_yields;
-//
-//    playerPops = data.player_pops;
-//    playerBuildings = data.player_buildings;
-//    playerWonderAccel = data.wonder_accel;
-//    playerBldgAccel = data.bldg_accel;
-//    playerMilitaryBldgAccel = data.military_bldg_accel;
-//    playerReligionBldgAccel = data.religion_bldg_accel;
-//    playerCultureBldgAccel = data.culture_bldg_accel;
-//    playerSeaBldgAccel = data.sea_bldg_accel;
-//    playerScienceBldgAccel = data.science_bldg_accel;
-//    playerEconBldgAccel = data.econ_bldg_accel;
-//    playerCityReligion = data.city_religious_tenets;
-//    playerGWSlots = data.gw_slots;
-//    playerUnitAccel = data.unit_accel;
-//    playerYieldAccel = data.yield_accel;
-//    playerBorderAccel = data.border_accel;
-//    playerSpecialistSlots = data.specialist_slots;
-//    playerBldgMaintenance = data.bldg_maintenance;
-//    playerUnitXPAdd = data.unit_xp_add;
-//    playerCanTradeFood = data.can_trade_food;
-//    playerCanTradeProd = data.can_trade_prod;
-//    playerDefense = data.defense;
-//    playerHP = data.hp;
-//    tradeGoldAddOwner = data.trade_gold_add_owner;
-//    tradeGoldAddDest = data.trade_gold_add_dest;
-//    tradeLandDistMod = data.trade_land_dist_mod;
-//    tradeSeaDistMod = data.trade_sea_dist_mod;
-//    playerGPAccel = data.gp_accel;
-//    playerMountedAccel = data.mounted_accel;
-//    playerLandUnitAccel = data.land_unit_accel;
-//    playerTechStealReduce = data.tech_steal_reduce_accel;
-//    playerSeaUnitAccel = data.sea_unit_accel;
-//    playerGWTourismAccel = data.gw_tourism_accel;
-//    playerCultureToTourism = data.culture_to_tourism;
-//    playerAirUnitCapacity = data.air_unit_capacity;
-//    playerSpaceshipProdAccel = data.spaceship_prod_accel;
-//    playerNavalMovementAdd = data.naval_movement_add;
-//    playerNavalSightAdd = data.naval_sight_add;
-//    playerCityConnectionGoldAccel = data.city_connection_gold_accel;
-//    playerArmoredAccel = data.armored_accel;
-//    tourismTotal = data.tourism_total;
-//    cultureTotal = data.culture_total;
-//    improvementMap = data.improvement_map;
-//    roadMap = data.road_map;
-//    isConstructing = data.is_constructing;
-//    prodReserves = data.prod_reserves;
-//    csReligiousPopulation = data.cs_religious_population;
-//    csRelationships = data.cs_relationships;
-//    csInfluence = data.cs_influence;
-//    csType = data.cs_type;
-//    csQuest = data.cs_quest;
-//    csCultureTracker = data.cs_culture_tracker;
-//    csFaithTracker = data.cs_faith_tracker;
-//    csTechTracker = data.cs_tech_tracker;
-//    csTradeTracker = data.cs_trade_tracker;
-//    csReligionTracker = data.cs_religion_tracker;
-//    csWonderTracker = data.cs_wonder_tracker;
-//    csResourceTracker = data.cs_resource_tracker;
-//
-//    playerReligiousPop = data.city_religious_pop;
-//    fow = data.fog_of_war;
-//    tradeLedger = data.trade_ledger;
-//    tradeLengthLedger = data.trade_length_ledger;
-//    tradeGPTAdj = data.trade_gpt_adj;
-//    tradeResourceAdj = data.trade_resource_adj;
-//    haveMet = data.have_met;
-//    atWar = data.at_war;
-//    unitHealth = data.unit_health;
-//
-//    cityHP = data.hp;
-//    cityDefense = data.defense;
-//    hasSacked = data.has_sacked;
-//    treasury = data.treasury;
-//    happiness = data.happiness;
-//    resourcesOwned = data.resources_owned;
-//    gpps = data.gpps;
-//    gpThreshold = data.gpp_threshold;
-//    goldenAgeTurns = data.golden_age_turns;
-//
-//    // Heavy work
-//    renderMapStatic();
-//    // Hide BEFORE heavy rendering, and yield a frame so the overlay disappears
-//  // IMPORTANT: wait for the FOW animation to play before heavy rendering
-//  await Loader.hide();                        // runs the .45s animation
-//  await new Promise(requestAnimationFrame);   // give the browser a paint
-//    renderMapDynamic();
-//
-//  } catch (err) {
-//    console.error("Failed to load gamestate:", err);
-//    // show a quick error toast
-//    alert("Failed to load game state. Check the file or console for details.");
-//    await Loader.hide();
-//  }
-//});
-//document.getElementById("jsonFileDropdown").addEventListener("change", function () {
-//  const filename = this.value;
-//  fetch(filename)
-//    .then(response => response.json())
-//    .then(data => {
-//      terrainMap = data.terrain;
-//      riverMap = data.rivers;
-//      lakeMap = data.lakes;
-//      elevationMap = data.elevation;
-//      featureMap = data.features;
-//      nwMap = data.nw;
-//
-//      unitsType = data.units_type;
-//      unitsMilitary = data.units_military;
-//      unitsRowCol = data.units_rowcol;
-//      unitsTradePlayerTo = data.units_trade_player_to;
-//      unitsTradeCityTo = data.units_trade_city_to;
-//      unitsTradeCityFrom = data.units_trade_city_from;
-//      unitsTradeYield = data.units_trade_yields;
-//      unitsEngaged = data.units_engaged;
-//      unitsCombatBonus = data.combat_bonus_accel;
-//
-//      //settlers = data.settler_rowcols;
-//      cs_cities = data.cs_rowcols;
-//      csOwnership = data.cs_ownership;
-//      playerCities = data.player_rowcols;
-//      playerOwnership = data.player_ownership;
-//      csOwnershipBorders = data.cs_ownership_borders;
-//      playerOwnershipBorders = data.player_ownership_borders;
-//      allResourceMap = data.all_resource_map;
-//      gtYieldMap = data.gt_yield_map;
-//      playerYieldMap = data.player_yield_map;
-//      movementCostMap = data.movement_cost_map;
-//      numDelegates = data.num_delegates;
-//      //canMoveTo = data.can_move_to;
-//      //ISREPLAY = (countNestedArrays(terrainMap) > 43);
-//      ISREPLAY = true;
-//      playerTechs = data.techs;
-//      playerPolicies = data.policies;
-//      playerReligion = data.religious_tenets;
-//      workedSlots = data.player_worked_slots;
-//      playerYields = data.player_yields;
-//
-//      playerPops = data.player_pops;
-//      playerBuildings = data.player_buildings;
-//      playerWonderAccel = data.wonder_accel;
-//      playerBldgAccel = data.bldg_accel;
-//      playerMilitaryBldgAccel = data.military_bldg_accel;
-//      playerReligionBldgAccel = data.religion_bldg_accel;
-//      playerCultureBldgAccel = data.culture_bldg_accel;
-//      playerSeaBldgAccel = data.sea_bldg_accel;
-//      playerScienceBldgAccel = data.science_bldg_accel;
-//      playerEconBldgAccel = data.econ_bldg_accel;
-//      playerCityReligion = data.city_religious_tenets;
-//      playerGWSlots = data.gw_slots;
-//      playerUnitAccel = data.unit_accel;
-//      //playerGoldAccel = data.gold_accel;
-//      //playerTourismAccel = data.tourism_accel;
-//      //playerScienceAccel = data.science_accel;
-//      //playerGrowthAccel = data.growth_accel;
-//      playerYieldAccel = data.yield_accel;
-//      playerBorderAccel = data.border_accel;
-//      playerSpecialistSlots = data.specialist_slots;
-//      playerBldgMaintenance = data.bldg_maintenance;
-//      playerUnitXPAdd = data.unit_xp_add;
-//      playerCanTradeFood = data.can_trade_food;
-//      playerCanTradeProd = data.can_trade_prod;
-//      playerDefense = data.defense;
-//      playerHP = data.hp;
-//      tradeGoldAddOwner = data.trade_gold_add_owner;
-//      tradeGoldAddDest = data.trade_gold_add_dest;
-//      tradeLandDistMod = data.trade_land_dist_mod;
-//      tradeSeaDistMod = data.trade_sea_dist_mod;
-//      playerGPAccel = data.gp_accel;
-//      playerMountedAccel = data.mounted_accel;
-//      playerLandUnitAccel = data.land_unit_accel;
-//      playerTechStealReduce = data.tech_steal_reduce_accel;
-//      playerSeaUnitAccel = data.sea_unit_accel;
-//      playerGWTourismAccel = data.gw_tourism_accel;
-//      playerCultureToTourism = data.culture_to_tourism;
-//      playerAirUnitCapacity = data.air_unit_capacity;
-//      playerSpaceshipProdAccel = data.spaceship_prod_accel;
-//      playerNavalMovementAdd = data.naval_movement_add;
-//      playerNavalSightAdd = data.naval_sight_add;
-//      playerCityConnectionGoldAccel = data.city_connection_gold_accel;
-//      playerArmoredAccel = data.armored_accel;
-//      tourismTotal = data.tourism_total;
-//      cultureTotal = data.culture_total;
-//      improvementMap = data.improvement_map;
-//      roadMap = data.road_map;
-//      isConstructing = data.is_constructing;
-//      prodReserves = data.prod_reserves;
-//      csReligiousPopulation = data.cs_religious_population;
-//      csRelationships = data.cs_relationships;
-//      csInfluence = data.cs_influence;
-//      csType = data.cs_type;
-//      csQuest = data.cs_quest;
-//      csCultureTracker = data.cs_culture_tracker;
-//      csFaithTracker = data.cs_faith_tracker;
-//      csTechTracker = data.cs_tech_tracker;
-//      csTradeTracker = data.cs_trade_tracker;
-//      csReligionTracker = data.cs_religion_tracker;
-//      csWonderTracker = data.cs_wonder_tracker;
-//      csResourceTracker = data.cs_resource_tracker;
-//      
-//      playerReligiousPop = data.city_religious_pop,
-//      fow = data.fog_of_war;
-//      tradeLedger = data.trade_ledger;
-//      tradeLengthLedger = data.trade_length_ledger;
-//      tradeGPTAdj = data.trade_gpt_adj;
-//      tradeResourceAdj = data.trade_resource_adj;
-//      haveMet = data.have_met;
-//      atWar = data.at_war;
-//      unitHealth = data.unit_health;
-//
-//      cityHP = data.hp;
-//      cityDefense = data.defense;
-//      hasSacked = data.has_sacked;
-//      treasury = data.treasury;
-//      happiness = data.happiness;
-//      resourcesOwned = data.resources_owned;
-//      gpps = data.gpps;
-//      gpThreshold = data.gpp_threshold;
-//      goldenAgeTurns = data.golden_age_turns;
-//      //console.log(playerPops);
-//      //console.log("playerCities: ", playerOwnership);
-//      //console.log("ISREPLAY check: ", ISREPLAY);
-//      //console.log("TERRAINMAP: ", terrainMap);
-//      /*
-//      if (ISREPLAY) {
-//        NUMTURNS = terrainMap.length;
-//      } else {
-//        NUMTURNS = 1;
-//      }
-//      */
-//      renderMapStatic();
-//      renderMapDynamic();
-//    })
-//    .catch(err => console.error("Failed to load gamestate:", err));
-//});
-
 populateDropdown();
 
 // Camera intrinsics
@@ -1040,7 +753,7 @@ let dragging  = false;
 let dragStart = new PIXI.Point();
 let worldStart= new PIXI.Point();
 
-app.stage.interactive = true;           // listen on the whole canvas
+app.stage.interactive = true;  // listen on the whole canvas
 
 app.stage
   .on('pointerdown', (e) => {
@@ -1145,37 +858,31 @@ function getLayerToggleStates() {
 document.getElementById('tech-tree-button').addEventListener('click', () => {
   const nowPressed = document.getElementById('tech-tree-button').getAttribute('aria-pressed') === 'true';
   document.getElementById('tech-tree-button').setAttribute('aria-pressed', !nowPressed);   // toggle
-  //renderMapDynamic(getLayerToggleStates());
 });
 
 document.getElementById('social-policy-button').addEventListener('click', () => {
   const nowPressed = document.getElementById('social-policy-button').getAttribute('aria-pressed') === 'true';
   document.getElementById('social-policy-button').setAttribute('aria-pressed', !nowPressed);   // toggle
-  //renderMapDynamic(getLayerToggleStates());
 });
 
 document.getElementById('religion-button').addEventListener('click', () => {
   const nowPressed = document.getElementById('religion-button').getAttribute('aria-pressed') === 'true';
   document.getElementById('religion-button').setAttribute('aria-pressed', !nowPressed);   // toggle
-  //renderMapDynamic(getLayerToggleStates());
 });
 
 document.getElementById('victory-button').addEventListener('click', () => {
   const nowPressed = document.getElementById('victory-button').getAttribute('aria-pressed') === 'true';
   document.getElementById('victory-button').setAttribute('aria-pressed', !nowPressed);   // toggle
-  //renderMapDynamic(getLayerToggleStates());
 });
 
 document.getElementById('trade-button').addEventListener('click', () => {
   const nowPressed = document.getElementById('trade-button').getAttribute('aria-pressed') === 'true';
   document.getElementById('trade-button').setAttribute('aria-pressed', !nowPressed);   // toggle
-  //renderMapDynamic(getLayerToggleStates());
 });
 
 document.getElementById('demos-button').addEventListener('click', () => {
   const nowPressed = document.getElementById('demos-button').getAttribute('aria-pressed') === 'true';
   document.getElementById('demos-button').setAttribute('aria-pressed', !nowPressed);   // toggle
-  //renderMapDynamic(getLayerToggleStates());
 });
 
 function setupLayerControls() {
@@ -1362,36 +1069,29 @@ function drawHexOwnershipv2(cx, cy, colorHex, borderColor = 0x000000, bgColor = 
   container.addChild(maskShape); // Add mask to container
   container.addChild(stripeGraphics);
 
-  /* ---------- Draw border ---------- */
-  //const border = new PIXI.Graphics();
-  //border.lineStyle(1, borderColor, 1.0);
-  //traceHexPath(border);
-  //border.stroke();
-  //container.addChild(border);
-
   return container;
 }
 function addElevationSprite(cx, cy, elevID, textures) {
   const cfg  = constants.elevationConfigs[elevID];
   const tex  = textures[elevID];
-  if (!cfg || !tex) return;                   // ocean/flat → nothing
+  if (!cfg || !tex) return;  // ocean/flat → nothing
 
   const spr  = new PIXI.Sprite(tex);
   spr.anchor.set(0.5);
   spr.scale.set(cfg.scale);
   spr.x = cx;
-  spr.y = cy + cfg.yOff;                      // lift mountains a bit
+  spr.y = cy + cfg.yOff;  // lift mountains a bit
   elevationLayer.addChild(spr);
 }
 
 
 function addFeature(id, onHill, cx, cy, texTable) {
   const def = constants.featureDefs[id];
-  if (!def) return;                    // id 0 or unknown
+  if (!def) return;  // id 0 or unknown
 
   const variant = onHill && def.hill ? 'hill' : 'normal';
-  const tex     = texTable[id]?.[variant];
-  const conf    = def[variant];
+  const tex = texTable[id]?.[variant];
+  const conf = def[variant];
 
   if (!tex || !conf) return;
 
@@ -1417,8 +1117,8 @@ function addNaturalWonder(id, x, y) {
 }
 
 // angles for the 6 corners (pointy-topped)
-const CORNER_ANGLE = Math.PI / 6;        // 30°, start
-const D_THETA      = Math.PI / 3;        // 60°
+const CORNER_ANGLE = Math.PI / 6;  // 30°, start
+const D_THETA      = Math.PI / 3;  // 60°
 
 
 // drawHex starts at  +30°  (pointy top, first corner upper-right)
@@ -1442,19 +1142,21 @@ function traceRiverEdge(g, cx, cy, edgeIdx,
                         width = 6, extend = 0.85,
                         color = 0x4292c6, alpha = 0.9)
 {
-  const [cA, cB]        = EDGE_CORNER[edgeIdx];
-  const [ax0, ay0]      = cornerOffset(cA);
-  const [bx0, by0]      = cornerOffset(cB);
+  const [cA, cB] = EDGE_CORNER[edgeIdx];
+  const [ax0, ay0] = cornerOffset(cA);
+  const [bx0, by0] = cornerOffset(cB);
 
   let ax = cx + ax0, ay = cy + ay0;
   let bx = cx + bx0, by = cy + by0;
 
-  const dx  = bx - ax,  dy = by - ay;
+  const dx = bx - ax, dy = by - ay;
   const len = Math.hypot(dx, dy);
-  const nx  = dx / len, ny = dy / len;
+  const nx = dx / len, ny = dy / len;
 
-  ax -= nx * extend;     ay -= ny * extend;
-  bx += nx * extend;     by += ny * extend;
+  ax -= nx * extend;
+  ay -= ny * extend;
+  bx += nx * extend;
+  by += ny * extend;
 
   g.setStrokeStyle({ width, color, alpha, cap: 'round' });
   g.moveTo(ax, ay);
@@ -1463,17 +1165,18 @@ function traceRiverEdge(g, cx, cy, edgeIdx,
 }
 
 function hexStringToNumber(str) {
-  return new PIXI.Color(str).toNumber();   // "#FF2A2F" → 0xff2a2f
+  return new PIXI.Color(str).toNumber();  // "#FF2A2F" → 0xff2a2f
 }
 
 function addBorderEdge(g, cx, cy, edgeIdx, color,
-                       width = 4.4, extend = 0.1)
-{
-  const [cA, cB]   = EDGE_CORNER[edgeIdx];
-  let [ax, ay]     = cornerOffset(cA);
-  let [bx, by]     = cornerOffset(cB);
-  ax += cx; ay += cy;
-  bx += cx; by += cy;
+                       width = 4.4, extend = 0.1) {
+  const [cA, cB] = EDGE_CORNER[edgeIdx];
+  let [ax, ay] = cornerOffset(cA);
+  let [bx, by] = cornerOffset(cB);
+  ax += cx; 
+  ay += cy;
+  bx += cx; 
+  by += cy;
 
   // extend a smidge beyond the hex
   const dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy);
@@ -1490,12 +1193,12 @@ function addBorderEdge(g, cx, cy, edgeIdx, color,
 function addResource(id, cx, cy) {
   const def = constants.resourceDefs[id];
   const tex = resTextures[id];
-  if (!def || !tex) return;               // id 0 or missing
+  if (!def || !tex) return;  // id 0 or missing
 
   const spr = new PIXI.Sprite(tex);
   spr.anchor.set(0.5);
   spr.scale.set(def.s);
-  spr.x = cx + 22;                        // shift right like old code
+  spr.x = cx + 22;  // shift right like old code
   spr.y = cy;
   resourceLayer.addChild(spr);
 }
@@ -1503,7 +1206,7 @@ function addResource(id, cx, cy) {
 function drawImprovements(id, cx, cy) {
   const def = constants.improvementDefs[id];
   const tex = impTextures[id];
-  if (id === 0 || !tex) return;           // nothing to draw
+  if (id === 0 || !tex) return;  // nothing to draw
 
   const spr = new PIXI.Sprite(tex);
   spr.anchor.set(0.5);
@@ -1553,7 +1256,7 @@ function drawYield(cx, cy, yieldVec) {
   if (count === 0) return;
 
   const kinds = nonZeroIdx(yieldVec);
-  const off   = offsets[count-1];
+  const off = offsets[count-1];
 
   /*  create a container so the whole block moves together */
   const group = new PIXI.Container();
@@ -1562,12 +1265,12 @@ function drawYield(cx, cy, yieldVec) {
   yieldLayer.addChild(group);
 
   for (let i = 0; i < count; i++) {
-    const kind   = kinds[i];                 // 0–5
-    const amt    = yieldVec[kind];           // 1–N
+    const kind = kinds[i];  // 0–5
+    const amt = yieldVec[kind];  // 1–N
     const capped = Math.min(amt, 5);
-    const id     = kind*5 + (capped-1) + 1;  // translate to defs index
-    const tex    = yieldTextures[id];
-    const def    = constants.yieldDefs[id];
+    const id = kind*5 + (capped-1) + 1;  // translate to defs index
+    const tex = yieldTextures[id];
+    const def = constants.yieldDefs[id];
     if (!def || !tex) continue;
 
     /* icon sprite */
@@ -1577,7 +1280,7 @@ function drawYield(cx, cy, yieldVec) {
 
     /* position */
     const dx = off[i];
-    const dy = (count >= 5 && i >= 3) ?  7
+    const dy = (count >= 5 && i >= 3) ? 7
              : (count >= 5 && i <  3) ? -7
              : 0;
     spr.x = dx;
@@ -1594,18 +1297,12 @@ function drawYield(cx, cy, yieldVec) {
       group.addChild(circ);
 
       const txt = new PIXI.Text({
-        text : String(amt),          // "6", "7", …
+        text : String(amt), 
         style: {
-          //fontFamily: 'sans-serif',
-          fontSize  : 8,             // crisper / larger
-          //fontWeight: 'bold',
-          fill      : 0xffffff,      // solid white
-          //align     : 'center',
-          //strokeThickness: 0,
-          //resolution: 200              // high-DPI so small fonts stay sharp
+          fontSize : 8,
+          fill : 0xffffff,
         }
       });
-      //txt.style.fontFamily = 'sans-serif'; 
 
       txt.anchor.set(0.5);
       txt.x = dx + 5.65;
@@ -1621,9 +1318,9 @@ function drawFOW(cx, cy, fowValue) {
   container.x = cx;
   container.y = cy;
 
-  const r            = hexRadius - 0.5;
-  const angleOffset  = Math.PI / 6;
-  const dTheta       = Math.PI / 3;
+  const r = hexRadius - 0.5;
+  const angleOffset = Math.PI / 6;
+  const dTheta = Math.PI / 3;
 
   /* helper: trace a hex path on a Graphics object */
   function traceHexPath(g) {
@@ -1661,13 +1358,12 @@ function drawFOW(cx, cy, fowValue) {
 
 function drawUnitBadge(civIdx, isMilitary, cx, cy) {
   // shapeIndex 0 = triangle (civilian), 1 = circle (military)
-  const badgeID  = isMilitary * 6 + civIdx + 1;   // 1‒12
-  const tex      = unitBGTextures[badgeID];
-  const def      = constants.unitBGDefs[badgeID];
-  //console.log("BADGE: ", civIdx, isMilitary, badgeID,  tex, def);
+  const badgeID = isMilitary * 6 + civIdx + 1;   // 1‒12
+  const tex = unitBGTextures[badgeID];
+  const def = constants.unitBGDefs[badgeID];
   if (!tex || !def) return;
 
-  const spr  = new PIXI.Sprite(tex);
+  const spr = new PIXI.Sprite(tex);
   spr.anchor.set(0.5);
   spr.scale.set(def.s);
   spr.x = cx;
@@ -1676,9 +1372,9 @@ function drawUnitBadge(civIdx, isMilitary, cx, cy) {
 }
 
 function drawUnitIcon(unitType, isMilitary, cx, cy) {
-  if (unitType === 0) return;               // no unit
+  if (unitType === 0) return;  // no unit
 
-  const tex = unitTextures[unitType];       // 1 settler, 2 warrior, 3 worker
+  const tex = unitTextures[unitType];  // 1 settler, 2 warrior, 3 worker
   const def = constants.unitDefs[unitType];
   if (!tex || !def) return;
 
@@ -1686,7 +1382,7 @@ function drawUnitIcon(unitType, isMilitary, cx, cy) {
   spr.anchor.set(0.5);
   spr.scale.set(def.s);
   spr.x = cx;
-  spr.y = isMilitary ? cy - 26 : cy + 24;   // match old offsets
+  spr.y = isMilitary ? cy - 26 : cy + 24;  // match old offsets
   unitsLayer.addChild(spr);
 }
 
@@ -1743,9 +1439,9 @@ function drawUnitHealth(health, cx, cy) {
   healthFill.beginFill(fillColor);
   healthFill.drawRect(
     cx + offsetX,
-    cy + offsetY + depletedHeight, // Start drawing from depleted point
+    cy + offsetY + depletedHeight,  // Start drawing from depleted point
     barWidth,
-    barHeight * health // Height based on health percentage
+    barHeight * health  // Height based on health percentage
   );
   healthFill.endFill();
   
@@ -1753,12 +1449,11 @@ function drawUnitHealth(health, cx, cy) {
   healthBar.addChild(border);
   healthBar.addChild(background);
   healthBar.addChild(healthFill);
-  
   unitsLayer.addChild(healthBar);
 }
 
 function drawUnits(civIdx, unitType, isMilitary, health, cx, cy) {
-  if (unitType === 0) return;               // nothing to draw
+  if (unitType === 0) return;  // nothing to draw
   drawUnitBadge(civIdx, isMilitary, cx, cy);
   drawUnitIcon(unitType, isMilitary, cx, cy);
   if (health < 1) {
@@ -1770,9 +1465,6 @@ function drawCityHealth(cx, cy, turn, playerID, cityID, health) {
   const maxHPView = globalMapState.cityMaxHPLookup.get(turn);
   const maxHP = globalMapState.cityMaxHPLookup.toMatrix(maxHPView);
   const maxHPForMe = Math.max(maxHP[playerID][cityID], 2);
-
-  //console.log(turn, playerID, cityID, health, maxHPForMe);
-
   const healthBar = new PIXI.Container();
   
   // Health bar dimensions
@@ -1781,8 +1473,8 @@ function drawCityHealth(cx, cy, turn, playerID, cityID, health) {
   const borderThickness = 1;
   
   // Position to the right of the unit
-  const offsetX = hexRadius * 0.28; // Adjust based on unit sprite width
-  const offsetY = -10; // Center vertically on unit
+  const offsetX = hexRadius * 0.28;  // Adjust based on unit sprite width
+  const offsetY = -10;  // Center vertically on unit
   
   // Create background/border
   const border = new PIXI.Graphics();
@@ -1824,9 +1516,9 @@ function drawCityHealth(cx, cy, turn, playerID, cityID, health) {
   healthFill.beginFill(fillColor);
   healthFill.drawRect(
     cx + offsetX,
-    cy + offsetY + depletedHeight, // Start drawing from depleted point
+    cy + offsetY + depletedHeight,  // Start drawing from depleted point
     barWidth,
-    barHeight * (health / maxHPForMe) // Height based on health percentage
+    barHeight * (health / maxHPForMe)  // Height based on health percentage
   );
   healthFill.endFill();
   
@@ -1841,7 +1533,7 @@ function drawCityHealth(cx, cy, turn, playerID, cityID, health) {
 function drawCity(cx, cy, texture, scale) {
   const spr = new PIXI.Sprite(texture);
   spr.anchor.set(0.5);
-  spr.scale.set(scale);                   // cityDef.s = 0.05
+  spr.scale.set(scale);  // cityDef.s = 0.05
   spr.x = cx;
   spr.y = cy;
   cityLayer.addChild(spr);
@@ -1850,7 +1542,7 @@ function drawCity(cx, cy, texture, scale) {
 function drawCap(cx, cy, texture, scale) {
   const spr = new PIXI.Sprite(texture);
   spr.anchor.set(0.5);
-  spr.scale.set(scale);                   // cityDef.s = 0.05
+  spr.scale.set(scale);  // cityDef.s = 0.05
   spr.x = cx - hexRadius / 2;
   spr.y = cy - hexRadius / 2;
   cityLayer.addChild(spr);
@@ -1874,7 +1566,7 @@ function drawCityReligion(cx, cy, idx) {
     const scale = constants.religionConfigs[idx].s / 6.5; 
     const spr = new PIXI.Sprite(texture);
     spr.anchor.set(0.5);
-    spr.scale.set(scale);                   // cityDef.s = 0.05
+    spr.scale.set(scale);  // cityDef.s = 0.05
     spr.x = cx + hexRadius / 2;
     spr.y = cy - hexRadius / 2;
     cityLayer.addChild(spr);
@@ -1968,7 +1660,6 @@ function drawTraderoute(cx, cy, playerFrom, cityFrom, playerTo, cityTo, playerCi
     ? csCityLocations[playerTo - 6]
     : playerCityLocations[playerTo][cityTo];
 
-
   const path = hexLine(...fromHex, ...toHex);
 
   const points = path.map(([r, c]) => {
@@ -1997,7 +1688,7 @@ function drawTraderoute(cx, cy, playerFrom, cityFrom, playerTo, cityTo, playerCi
     }
   }
 
-  g.stroke(); // don't forget to stroke the line
+  g.stroke();
   traderouteLayer.addChild(g);
 }
 
@@ -2009,11 +1700,11 @@ async function initTechTreeOverlay() {
   /* --- create transparent Pixi canvas that sits above the map --- */
   const techCanvas = document.getElementById('techCanvas');
 
-  const techApp = new PIXI.Application();          // ① plain constructor
-  await techApp.init({                             // ② initialise
+  const techApp = new PIXI.Application();  // plain constructor
+  await techApp.init({                            
     view: techCanvas,
-    width : techCanvas.width,      // 2400
-    height: techCanvas.height,     // 1000
+    width : techCanvas.width,
+    height: techCanvas.height,
     backgroundAlpha: 0,
     antialias: true,
     autoDensity: true,
@@ -2058,19 +1749,19 @@ async function initTechTreeOverlay() {
 }
 
 async function initPolicyOverlay() {
-  /* 1️⃣  load JSON ----------------------------------------- */
+  /* load JSON ----------------------------------------- */
   const polArray = await fetch('social_policies.json').then(r => r.json());
 
-  /* 2️⃣  create transparent Pixi canvas -------------------- */
+  /* create transparent Pixi canvas -------------------- */
   const polCanvas = document.getElementById('policyCanvas');
-  const polApp    = new PIXI.Application();
+  const polApp = new PIXI.Application();
   await polApp.init({
-    view           : polCanvas,
-    width          : polCanvas.width,     // or use resizeTo: window
-    height         : polCanvas.height,
+    view : polCanvas,
+    width : polCanvas.width,  // or use resizeTo: window
+    height : polCanvas.height,
     backgroundAlpha: 0,
-    antialias      : true,
-    autoDensity    : true,
+    antialias : true,
+    autoDensity : true,
   });
 
   // Scale down the entire stage to 80%
@@ -2082,10 +1773,10 @@ async function initPolicyOverlay() {
     polCanvas.height * 0.1  // Center vertically
   );
 
-  /* 3️⃣  build renderer ------------------------------------ */
+  /*  build renderer ------------------------------------ */
   const polScreen = new PolicyScreenRendererPixi(polApp, polArray);
 
-  /* 4️⃣  DOM controls (same ids as before) ----------------- */
+  /*  DOM controls (same ids as before) ----------------- */
   const toggleBtn = document.getElementById('social-policy-button');
   const turnBox  = document.getElementById('turnInput');
   const prevTurn = document.getElementById('prevTurn');
@@ -2106,7 +1797,6 @@ async function initPolicyOverlay() {
     }
   });
 
-
   const syncTurn = () => { 
     const on = isPressed(toggleBtn);
     if (on) polScreen.setTurn(+turnBox.value); 
@@ -2122,12 +1812,12 @@ async function initReligionOverlay () {
 
   const relApp = new PIXI.Application();
   await relApp.init({
-    view           : relCanvas,
-    width          : relCanvas.width,     // or use resizeTo: window
-    height         : relCanvas.height,
+    view : relCanvas,
+    width : relCanvas.width,
+    height : relCanvas.height,
     backgroundAlpha: 0,
-    antialias      : true,
-    autoDensity    : true
+    antialias : true,
+    autoDensity : true
   });
   
   // Scale down the entire stage to 80%
@@ -2148,7 +1838,7 @@ async function initReligionOverlay () {
 
   /* ── 3. Hook up the existing UI controls ──────────────────────────── */
   const toggleBtn = document.getElementById('religion-button');
-  const turnBox  = document.getElementById('turnInput');
+  const turnBox = document.getElementById('turnInput');
   const prevTurn = document.getElementById('prevTurn');
   const nextTurn = document.getElementById('nextTurn');
 
@@ -2182,7 +1872,6 @@ async function initReligionOverlay () {
 
 async function initVictoryOverlay() {
   const vicCanvas = document.getElementById('victoryCanvas');
-  
   const vicApp = new PIXI.Application();
 
   await vicApp.init({
@@ -2232,11 +1921,6 @@ async function initVictoryOverlay() {
   turnBox .addEventListener('input', syncTurn);
   prevTurn.addEventListener('click', syncTurn);
   nextTurn.addEventListener('click', syncTurn);
-  
-  // Sync turn changes
-  //turnBox.addEventListener('input', () => {
-  //  if (chk.checked) vicScreen.setTurn(+turnBox.value);
-  //});
 }
 
 async function initTradeOverlay() {
@@ -2244,18 +1928,17 @@ async function initTradeOverlay() {
   
   const tradeApp = new PIXI.Application();
   await tradeApp.init({
-    view           : tradeCanvas,
-    width          : tradeCanvas.width,     // or use resizeTo: window
-    height         : tradeCanvas.height,
+    view : tradeCanvas,
+    width : tradeCanvas.width,    
+    height : tradeCanvas.height,
     backgroundAlpha: 0,
-    antialias      : true,
-    autoDensity    : true
+    antialias : true,
+    autoDensity : true
   });
   
   // Scale down the entire stage to 80%
   tradeApp.stage.scale.set(1.0);
 
-  // Optional: Center the scaled content if needed
   tradeApp.stage.position.set(
     tradeCanvas.width * 0.0,  // Center horizontally (10% margin on each side)
     tradeCanvas.height * 0.0 + 20  // Center vertically
@@ -2309,7 +1992,6 @@ async function initTradeOverlay() {
   turnBox.addEventListener('input', syncTurn);
   prevTurn.addEventListener('click', syncTurn);
   nextTurn.addEventListener('click', syncTurn);
-  
 }
 
 
@@ -2361,17 +2043,6 @@ async function initDemographicsOverlay() {
         treasury: treasury,
         netHappiness: happiness,
         goldenAgeTurns: goldenAgeTurns,
-        /*
-        military: playerMilitary,
-        approval: playerApproval,
-        literacy: playerLiteracy,
-        production: playerProduction,
-        food: playerFood,
-        science: playerScience,
-        gold: playerGold,
-        culture: playerCulture,
-        faith: playerFaith
-        */
       };
       demoScreen.setDemographicsData(demographicsData);
       demoScreen.setMaxTurn(terrainMap.length);  // Set the maximum turn if known
@@ -2503,16 +2174,16 @@ function centreCameraOnPixel(px, py) {
   const vpH = app.screen.height;
   const z   = world.scale.x;          // uniform zoom
 
-  /* 1️⃣ move the pivot so that (px,py) is the local origin */
+  /*  move the pivot so that (px,py) is the local origin */
   world.pivot.set(px, py);
 
-  /* 2️⃣ put that origin in the exact centre of the viewport */
+  /* put that origin in the exact centre of the viewport */
   world.position.set(vpW / 2, vpH / 2);
 }
 
 /* convert axial (col,row) to map-pixel centre */
 function hexToPixel(col, row, r = hexRadius) {
-  const w = Math.sqrt(3) * r;          // flat-to-flat
+  const w = Math.sqrt(3) * r;  // flat-to-flat
   const h = 2 * r;
   const vert = h * 0.75;
   const offX = (row & 1) ? w / 2 : 0;
@@ -2524,8 +2195,7 @@ function hexToPixel(col, row, r = hexRadius) {
 }
 
 function moveCameraToFirstCity(playerIdx, stepIdx = +turnInput.value) {
-  const slice = playerCities[stepIdx];              // [P][C][2]
-  //for (let p = 0; p < slice.length; p++) {
+  const slice = playerCities[stepIdx];  // [P][C][2]
     for (let c = 0; c < slice[playerIdx].length; c++) {
       const [row, col] = slice[playerIdx][c];
       if (row >= 0 && col >= 0) {
@@ -2533,11 +2203,10 @@ function moveCameraToFirstCity(playerIdx, stepIdx = +turnInput.value) {
         viewState.selectedCityPlayer = playerIdx;
         viewState.selectedCityNum = c;
         const { x, y } = hexToPixel(col, row);
-        centreCameraOnPixel(x, y);                  // ← new pivot logic
+        centreCameraOnPixel(x, y);                  
         return;
       }
     }
-  //}
 }
 
 
@@ -2553,8 +2222,8 @@ document.getElementById('cityview-button').addEventListener('click', () => {
   const playerDropdown = document.getElementById("playerDropdown");
 
   if (on) {
-    moveCameraToFirstCity(parseInt(playerDropdown.value));   // <——  centre on a city
-    viewState.cityViewEnabled = true;    // flag you’ll need for step 2
+    moveCameraToFirstCity(parseInt(playerDropdown.value));   // <——  center on a city
+    viewState.cityViewEnabled = true; 
     
     cityScroller.style.display = "flex";
     cityScroller.querySelectorAll("button").forEach(btn => {
@@ -2571,7 +2240,7 @@ document.getElementById('cityview-button').addEventListener('click', () => {
     });
     playerDropdown.style.display = "none";
   }
-  renderMapDynamic(getLayerToggleStates());                    // re-draw the frame right away
+  renderMapDynamic(getLayerToggleStates());  // re-draw the frame right away
 });
 
 
@@ -2605,16 +2274,11 @@ function scrollToPreviousCity() {
   // Now prevCityIdx is the previous city with POP > 0
   viewState.selectedCityNum = prevCityIdx;
 
-  // Decrement and wrap
-  //const prevCityIdx = (currCity === 0) ? nCitiesCurrPlayer - 1 : currCity - 1;
-  //viewState.selectedCityNum = prevCityIdx;
-
   // Now to extract the previous city's row-col
   const rc = playerCities[turn.value][viewState.selectedCityPlayer][prevCityIdx];
   const { x: px, y: py } = hexToPixel(rc[1], rc[0], hexRadius);
   centreCameraOnPixel(px, py);
-  renderMapDynamic(getLayerToggleStates());                    // re-draw the frame right away
-  //renderMap(getLayerToggleStates());
+  renderMapDynamic(getLayerToggleStates());  // re-draw the frame right away
 }
 
 function scrollToNextCity() {
@@ -2642,15 +2306,11 @@ function scrollToNextCity() {
   }
   viewState.selectedCityNum = nextCityIdx;
 
-  //const nextCityIdx = (currCity + 1 >= nCitiesCurrPlayer || POP <= 0) ? 0 : currCity + 1;
-  //viewState.selectedCityNum = nextCityIdx;
-
   // Now to extract the next city's row-col
   const rc = playerCities[turn.value][viewState.selectedCityPlayer][nextCityIdx];
   const { x: px, y: py } = hexToPixel(rc[1], rc[0], hexRadius);
   centreCameraOnPixel(px, py);
-  renderMapDynamic(getLayerToggleStates());                    // re-draw the frame right away
-  //renderMap(getLayerToggleStates());
+  renderMapDynamic(getLayerToggleStates());  // re-draw the frame right away
 }
 
 document.getElementById("prevCity").addEventListener("click", () => {
@@ -2664,15 +2324,14 @@ document.getElementById("nextCity").addEventListener("click", () => {
 });
 
 function drawCityYieldPanelPixi(step, pID, cID) {
-  /* 0️⃣  --- fetch data ----------------------------------- */
+  /*  --- fetch data ----------------------------------- */
   const yields = playerYields?.[step]?.[pID]?.[cID];   // [8] numbers
   //if (!yields) return;
 
   const POP    = playerPops?.[step]?.[pID]?.[cID] ?? 0;
-  //console.log("XY ", world.toLocal(new PIXI.Point(0, 0)));
   const globalXY = world.toLocal(new PIXI.Point(0, 0));
 
-  /* 1️⃣  --- layout constants ------------------------------ */
+  /*  --- layout constants ------------------------------ */
   const pad       = 6;
   const lineH     = 32;
   const panelW    = 210;
@@ -2686,7 +2345,7 @@ function drawCityYieldPanelPixi(step, pID, cID) {
     'Culture', 'Science', 'Happiness', 'Tourism'
   ];
 
-  /* 2️⃣  --- build panel container ------------------------- */
+  /* --- build panel container ------------------------- */
   const panel = new PIXI.Container();
   panel.position.set(panelX, panelY);
 
@@ -2700,7 +2359,7 @@ function drawCityYieldPanelPixi(step, pID, cID) {
     .endFill();
   panel.addChild(g);
 
-  /* 3️⃣  --- population header ----------------------------- */
+  /* --- population header ----------------------------- */
   const header = new PIXI.Graphics()
     .beginFill(0x10b121)                            // Civ-V green
     .drawCircle(pad + inset, pad + inset, 10)             // 20-px circle
@@ -2721,7 +2380,7 @@ function drawCityYieldPanelPixi(step, pID, cID) {
   panel.addChild(popText);
   
   const HEADER_H = pad + 35
-   /* 4️⃣  --- yield rows ------------------------------------ */
+   /* --- yield rows ------------------------------------ */
   for (let k = 0; k < 8; k++) {
     const amount = yields[k];
     const rowY   = pad + HEADER_H + k * lineH;      // HEADER_H = 32
@@ -2747,23 +2406,23 @@ function drawCityYieldPanelPixi(step, pID, cID) {
 
   }
 
-  /* 5️⃣  --- add to overlay layer -------------------------- */
+  /* --- add to overlay layer -------------------------- */
   cityUILayer.addChild(panel);
 }
 
 function drawWorkedRing(cx, cy) {
-  const r    = hexRadius * 0.95;                  // world-units radius
-  const z    = world.scale.x;                     // current zoom
-  const wPx  = 3;                                 // 3 px on screen
-  const wWorld = wPx / z;                         // convert to world-units
+  const r = hexRadius * 0.95;  // world-units radius
+  const z = world.scale.x;  // current zoom
+  const wPx = 3;  // 3 px on screen
+  const wWorld = wPx / z;  // convert to world-units
 
   workedTileLayer.lineStyle(wWorld, 0x00ff00, 0.8)
                  .beginFill(0x00ff00, 0.2);
 
   for (let i = 0; i < 6; i++) {
     const ang = (60 * i - 30) * Math.PI / 180;
-    const vx  = cx + r * Math.cos(ang) + 5.5;
-    const vy  = cy + r * Math.sin(ang);
+    const vx = cx + r * Math.cos(ang) + 5.5;
+    const vy = cy + r * Math.sin(ang);
     i ? workedTileLayer.lineTo(vx, vy)
       : workedTileLayer.moveTo(vx, vy);
   }
@@ -2808,7 +2467,7 @@ function drawCityBuildingPanelPixi(turn, playerIdx, cityIdx, scrollY = 0) {
   const lineH  = 20;
   const panelW = 210 + 2;
   const panelH = 180;
-  const panelX = constants.cityview_x_offset_column1;            // to the right of yield panel
+  const panelX = constants.cityview_x_offset_column1;  // to the right of yield panel
   const panelY = 325 + constants.cityview_y_offset;
 
   /* ========================================================
@@ -2852,22 +2511,22 @@ function drawCityBuildingPanelPixi(turn, playerIdx, cityIdx, scrollY = 0) {
   
   // Mask to block out building names from obscurring the panel label
   const listAreaY = 50;
-  const visibleH  = panelH - listAreaY - padY; // 180-50-8 = 122
+  const visibleH  = panelH - listAreaY - padY;  // 180-50-8 = 122
 
   const listMask = new PIXI.Graphics()
     .beginFill(0xffffff)
     .drawRect(padX, listAreaY, panelW - padX * 2, visibleH)
-    .endFill();                              // mask ONLY the list area
+    .endFill();  // mask ONLY the list area
   bldgPanel.addChild(listMask);
 
   /* inner container for scrolling rows */
   const list = new PIXI.Container();
-  list.position.set(padX + 5, listAreaY);    // inside mask
-  list.mask = listMask;                      // ← clipping!
+  list.position.set(padX + 5, listAreaY);  // inside mask
+  list.mask = listMask; 
   bldgPanel.addChild(list);
-  bldgPanel.list       = list;
-  bldgPanel.visibleH   = visibleH;
-  bldgPanel.listAreaY  = listAreaY;
+  bldgPanel.list = list;
+  bldgPanel.visibleH = visibleH;
+  bldgPanel.listAreaY = listAreaY;
   
   cityUILayer.addChild(bldgPanel);
 
@@ -2899,7 +2558,7 @@ export function clampBuildingScroll(visibleRows) {
 
 function drawCityAccelPanelPixi(turn, pID, cID) {
 
-  /* 0️⃣  — fetch data */
+  /* — fetch data */
   const accels = playerWonderAccel?.[turn]?.[pID]?.[cID];
   if (!accels) return;
 
@@ -2911,7 +2570,7 @@ function drawCityAccelPanelPixi(turn, pID, cID) {
   const r  = playerReligionBldgAccel?.[turn]?.[pID]?.[cID] ?? 0;
   const e  = playerEconBldgAccel?.    [turn]?.[pID]?.[cID] ?? 0;
 
-  /* 1️⃣  — layout constants */
+  /* — layout constants */
   const padX   = 8;
   const padY   = 8;
   const lineH  = 23;
@@ -2925,7 +2584,7 @@ function drawCityAccelPanelPixi(turn, pID, cID) {
     'Industrial','Modern','Post-modern','Future'
   ];
 
-  /* 2️⃣  — build container (create once, update text later) */
+  /* — build container (create once, update text later) */
   const panel = new PIXI.Container();
   panel.position.set(panelX, panelY  + 8);
 
@@ -2945,17 +2604,12 @@ function drawCityAccelPanelPixi(turn, pID, cID) {
   panel.addChild(header);
 
   /* “Wonders” sub-header --------------------------------- */
-  //const subHead = new PIXI.Text('Wonders', detailStyle);
-  //subHead.anchor.set(0.5);
-  //subHead.position.set(panelW / 2 - 10, padY + 16 + 35);
-  //panel.addChild(subHead);
-
   /* list container for rows (easy to clear/update) */
   const list = new PIXI.Container();
   list.position.set(0, padY + 16 + 45);
   panel.addChild(list);
 
-  /* 3️⃣  — build row helper */
+  /* — build row helper */
   const makeRow = (label, value, idx) => {
     const y = idx * lineH;
 
@@ -2969,10 +2623,10 @@ function drawCityAccelPanelPixi(turn, pID, cID) {
     list.addChild(right);
   };
 
-  /* 4️⃣  — wonder-era rows */
+  /* — wonder-era rows */
   wonderEras.forEach((era, i) => makeRow(era, accels[i] ?? 0, i));
 
-  /* 5️⃣  — other accel rows */
+  /* — other accel rows */
   let idx = wonderEras.length;
   makeRow('Buildings' , b , idx++);
   makeRow('Military'  , m , idx++);
@@ -2982,7 +2636,7 @@ function drawCityAccelPanelPixi(turn, pID, cID) {
   makeRow('Religion'  , r , idx++);
   makeRow('Economic'  , e , idx++);
 
-  /* 6️⃣  — add to overlay layer */
+  /* — add to overlay layer */
   cityUILayer.addChild(panel);
 }
 
@@ -2990,16 +2644,13 @@ function drawCityAccelPanelPixi(turn, pID, cID) {
 function drawCityIsBuildingPanelPixi(turn, pID, cID) {
   const constructing = isConstructing?.[turn]?.[pID]?.[cID];
   const prod = prodReserves?.[turn]?.[pID]?.[cID];
-  console.log("Making ",  constructing);
-  //if (!constructing) return;
-
   // Layout
   const padX = 8;
   const padY = 8;
   const lineH  = 18;
   const panelW = 210;
   const panelH = 160;
-  const panelX = constants.cityview_x_offset_column1;            // to the right of yield panel
+  const panelX = constants.cityview_x_offset_column1;  // to the right of yield panel
   const panelY = 325 + constants.cityview_y_offset + 180 + 6;
 
   /* ========================================================
@@ -3027,9 +2678,6 @@ function drawCityIsBuildingPanelPixi(turn, pID, cID) {
     const buildingName = constants.buildingNames[constructing];
     const buildingCost = constants.buildingCosts[constructing];
     const buildingText = new PIXI.Text(buildingName, detailStyle2);
-    //buildingText.style.wordWrap      = true;
-    //buildingText.style.wordWrapWidth = panelW - 10;
-    //buildingText.updateText();
     buildingText.position.set(padX, padY + 80);
     constructionPanel.addChild(buildingText);
 
@@ -3037,7 +2685,6 @@ function drawCityIsBuildingPanelPixi(turn, pID, cID) {
     const prodText = new PIXI.Text(`${prod} / ${buildingCost}`,  detailStyle2);
     prodText.anchor.x = 1;                // 0 = left, 0.5 = centre, 1 = right
     prodText.x = RIGHT_EDGE_X;
-    //prodText.anchor.y = 0;
     prodText.y = 50;
     constructionPanel.addChild(prodText);
 
@@ -3082,8 +2729,6 @@ function hasYieldArrayChanged(oldFeatures, newFeatures) {
   }
   return false;
 }
-
-
 
 function drawOwnershipLayer(cx, cy, _playerOwnership) {
   // _playerOwnership is an integer specifying who owns thie tile on cxcy
@@ -3190,10 +2835,6 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
   // This function is only ever called once, so let's go ahead and build the per-city lookup table of max health per turn
   globalMapState.cityMaxHPLookup = buildPrefixMax3D(cityHP);
 
-  // Clear previous tiles
-  //app.stage.removeChildren();
-  //mapLayer.removeChildren();
-
   const terrainMapLocal = ISREPLAY ? terrainMap[turn] : terrainMap;
   const lakeMapLocal = ISREPLAY ? lakeMap[turn] : lakeMap;
   const elevationMapLocal = ISREPLAY ? elevationMap[turn] : elevationMap;
@@ -3270,9 +2911,9 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
 
       /* --- feature overlay --- */
       /* determine if that tile is a hill */
-      const onHill   = elevID === 2;               // true only for hills, not mountains
+      const onHill   = elevID === 2;  // true only for hills, not mountains
 
-      const featID = featureMapLocal[row][col];       // 0–5 as per table
+      const featID = featureMapLocal[row][col];  // 0–5 as per table
       addFeature(featID, onHill, cx, cy, featureTextures);
       
       /* --- Natural Wonders --- */
@@ -3280,7 +2921,7 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
       addNaturalWonder(nwID, cx, cy);
       
       //riverLayer.clear();
-      const riverEdges = riverMapLocal[row]?.[col];             // array[6] booleans
+      const riverEdges = riverMapLocal[row]?.[col];  // array[6] booleans
 
       for (let e = 0; e < 6; e++) {
         if (riverEdges[e]) {
@@ -3290,7 +2931,7 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
 
       // City ownership borders
       /* ------- city-state borders ------- */
-      const csID = csOwnershipLocal[row][col];          // 0 = none
+      const csID = csOwnershipLocal[row][col];  // 0 = none
       if (csID > 0) {
         const edges = csOwnershipBordersLocal[csID-1][row][col];
         const colour = hexStringToNumber(constants.csColors[csID]);
@@ -3347,9 +2988,9 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
       const cx = col * horizSpacing + offsetX + hexRadius;
       const cy = row * vertSpacing + hexRadius;
 
-      drawUnits(i,                      // civ index
-                unitsTypeLocal[i][j],   // 0‒3
-                unitsMilitaryLocal[i][j],// 0 civilian, 1 military
+      drawUnits(i,  // civ index
+                unitsTypeLocal[i][j],  // 0‒3
+                unitsMilitaryLocal[i][j],  // 0 civilian, 1 military
                 unitHealthLocal[i][j],
                 cx, cy);
     }
@@ -3389,12 +3030,8 @@ function renderMapDynamic({ showYieldsBool = false, showResourcesBool = false, s
 
   // Switching between different players' views of the yields (or GT) -- playerYieldMap
   if (yieldTypeIdx === "GT") {
-    //console.log("IN GT BLOCK");
-    //let yieldMapToUse = gtYieldMap;
     var YieldMapLocal = ISREPLAY ? gtYieldMap[turn] : gtYieldMap;
   } else {
-    //console.log(playerYieldMap);
-    //let yieldMapToUse = playerYieldMap;
     var YieldMapLocal = ISREPLAY ? playerYieldMap[turn][Number(yieldTypeIdx)] : playerYieldMap;
   }
 
@@ -3435,15 +3072,12 @@ function renderMapDynamic({ showYieldsBool = false, showResourcesBool = false, s
   }
 
   if (showOwnershipBool) {
-    //ownershipLayer.removeChildren().forEach(c => c.destroy(true));
-    //ownershipLayer.clear();
-
-//    ownershipLayer.removeChildren();
+    //ownershipLayer.removeChildren();
   }
   ownershipLayer.removeChildren();
   
   unitsLayer.removeChildren();
-  traderouteLayer.removeChildren(); // or should be .clear()?
+  traderouteLayer.removeChildren();
   cityLayer.removeChildren();
 
   cityUILayer.removeChildren();
@@ -3460,18 +3094,18 @@ function renderMapDynamic({ showYieldsBool = false, showResourcesBool = false, s
       
       const isLake = lakeMapLocal[row][col];
 
-      let elevID = elevationMapLocal[row][col];    // 0-3
+      let elevID = elevationMapLocal[row][col];  // 0-3
 
       if (featuresChangedBool){
         elevID = (1 - isLake) * elevID;
-        const onHill = elevID === 2;               // true only for hills, not mountains
-        const featID = featureMapLocal[row][col];       // 0–5 as per table
+        const onHill = elevID === 2;  // true only for hills, not mountains
+        const featID = featureMapLocal[row][col];  // 0–5 as per table
         addFeature(featID, onHill, cx, cy, featureTextures);
       }
 
       // City ownership borders
       /* ------- city-state borders ------- */
-      const csID = csOwnershipLocal[row][col];          // 0 = none
+      const csID = csOwnershipLocal[row][col];  // 0 = none
       if (csID > 0) {
         const edges = csOwnershipBordersLocal[csID-1][row][col];
         const colour = hexStringToNumber(constants.csColors[csID]);
@@ -3514,7 +3148,6 @@ function renderMapDynamic({ showYieldsBool = false, showResourcesBool = false, s
   }
 
   for (let i = 0; i < cs_citiesLocal.length; i++) {
-    //console.log("NUM CS: ", cs_citiesLocal.length);
     const unit_rowcol = cs_citiesLocal[i];
     const row = unit_rowcol[0]; 
     const col = unit_rowcol[1];
@@ -3538,7 +3171,7 @@ function renderMapDynamic({ showYieldsBool = false, showResourcesBool = false, s
   for (let i = 0; i < playerCitiesLocal.length; i++) {
     for (let j = 0; j < playerCitiesLocal[i].length; j++) {
       const [row, col] = playerCitiesLocal[i][j];
-      if (row === -1) continue;             // skip empty slot
+      if (row === -1) continue;  // skip empty slot
 
       const offsetX = (row % 2) * (hexWidth / 2);
       const cx = col * horizSpacing + offsetX + hexRadius;
@@ -3576,7 +3209,6 @@ function renderMapDynamic({ showYieldsBool = false, showResourcesBool = false, s
     }
   }
 
-
   for (let i = 0; i < unitsTypeLocal.length; i++) {
     for (let j = 0; j < unitsTypeLocal[0].length; j++) {
       const [row, col] = unitsRowColLocal[i][j];
@@ -3589,9 +3221,9 @@ function renderMapDynamic({ showYieldsBool = false, showResourcesBool = false, s
           drawTraderoute(cx, cy, i, unitsTradeCityFromLocal[i][j], unitsTradePlayerToLocal[i][j], unitsTradeCityToLocal[i][j], playerCitiesLocal, cs_citiesLocal);
         }
       }
-      drawUnits(i,                      // civ index
-                unitsTypeLocal[i][j],   // 0‒3
-                unitsMilitaryLocal[i][j],// 0 civilian, 1 military
+      drawUnits(i,  // civ index
+                unitsTypeLocal[i][j],  // 0‒3
+                unitsMilitaryLocal[i][j],  // 0 civilian, 1 military
                 unitHealthLocal[i][j],
                 cx, cy);
     }
