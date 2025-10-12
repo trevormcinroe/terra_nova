@@ -58,11 +58,11 @@ const textureMap = {
 
 export const terrainRenderConfigs = [
   { fillColor: "#08306b" },
-  { texturePath: './textures/grassland_entire_map.png' },  // 1
-  { texturePath: './textures/plains_entire_map.png' },     // 2
-  { texturePath: './textures/desert_entire_map.png' },     // 3
-  { texturePath: './textures/asia_tundra_d.png' },         // 4
-  { texturePath: './textures/generic_snow_d.png' },        // 5
+  { texturePath: './textures/grassland_entire_map.png' },  
+  { texturePath: './textures/plains_entire_map.png' },     
+  { texturePath: './textures/desert_entire_map.png' },     
+  { texturePath: './textures/asia_tundra_d.png' },         
+  { texturePath: './textures/generic_snow_d.png' },        
   { texturePath: './textures/water_entire_map.png'}
 ];
 
@@ -83,10 +83,10 @@ export async function loadTerrainTextures() {
 
 /* icons + per-type parameters */
 export const elevationConfigs = [
-  null,                                            // 0 ocean
-  null,                                            // 1 flatland
+  null,  // 0 ocean
+  null,  // 1 flatland
   { path: './icons/hill.png',      scale: 0.255, yOff:  0 },  // 2 hill
-  { path: './icons/mountain2.png', scale: 0.25, yOff: -5 }   // 3 mountain
+  { path: './icons/mountain2.png', scale: 0.25, yOff: -5 }  // 3 mountain
 ];
 
 /* load only the needed textures */
@@ -148,28 +148,28 @@ export async function loadFeatureTextures() {
 
     textures[id] = obj;
   }
-  return textures;     // textures[id].normal / .hill  (or undefined)
+  return textures; 
 }
 
 export const nwDefs = [
   null,
-  { path: './icons/krakatoa.png',       scale: 0.24, yOff: -12 },
-  { path: './icons/gibraltar.png',      scale: 0.24, yOff: -10 },
-  { path: './icons/kailash.png',        scale: 0.24, yOff: -10 },
-  { path: './icons/kilimanjaro.png',    scale: 0.24, yOff:  -2 },
-  { path: './icons/sinai.png',          scale: 0.24, yOff:  -4 },
-  { path: './icons/sripada.png',        scale: 0.24, yOff: -10 },
-  { path: './icons/cerro.png',          scale: 0.24, yOff:  -5 },
-  { path: './icons/fuji.png',           scale: 0.24, yOff:  -5 },
-  { path: './icons/uluru.png',          scale: 0.24, yOff:  -1 },
-  { path: './icons/barringer.png',      scale: 0.24, yOff:  -1 },
-  { path: './icons/grand_mesa.png',     scale: 0.24, yOff:  -1 },
-  { path: './icons/oldfaithful.png',    scale: 0.24, yOff:  -8 },
-  { path: './icons/fountain.png',       scale: 0.24, yOff:  -1 },
-  { path: './icons/gbr.png',            scale: 0.24, yOff:  -1 },
-  { path: './icons/eldorado.png',       scale: 0.24, yOff:  -1 },
-  { path: './icons/solomon.png',        scale: 0.24, yOff:  -1 },
-  { path: './icons/lakevictoria.png',   scale: 0.24, yOff:  -1 },
+  { path: './icons/krakatoa.png', scale: 0.24, yOff: -12 },
+  { path: './icons/gibraltar.png', scale: 0.24, yOff: -10 },
+  { path: './icons/kailash.png', scale: 0.24, yOff: -10 },
+  { path: './icons/kilimanjaro.png', scale: 0.24, yOff:  -2 },
+  { path: './icons/sinai.png', scale: 0.24, yOff:  -4 },
+  { path: './icons/sripada.png', scale: 0.24, yOff: -10 },
+  { path: './icons/cerro.png', scale: 0.24, yOff:  -5 },
+  { path: './icons/fuji.png', scale: 0.24, yOff:  -5 },
+  { path: './icons/uluru.png', scale: 0.24, yOff:  -1 },
+  { path: './icons/barringer.png', scale: 0.24, yOff:  -1 },
+  { path: './icons/grand_mesa.png', scale: 0.24, yOff:  -1 },
+  { path: './icons/oldfaithful.png', scale: 0.24, yOff:  -8 },
+  { path: './icons/fountain.png', scale: 0.24, yOff:  -1 },
+  { path: './icons/gbr.png', scale: 0.24, yOff:  -1 },
+  { path: './icons/eldorado.png', scale: 0.24, yOff:  -1 },
+  { path: './icons/solomon.png', scale: 0.24, yOff:  -1 },
+  { path: './icons/lakevictoria.png', scale: 0.24, yOff:  -1 },
 ];
 
 export async function loadNWTextures() {
@@ -250,58 +250,58 @@ export async function loadResourceTextures() {
 
 export const ALL_RESOURCES = [
   null,
-    "dyes",
-    "copper",
-    "deer",
-    "ivory",
-    "silver",
-    "jewelry",
-    "uranium",
-    "lapis",
-    "gems",
-    "iron",  
-    "wine",
-    "cow",
-    "coconut",
-    "wheat",
-    "oil",
-    "marble",
-    "tobacco",
-    "maize",
-    "whales",
-    "olives",  
-    "truffles",
-    "bison",
-    "sugar",
-    "horses",
-    "citrus",
-    "cotton",
-    "salt",
-    "gold",
-    "aluminium",
-    "incense",  
-    "coffee",
-    "crabs",
-    "silk",
-    "perfume",
-    "glass",
-    "spices",
-    "amber",
-    "chocolate",
-    "rubber",
-    "coal",  
-    "sheep",
-    "coral",
-    "furs",
-    "porcelain",
-    "fish",
-    "tea",
-    "hardwood",
-    "obsidian",
-    "banana",
-    "jade",  
-    "pearls",
-    "stone",
+  "dyes",
+  "copper",
+  "deer",
+  "ivory",
+  "silver",
+  "jewelry",
+  "uranium",
+  "lapis",
+  "gems",
+  "iron",  
+  "wine",
+  "cow",
+  "coconut",
+  "wheat",
+  "oil",
+  "marble",
+  "tobacco",
+  "maize",
+  "whales",
+  "olives",  
+  "truffles",
+  "bison",
+  "sugar",
+  "horses",
+  "citrus",
+  "cotton",
+  "salt",
+  "gold",
+  "aluminium",
+  "incense",  
+  "coffee",
+  "crabs",
+  "silk",
+  "perfume",
+  "glass",
+  "spices",
+  "amber",
+  "chocolate",
+  "rubber",
+  "coal",  
+  "sheep",
+  "coral",
+  "furs",
+  "porcelain",
+  "fish",
+  "tea",
+  "hardwood",
+  "obsidian",
+  "banana",
+  "jade",  
+  "pearls",
+  "stone",
 ]
 
 
