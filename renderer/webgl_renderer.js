@@ -138,15 +138,15 @@ app.stage.addChild(world);
 app.stage.addChild(cityUILayer);
 
 // Create FPS monitor container at the highest level
-const fpsLayer = new PIXI.Container();
-fpsLayer.zIndex = 10000;
-app.stage.addChild(fpsLayer);
+//const fpsLayer = new PIXI.Container();
+//fpsLayer.zIndex = 10000;
+//app.stage.addChild(fpsLayer);
 
 // Modify the monitor creation to use this layer
-const monitor = new PerformanceMonitor(app, {
-  position: { x: 10, y: app.screen.height - 300 },  // bottom-left
-  container: fpsLayer  // pass the layer
-});
+//const monitor = new PerformanceMonitor(app, {
+//  position: { x: 10, y: app.screen.height - 300 },  // bottom-left
+//  container: fpsLayer  // pass the layer
+//});
 
 document.body.appendChild(app.canvas);
 
@@ -2902,7 +2902,7 @@ async function renderMapStatic({ showYieldsBool = false, showResourcesBool = fal
       const tile = drawHex(cx, cy, config?.fillColor, texture);
       //app.stage.addChild(tile);
       mapLayer.addChild(tile);
-      drawHexCoords(cx, cy, row, col);
+      //drawHexCoords(cx, cy, row, col);
 
       /* --- elevation overlay --- */
       let elevID = elevationMapLocal[row][col];    // 0-3
