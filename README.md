@@ -3,12 +3,20 @@
 </p>
 
 # Terra Nova
-Terra Nova is a comprehensive challenge environment for reinforcement learning research.
-Terra Nova is based on and contains the challenges of Civilization V. 
-
 <p align="center">
   <img src="./assets/viewer_demo.gif" width=90% />
 </p>
+
+Terra Nova is a comprehensive challenge environment for reinforcement learning research.
+Terra Nova is based on and contains the challenges of Civilization V.
+
+## Quickstart
+
+## Maps
+Terra Nova games take place on procedurally-generated maps. We provide 10k maps you can download [here](https://huggingface.co/datasets/trevormcinroe/terra_nova_maps).
+For more information on map contents and mechanics, see [here](https://trevormcinroe.github.io/terra_nova_environment#maps-mech).
+
+We also provide utilities for generating your own maps, which can be read about [here](https://trevormcinroe.github.io/terra_nova_documentation#mapgen).
 
 
 ## Documentation
