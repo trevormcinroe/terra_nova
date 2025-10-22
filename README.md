@@ -32,4 +32,10 @@ The Viewer also provides plots of various metrics over the course of the game:
 <p align="center">
   <img src="./assets/pop_demos.png" width=75% />
 </p>
+<p align="center">
+  <img src="./assets/prod_demos.png" width=75% />
+</p>
 
+<p align="center">
+  <img src="./assets/gold_demos.png" width=75% />
+</p>
