@@ -19,6 +19,25 @@ For documentation on the environment API, the action space, the observation spac
 ## Replay viewer
 We also provide tool to record and watch batch games that your agents play. This tool visualizes the entire gamestate, allowing you to see every aspect of the game.
 
+The Viewer runs in browser and uses node, which can be installed on Linux systems like:
+
 ```bash
 sudo apt install nodejs
 ```
+
+We recommend Chrome for the best user experience.
+
+The Viewer also provides plots of various metrics over the course of the game:
+
+<div class="grid" markdown>
+
+![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=1)
+
+![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=2)
+
+![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=3)
+
+![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=4)
+
+</div>
+
