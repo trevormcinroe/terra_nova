@@ -7,7 +7,7 @@ Terra Nova is a comprehensive challenge environment for reinforcement learning r
 Terra Nova is based on and contains the challenges of Civilization V. 
 
 <p align="center">
-  <img src="./assets/viewer_demo.gif" width=50% />
+  <img src="./assets/viewer_demo.gif" width=90% />
 </p>
 
 
