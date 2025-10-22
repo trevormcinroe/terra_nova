@@ -29,12 +29,7 @@ We recommend Chrome for the best user experience.
 
 The Viewer also provides plots of various metrics over the course of the game:
 
-<div class="grid" markdown>
-
-![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=1){: style="width=20%"}
-![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=2){: style="width=20%"}
-![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=3){: style="width=20%"}
-![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=4){: style="width=20%"}
-
-</div>
+<p align="center">
+  <img src="./assets/pop_demos.png" width=75% />
+</p>
 
