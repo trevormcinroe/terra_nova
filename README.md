@@ -32,11 +32,8 @@ The Viewer also provides plots of various metrics over the course of the game:
 <div class="grid" markdown>
 
 ![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=1)
-
 ![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=2)
-
 ![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=3)
-
 ![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa?text=4)
 
 </div>
