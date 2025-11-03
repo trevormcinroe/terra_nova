@@ -1,0 +1,635 @@
+[
+  {
+    "id": 0,
+    "name": "tradition_opener",
+    "tree": "tradition",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 1,
+    "name": "aristocracy",
+    "tree": "tradition",
+    "prereq": [
+      0
+    ],
+    "grid": [
+      1,
+      1
+    ]
+  },
+  {
+    "id": 2,
+    "name": "oligarchy",
+    "tree": "tradition",
+    "prereq": [
+      0
+    ],
+    "grid": [
+      1,
+      5
+    ]
+  },
+  {
+    "id": 3,
+    "name": "legalism",
+    "tree": "tradition",
+    "prereq": [
+      0
+    ],
+    "grid": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 4,
+    "name": "landed_elite",
+    "tree": "tradition",
+    "prereq": [
+      3
+    ],
+    "grid": [
+      2,
+      2
+    ]
+  },
+  {
+    "id": 5,
+    "name": "monarchy",
+    "tree": "tradition",
+    "prereq": [
+      3
+    ],
+    "grid": [
+      2,
+      4
+    ]
+  },
+  {
+    "id": 6,
+    "name": "liberty_opener",
+    "tree": "liberty",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 7,
+    "name": "collective_rule",
+    "tree": "liberty",
+    "prereq": [
+      8
+    ],
+    "grid": [
+      2,
+      1
+    ]
+  },
+  {
+    "id": 8,
+    "name": "republic",
+    "tree": "liberty",
+    "prereq": [
+      6
+    ],
+    "grid": [
+      1,
+      1
+    ]
+  },
+  {
+    "id": 9,
+    "name": "citizenship",
+    "tree": "liberty",
+    "prereq": [
+      6
+    ],
+    "grid": [
+      1,
+      4
+    ]
+  },
+  {
+    "id": 10,
+    "name": "meritocracy",
+    "tree": "liberty",
+    "prereq": [
+      9
+    ],
+    "grid": [
+      2,
+      5
+    ]
+  },
+  {
+    "id": 11,
+    "name": "representation",
+    "tree": "liberty",
+    "prereq": [
+      9
+    ],
+    "grid": [
+      2,
+      3
+    ]
+  },
+  {
+    "id": 12,
+    "name": "honor_opener",
+    "tree": "honor",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 13,
+    "name": "warrior_code",
+    "tree": "honor",
+    "prereq": [
+      12
+    ],
+    "grid": [
+      1,
+      2
+    ]
+  },
+  {
+    "id": 14,
+    "name": "professional_army",
+    "tree": "honor",
+    "prereq": [
+      12
+    ],
+    "grid": [
+      1,
+      5
+    ]
+  },
+  {
+    "id": 15,
+    "name": "military_caste",
+    "tree": "honor",
+    "prereq": [
+      13
+    ],
+    "grid": [
+      2,
+      1
+    ]
+  },
+  {
+    "id": 16,
+    "name": "military_tradition",
+    "tree": "honor",
+    "prereq": [
+      14
+    ],
+    "grid": [
+      2,
+      5
+    ]
+  },
+  {
+    "id": 17,
+    "name": "discipline",
+    "tree": "honor",
+    "prereq": [
+      13
+    ],
+    "grid": [
+      2,
+      3
+    ]
+  },
+  {
+    "id": 18,
+    "name": "piety_opener",
+    "tree": "piety",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 19,
+    "name": "organized_religion",
+    "tree": "piety",
+    "prereq": [
+      18
+    ],
+    "grid": [
+      1,
+      1
+    ]
+  },
+  {
+    "id": 20,
+    "name": "mandate_of_heaven",
+    "tree": "piety",
+    "prereq": [
+      18
+    ],
+    "grid": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 21,
+    "name": "religious_tolerance",
+    "tree": "piety",
+    "prereq": [
+      20
+    ],
+    "grid": [
+      2,
+      4
+    ]
+  },
+  {
+    "id": 22,
+    "name": "reformation",
+    "tree": "piety",
+    "prereq": [
+      20
+    ],
+    "grid": [
+      2,
+      2
+    ]
+  },
+  {
+    "id": 23,
+    "name": "theocracy",
+    "tree": "piety",
+    "prereq": [
+      18
+    ],
+    "grid": [
+      1,
+      5
+    ]
+  },
+  {
+    "id": 24,
+    "name": "patronage_opener",
+    "tree": "patronage",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 25,
+    "name": "merchant_confederacy",
+    "tree": "patronage",
+    "prereq": [
+      24
+    ],
+    "grid": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 26,
+    "name": "scholasticism",
+    "tree": "patronage",
+    "prereq": [
+      25
+    ],
+    "grid": [
+      2,
+      1
+    ]
+  },
+  {
+    "id": 27,
+    "name": "cultural_diplomacy",
+    "tree": "patronage",
+    "prereq": [
+      25
+    ],
+    "grid": [
+      2,
+      3
+    ]
+  },
+  {
+    "id": 28,
+    "name": "philanthropy",
+    "tree": "patronage",
+    "prereq": [
+      25
+    ],
+    "grid": [
+      2,
+      5
+    ]
+  },
+  {
+    "id": 29,
+    "name": "consulates",
+    "tree": "patronage",
+    "prereq": [
+      27
+    ],
+    "grid": [
+      3,
+      3
+    ]
+  },
+  {
+    "id": 30,
+    "name": "aesthetics_opener",
+    "tree": "aesthetics",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 31,
+    "name": "cultural_centers",
+    "tree": "aesthetics",
+    "prereq": [
+      30
+    ],
+    "grid": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 32,
+    "name": "ethics",
+    "tree": "aesthetics",
+    "prereq": [
+      31
+    ],
+    "grid": [
+      2,
+      2
+    ]
+  },
+  {
+    "id": 33,
+    "name": "artistic_genius",
+    "tree": "aesthetics",
+    "prereq": [
+      31
+    ],
+    "grid": [
+      2,
+      4
+    ]
+  },
+  {
+    "id": 34,
+    "name": "flourishing_of_arts",
+    "tree": "aesthetics",
+    "prereq": [
+      32
+    ],
+    "grid": [
+      3,
+      2
+    ]
+  },
+  {
+    "id": 35,
+    "name": "fine_arts",
+    "tree": "aesthetics",
+    "prereq": [
+      32,
+      33
+    ],
+    "grid": [
+      3,
+      4
+    ]
+  },
+  {
+    "id": 36,
+    "name": "commerce_opener",
+    "tree": "commerce",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 37,
+    "name": "trade_unions",
+    "tree": "commerce",
+    "prereq": [
+      36
+    ],
+    "grid": [
+      1,
+      5
+    ]
+  },
+  {
+    "id": 38,
+    "name": "caravans",
+    "tree": "commerce",
+    "prereq": [
+      36
+    ],
+    "grid": [
+      1,
+      2
+    ]
+  },
+  {
+    "id": 39,
+    "name": "mercantilism",
+    "tree": "commerce",
+    "prereq": [
+      38
+    ],
+    "grid": [
+      2,
+      3
+    ]
+  },
+  {
+    "id": 40,
+    "name": "entrepreneurship",
+    "tree": "commerce",
+    "prereq": [
+      38
+    ],
+    "grid": [
+      2,
+      1
+    ]
+  },
+  {
+    "id": 41,
+    "name": "protectionism",
+    "tree": "commerce",
+    "prereq": [
+      39
+    ],
+    "grid": [
+      3,
+      3
+    ]
+  },
+  {
+    "id": 42,
+    "name": "exploration_opener",
+    "tree": "exploration",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 43,
+    "name": "merchant_navy",
+    "tree": "exploration",
+    "prereq": [
+      42
+    ],
+    "grid": [
+      1,
+      5
+    ]
+  },
+  {
+    "id": 44,
+    "name": "maritime_infrastructure",
+    "tree": "exploration",
+    "prereq": [
+      42
+    ],
+    "grid": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 45,
+    "name": "naval_tradition",
+    "tree": "exploration",
+    "prereq": [
+      42
+    ],
+    "grid": [
+      1,
+      1
+    ]
+  },
+  {
+    "id": 46,
+    "name": "navigation_school",
+    "tree": "exploration",
+    "prereq": [
+      44,
+      45
+    ],
+    "grid": [
+      2,
+      3
+    ]
+  },
+  {
+    "id": 47,
+    "name": "treasure_fleets",
+    "tree": "exploration",
+    "prereq": [
+      46
+    ],
+    "grid": [
+      3,
+      3
+    ]
+  },
+  {
+    "id": 48,
+    "name": "rationalism_opener",
+    "tree": "rationalism",
+    "prereq": [],
+    "grid": [
+      0,
+      0
+    ]
+  },
+  {
+    "id": 49,
+    "name": "sovereignity",
+    "tree": "rationalism",
+    "prereq": [
+      48
+    ],
+    "grid": [
+      1,
+      1
+    ]
+  },
+  {
+    "id": 50,
+    "name": "free_thought",
+    "tree": "rationalism",
+    "prereq": [
+      48
+    ],
+    "grid": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 51,
+    "name": "humanism",
+    "tree": "rationalism",
+    "prereq": [
+      48
+    ],
+    "grid": [
+      1,
+      5
+    ]
+  },
+  {
+    "id": 52,
+    "name": "scientific_revolution",
+    "tree": "rationalism",
+    "prereq": [
+      49,
+      50
+    ],
+    "grid": [
+      2,
+      3
+    ]
+  },
+  {
+    "id": 53,
+    "name": "secularism",
+    "tree": "rationalism",
+    "prereq": [
+      52
+    ],
+    "grid": [
+      3,
+      3
+    ]
+  }
+]
