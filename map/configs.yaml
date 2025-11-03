@@ -1,0 +1,64 @@
+small:
+  num_players: 6
+  num_player_rows: 2
+  num_player_cols: 3
+  dimensions: [66, 42]
+  num_city_states: 12
+  num_natural_wonders: 4  # is only "5" with GBF (counts as 2 tiles)
+  nw_min_distance_from_start: 10
+  num_random_lux: 12
+  num_cs: 12
+  min_cs_distance_to_player: 6
+  min_cs_distance_to_cs: 4
+  min_regional_distance: 2
+  ocean_fish_threshold: 0.055
+  ocean_oil_threshold: 0.019
+  bonus_multiplier: 0.45  # (https://github.com/EnormousApplePie/Lekmod/blob/main/Lekmap/HBAssignStartingPlots.lua#L13857)
+  elevation:
+    elevation_noise_scale: 1
+    world_age_adjustment: 4
+    extra_mountains: 25
+    hill_threshold: 0.75
+    foothill_threshold: 0.75
+    mountain_threshold: 0.8
+  terrain:
+    terrain_noise_scale: 3  # smaller = noisier / finer terrain, larger = bigger chunks
+    # Latitude cutoffs (used symmetrically)
+    snow_lat: 0.85
+    tundra_lat: 0.75
+    desert_lat_max: 0.25
+
+    # Noise thresholds (modulates how likely terrain appears within bands) -- lower = more likely
+    snow_thresh: 0.1
+    tundra_thresh: 0.5
+    desert_thresh: 0.5
+    plains_thresh: 0.5
+    grass_thresh: 0.2
+  rivers:
+    river_source_min_elevation: 2  # >= hills and mountains
+    river_source_threshold:  0.955  # higher = fewer sources -- deprecated
+    river_max_length: 400
+    river_multiplier: 20  # 25 is safe max(?) for wet world
+    l2_dist_threshold: 6  # ensures rivers spawn far apart
+  lakes:
+    lake_seed_prob: 0.01
+    lake_growth_prob: 0.5
+    lake_growth_iters: 1
+  features:
+    TERRAIN_OCEAN: 0
+    TERRAIN_GRASSLAND: 1
+    TERRAIN_PLAINS: 2
+    TERRAIN_DESERT: 3
+    TERRAIN_TUNDRA: 4
+    TERRAIN_SNOW: 5
+    
+    forest_noise_scale: 2
+    feature_prob_forest: 0.25
+    
+    jungle_noise_scale: 5
+    jungle_max_latitude: 0.35
+    feature_prob_jungle: 0.35
+
+    marsh_max_elevation: 0.32
+    feature_prob_marsh: 0.1
+    feature_prob_oasis: 0.05
