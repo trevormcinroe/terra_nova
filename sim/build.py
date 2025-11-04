@@ -14,7 +14,6 @@ from game.religion import ReligiousTenets
 from game.social_policies import SocialPolicies
 from game.resources import ALL_RESOURCES 
 from learning.goals import compute_rewards
-from learning.metrics import EpisodicMetrics
 from learning.obs_spaces import TerraNovaObservationSpaceTracker, ObservationSpace 
 from game.termination_fns import reset_episode as termination_fn
 from game.primitives import Cities, CityStateInfo, ResetGameState, CultureInfo
@@ -425,7 +424,7 @@ def build_simulator(
     )
     
     @jax.jit
-    def reset_episode(inp: Tuple[GameState, EpisodicMetrics, jnp.ndarray, TerraNovaObservationSpaceTracker]):
+    def reset_episode(inp: Tuple[GameState, TerraNovaEpisodeMetrics, jnp.ndarray, TerraNovaObservationSpaceTracker]):
         games, episode_metrics, player_id, obs_space = inp
         
         # Need to track what happened this episode before we reset the entire gamestate, obv
@@ -442,7 +441,7 @@ def build_simulator(
         return games, episode_metrics, 0, jnp.array([True]), obs_space.reset()
 
     @partial(jax.vmap, in_axes=(0, None, 0, 0))
-    def maybe_reset(games: GameState, obs_space: ObservationSpace, episode_metrics: EpisodicMetrics, player_id):
+    def maybe_reset(games: GameState, obs_space: ObservationSpace, episode_metrics: TerraNovaEpisodeMetrics, player_id):
         games, episode_metrics, player_id, done_flag, obs_space = jax.lax.cond(
             termination_fn(games, obs_space, episode_metrics, player_id)[0],
             reset_episode,
