@@ -1,6 +1,6 @@
 
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -21,3 +21,14 @@ jax_cuda12 = [
   # Example pip wheels; exact extras vary by JAX release
   "jax[cuda12_local]==0.4.30",
 ]
+
+[tool.setuptools]
+# flat layout: discover only the packages you want
+packages = { find = { where = ["."],
+                      include = ["map*", "sim*", "game*", "renderer*", "learning*", ""],
+                      exclude = ["tests*", "run_test*", "fifth_test*", "docs*", "assets*"] } }
+
+# ship non-Python files that live under a package (e.g., assets)
+package-data = { "assets" = ["**/*"] }
+# If you have data under other packages, add similar lines:
+# package-data = { "renderer" = ["shaders/**/*"] }
