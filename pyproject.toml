@@ -8,7 +8,7 @@ name = "terra_nova"
 description = "Civilization-style RL environment(s) with Gymnasium-style API and JAX-friendly utilities."
 readme = "README.md"
 requires-python = ">=3.9.18"
-license = { file = "LICENSE" }
+license = "MIT"
 authors = [{ name = "Trevor McInroe", email = "trev.mcinroe@gmail.com" }]
 version = "0.1.0"
 
