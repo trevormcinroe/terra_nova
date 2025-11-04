@@ -117,6 +117,8 @@ class GameStateRecorder(GameState):
         * improvement_map will give us the improvement icons
         * road_map gives us the location of roads        
         """
+        print("Beginning data aggregation for save...")
+
         terrain_np = np.array(self.terrain_map)
         terrain_lol = [inner_l.tolist() for inner_l in [l for l in terrain_np]]
 
@@ -607,5 +609,7 @@ class GameStateRecorder(GameState):
             "specialist_slots": specialist_slots,
             "city_religious_pop": city_religious_pop,
         }
-
+        
+        print("Compressing save file...")
         atomic_write_ndjson_gzip(iter_gamestate_lines(gamestate), filename + ".ndjson.gz")
+        print("Saving complete.")
