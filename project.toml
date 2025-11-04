@@ -1,0 +1,23 @@
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "terra_nova"
+description = "Civilization-style RL environment(s) with Gymnasium-style API and JAX-friendly utilities."
+readme = "README.md"
+requires-python = ">=3.9.18"
+license = { file = "LICENSE" }
+authors = [{ name = "Trevor McInroe", email = "trev.mcinroe@gmail.com" }]
+version = "0.1.0"
+
+dependencies = [
+]
+
+[project.optional-dependencies]
+# Let users pick their JAX variant explicitly:
+jax_cuda12 = [
+  # Example pip wheels; exact extras vary by JAX release
+  "jax[cuda12_local]==0.4.30",
+]
