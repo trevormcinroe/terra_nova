@@ -2,13 +2,30 @@
   <img src="./assets/terra_nova_logo.png" width=50% />
 </p>
 
-# Terra Nova
 <p align="center">
   <img src="./assets/viewer_demo.gif" width=90% />
 </p>
 
 Terra Nova is a comprehensive challenge environment for reinforcement learning research.
 Terra Nova is based on and contains the challenges of Civilization V.
+
+## Table of Contents
+- [Installation](#installation)
+- [Quickstart](#quickstart)
+- [Maps](#maps)
+- [Documentation](#documentation)
+- [Recording Games](#recording-games)
+- [Replay Viewer](#replay-viewer)
+
+## Installation
+We provide a short requirements file that will auto-install everything all prerequisites using your preferred package manager.
+
+For example, with `mamba`:
+```bash
+mamba create -n terra_nova python=3.9.18
+mamba activate terra_nova
+pip install -r requirements.txt
+```
 
 ## Quickstart
 
@@ -23,6 +40,15 @@ We also provide utilities for generating your own maps, which can be read about 
 For documentation on environment mechanics, see [here](https://trevormcinroe.github.io/terra_nova_environment).
 
 For documentation on the environment API, the action space, the observation space, and more, see [here](https://trevormcinroe.github.io/terra_nova_documentation).
+
+## Recording Games
+We highly recommend using CPU-only context for recording Terra Nova games. This is because the recorder captures the entirety of the gamestate on every played turn, which requires a significant amount of memory. 
+
+You can accomplish this by using the following preamble:
+
+```bash
+CUDA_VISIBLE_DEVICES= python3 your_recording_script.py
+```
 
 ## Replay viewer
 We also provide tool to record and watch batch games that your agents play. This tool visualizes the entire gamestate, allowing you to see every aspect of the game.
