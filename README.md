@@ -28,6 +28,7 @@ pip install -r requirements.txt
 ```
 
 ## Quickstart
+Terra Nova comes with utilities to automatically distribute environments across any arbitrary mesh of GPUs, allowing for increased throughput via horizontal scaling.
 
 ## Maps
 Terra Nova games take place on procedurally-generated maps. We provide 10k maps you can download [here](https://huggingface.co/datasets/trevormcinroe/terra_nova_maps).
@@ -50,16 +51,14 @@ You can accomplish this by using the following preamble:
 CUDA_VISIBLE_DEVICES= python3 your_recording_script.py
 ```
 
-## Replay viewer
-We also provide tool to record and watch batch games that your agents play. This tool visualizes the entire gamestate, allowing you to see every aspect of the game.
+## Replay Viewer
+After a game has been recorded, you can watch the recording in your browser of choice. We recommend Chrome.
 
-The Viewer runs in browser and uses node, which can be installed on Linux systems like:
+The Viewer uses node, which can be installed on Linux systems like:
 
 ```bash
 sudo apt install nodejs
 ```
-
-We recommend Chrome for the best user experience.
 
 The Viewer also provides plots of various metrics over the course of the game:
 
@@ -69,7 +68,6 @@ The Viewer also provides plots of various metrics over the course of the game:
 <p align="center">
   <img src="./assets/prod_demos.png" width=75% />
 </p>
-
 <p align="center">
   <img src="./assets/gold_demos.png" width=75% />
 </p>
