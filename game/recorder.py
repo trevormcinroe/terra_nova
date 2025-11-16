@@ -92,7 +92,7 @@ class GameStateRecorder(GameState):
     @classmethod
     def create(cls, reference_gamestate, num_steps):
         return cls(
-            **asdict(jax.tree_map(lambda x: jnp.zeros(shape=(num_steps, *x.shape)), reference_gamestate)),
+            **asdict(jax.tree.map(lambda x: jnp.zeros(shape=(num_steps, *x.shape)), reference_gamestate)),
             recorder_step=jnp.zeros(shape=(1,), dtype=jnp.int32),
         )
 
@@ -100,7 +100,7 @@ class GameStateRecorder(GameState):
         #print(f"=================== CURRENT STEP: {gamestate_snapshot.current_step} vs {self.recorder_step} =======================")
         fields_to_update = {k: v for k, v in asdict(self).items()}
         del fields_to_update["recorder_step"]
-        updated_fields = jax.tree_map(
+        updated_fields = jax.tree.map(
             lambda x, y: x.at[self.recorder_step[0].astype(jnp.int32)].set(y),
             fields_to_update,
             asdict(gamestate_snapshot),
