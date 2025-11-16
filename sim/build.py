@@ -267,7 +267,7 @@ def build_simulator(
         # Now we need to take the lists of arrays and combine them into single arrays with an expanded
         # leading dimension.
         # One way to do this is to first expand the leading dim, then concat along that dim
-        updated_gamestates = [jax.tree_map(lambda x: x[None], game) for game in updated_gamestates]
+        updated_gamestates = [jax.tree.map(lambda x: x[None], game) for game in updated_gamestates]
         episode_metrics = TerraNovaEpisodeMetrics.create(n_games_per_device, num_episodes_to_track=10)
 
         # Now we can loop through each of the xla devices and place them on there
@@ -280,13 +280,13 @@ def build_simulator(
         
         print("Distributing arrays...")
         for i, mesh_device in enumerate(GLOBAL_MESH.devices):
-            games = jax.tree_map(lambda *arr: jnp.concatenate(arr, axis=0), *updated_gamestates[b_idx: e_idx])
+            games = jax.tree.map(lambda *arr: jnp.concatenate(arr, axis=0), *updated_gamestates[b_idx: e_idx])
             
             b_idx += n_games_per_device
             e_idx += n_games_per_device
             
-            game_bundle = jax.tree_map(lambda x: jax.device_put(deepcopy(x[None]), mesh_device), games)
-            placed_metrics = jax.tree_map(lambda x: jax.device_put(deepcopy(x[None]), mesh_device), episode_metrics)
+            game_bundle = jax.tree.map(lambda x: jax.device_put(deepcopy(x[None]), mesh_device), games)
+            placed_metrics = jax.tree.map(lambda x: jax.device_put(deepcopy(x[None]), mesh_device), episode_metrics)
             
             distributed_games.append(game_bundle)
             distributed_metrics.append(placed_metrics)
@@ -294,8 +294,8 @@ def build_simulator(
             players_turn_id.append(jax.device_put(jnp.zeros(shape=(1, n_games_per_device), dtype=jnp.int32), mesh_device))
             distributed_key_helper.append(jax.device_put(all_keys[i, :n_games_per_device][None], mesh_device))
 
-        distributed_games = jax.tree_map(lambda *x: list(x), *distributed_games)
-        distributed_games = jax.tree_map(
+        distributed_games = jax.tree.map(lambda *x: list(x), *distributed_games)
+        distributed_games = jax.tree.map(
             lambda x: jax.make_array_from_single_device_arrays(
                 (LOCAL_DEVICE_COUNT, *x[0].shape[1:]),
                 sharding, 
@@ -314,8 +314,8 @@ def build_simulator(
         # The observation space tracker
         distributed_obs_spaces = TerraNovaObservationSpaceTracker.create(n_games_per_device, distributed_games)
 
-        distributed_metrics = jax.tree_map(lambda *x: list(x), *distributed_metrics)
-        distributed_metrics = jax.tree_map(
+        distributed_metrics = jax.tree.map(lambda *x: list(x), *distributed_metrics)
+        distributed_metrics = jax.tree.map(
             lambda x: jax.make_array_from_single_device_arrays(
                 (LOCAL_DEVICE_COUNT, *x[0].shape[1:]),
                 sharding, 
@@ -346,8 +346,8 @@ def build_simulator(
         # Now we need to take the lists of arrays and combine them into single arrays with an expanded
         # leading dimension.
         # One way to do this is to first expand the leading dim, then concat along that dim
-        updated_gamestates = [jax.tree_map(lambda x: x[None], game) for game in updated_gamestates]
-        games = jax.tree_map(lambda *arr: jnp.concatenate(arr, axis=0), *updated_gamestates)
+        updated_gamestates = [jax.tree.map(lambda x: x[None], game) for game in updated_gamestates]
+        games = jax.tree.map(lambda *arr: jnp.concatenate(arr, axis=0), *updated_gamestates)
         
         episode_metrics = TerraNovaEpisodeMetrics.create(n_games, num_episodes_to_track=10)
 
@@ -364,8 +364,8 @@ def build_simulator(
             new_key = jax.vmap(jax.random.split, in_axes=(0))(games.key)[:, :, 0]
             games = games.replace(key=new_key)
 
-            game_bundle = jax.tree_map(lambda x: jax.device_put(deepcopy(x[None]), mesh_device), games)
-            placed_metrics = jax.tree_map(lambda x: jax.device_put(deepcopy(x[None]), mesh_device), episode_metrics)
+            game_bundle = jax.tree.map(lambda x: jax.device_put(deepcopy(x[None]), mesh_device), games)
+            placed_metrics = jax.tree.map(lambda x: jax.device_put(deepcopy(x[None]), mesh_device), episode_metrics)
             
             distributed_games.append(game_bundle)
             distributed_metrics.append(placed_metrics)
@@ -373,8 +373,8 @@ def build_simulator(
             players_turn_id.append(jax.device_put(jnp.zeros(shape=(1, n_games), dtype=jnp.int32), mesh_device))
             distributed_key_helper.append(jax.device_put(all_keys[i][None], mesh_device))
         
-        distributed_games = jax.tree_map(lambda *x: list(x), *distributed_games)
-        distributed_games = jax.tree_map(
+        distributed_games = jax.tree.map(lambda *x: list(x), *distributed_games)
+        distributed_games = jax.tree.map(
             lambda x: jax.make_array_from_single_device_arrays(
                 (LOCAL_DEVICE_COUNT, *x[0].shape[1:]),
                 sharding, 
@@ -393,8 +393,8 @@ def build_simulator(
         # The observation space tracker
         distributed_obs_spaces = TerraNovaObservationSpaceTracker.create(n_games, distributed_games)
 
-        distributed_metrics = jax.tree_map(lambda *x: list(x), *distributed_metrics)
-        distributed_metrics = jax.tree_map(
+        distributed_metrics = jax.tree.map(lambda *x: list(x), *distributed_metrics)
+        distributed_metrics = jax.tree.map(
             lambda x: jax.make_array_from_single_device_arrays(
                 (LOCAL_DEVICE_COUNT, *x[0].shape[1:]),
                 sharding, 
@@ -416,16 +416,16 @@ def build_simulator(
         """
         Need to run the fog of war computation before the game starts
         """
-        _games = jax.tree_map(lambda x: x[0], _games)
-        _obs_spaces = jax.tree_map(lambda x: x[0], _obs_spaces)
-        _distributed_players_turn = jax.tree_map(lambda x: x[0], _distributed_players_turn)
+        _games = jax.tree.map(lambda x: x[0], _games)
+        _obs_spaces = jax.tree.map(lambda x: x[0], _obs_spaces)
+        _distributed_players_turn = jax.tree.map(lambda x: x[0], _distributed_players_turn)
 
         _games = _games.compute_fog_of_war()
         _obs_spaces, _obs_for_reset = _obs_spaces._update_and_grab_obs(_games, _distributed_players_turn)
 
-        _games = jax.tree_map(lambda x: x[None], _games)
-        _obs_spaces = jax.tree_map(lambda x: x[None], _obs_spaces)
-        _obs_for_reset = jax.tree_map(lambda x: x[None], _obs_for_reset) 
+        _games = jax.tree.map(lambda x: x[None], _games)
+        _obs_spaces = jax.tree.map(lambda x: x[None], _obs_spaces)
+        _obs_for_reset = jax.tree.map(lambda x: x[None], _obs_for_reset) 
         return _games, _obs_spaces, _obs_for_reset
     
     print("Initializing observation space...")
@@ -564,10 +564,10 @@ def build_simulator(
         check_rep=False 
     )
     def env_step(games, logits, obs_space, episode_metrics, player_ids):
-        games = jax.tree_map(lambda x: x[0], games)
-        logits = jax.tree_map(lambda x: x[0], logits)
-        obs_space = jax.tree_map(lambda x: x[0], obs_space)
-        episode_metrics = jax.tree_map(lambda x: x[0], episode_metrics)
+        games = jax.tree.map(lambda x: x[0], games)
+        logits = jax.tree.map(lambda x: x[0], logits)
+        obs_space = jax.tree.map(lambda x: x[0], obs_space)
+        episode_metrics = jax.tree.map(lambda x: x[0], episode_metrics)
         player_ids = player_ids[0]
 
         games, obs_space, episode_metrics, new_player_ids, done_flags, selected_actions = run_simulation_once(
@@ -583,14 +583,14 @@ def build_simulator(
         # We need to ensure that we return the rewards to the player_id that just executed actions 
         # in the environments, _not_ the incremented player_id
         player_rewards, episode_metrics = compute_rewards(games, player_ids, episode_metrics)
-        games = jax.tree_map(lambda x: x[None], games)
-        obs_space = jax.tree_map(lambda x: x[None], obs_space)
-        episode_metrics = jax.tree_map(lambda x: x[None], episode_metrics)
+        games = jax.tree.map(lambda x: x[None], games)
+        obs_space = jax.tree.map(lambda x: x[None], obs_space)
+        episode_metrics = jax.tree.map(lambda x: x[None], episode_metrics)
         player_ids = new_player_ids[None]  # ensure we increment
-        next_obs = jax.tree_map(lambda x: x[None], next_obs)
+        next_obs = jax.tree.map(lambda x: x[None], next_obs)
         player_rewards = player_rewards[None]
         done_flags = done_flags[None]
-        selected_actions = jax.tree_map(lambda x: x[None], selected_actions)
+        selected_actions = jax.tree.map(lambda x: x[None], selected_actions)
 
         return games, obs_space, episode_metrics, player_ids, next_obs, player_rewards, done_flags, selected_actions
 
