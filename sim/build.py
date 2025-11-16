@@ -230,7 +230,7 @@ def build_simulator(
         
         gamestate = gamestate.create_improvement_bitfield_mask()
 
-        trimmed_units = jax.tree_map(lambda x: x[:, :MAX_NUM_UNITS] if len(x.shape) > 1 else x, gamestate.units)
+        trimmed_units = jax.tree.map(lambda x: x[:, :MAX_NUM_UNITS] if len(x.shape) > 1 else x, gamestate.units)
         gamestate = gamestate.replace(units=trimmed_units)
         initial_state_cache = ResetGameState().replace(**{name: deepcopy(getattr(gamestate, name)) for name in ResetGameState.__dataclass_fields__})
         gamestate = gamestate.replace(initial_state_cache=initial_state_cache)
