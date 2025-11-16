@@ -35,6 +35,8 @@ env_step_fn, games, obs_spaces, episode_metrics, players_turn_id, obs, GLOBAL_ME
 )
 
 trajectories = Trajectories.create(obs, args.memory_length)
+print("success.")
+qqq
 
 # Perhaps here you can initiailize your network and load your saved parameters via your custom code. 
 # You can use one of the arrays from `trajectories` as your sharding reference for the parameters
