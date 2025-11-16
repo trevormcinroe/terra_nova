@@ -38,8 +38,6 @@ class Improvements(enum.IntEnum):
 
 ALL_IMPROVEMENT_TECHS = jnp.array([x.tech_prereq._value_ for x in Improvements], dtype=jnp.int32)
 
-print(ALL_IMPROVEMENT_TECHS)
-qqq
 """
 All of these functions assume that we have already done the filtering for whether or not the given improvement type
 can be built/performed on the given tile. Also, we assume that the worker has already been held in place for the correct
