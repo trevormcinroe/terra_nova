@@ -948,8 +948,8 @@ class GameState:
         sp_logits = jax.device_put(sp_logits, sharding_ref)
         religion_logits = jax.device_put(religion_logits, sharding_ref)
         tech_logits = jax.device_put(tech_logits, sharding_ref)
-        unit_logits = jax.tree_map(lambda x: jax.device_put(x, sharding_ref), unit_logits)
-        city_logits = jax.tree_map(lambda x: jax.device_put(x, sharding_ref), city_logits)
+        unit_logits = jax.tree.map(lambda x: jax.device_put(x, sharding_ref), unit_logits)
+        city_logits = jax.tree.map(lambda x: jax.device_put(x, sharding_ref), city_logits)
         
         return (trade_logits, sp_logits, religion_logits, tech_logits, unit_logits, city_logits)
 
@@ -2475,7 +2475,7 @@ class GameState:
             _military, _unit_type, _unit_rowcol, _unit_ap, _player_trade_routes = jax.lax.switch(
                 (completed_unit).astype(jnp.int32), 
                 ALL_UNIT_INDICATOR_FNS,
-                jax.tree_map(lambda x: x[player_id[0]], _self.units),
+                jax.tree.map(lambda x: x[player_id[0]], _self.units),
                 _self.num_trade_routes[player_id[0]],
                 _self.player_cities.city_rowcols[player_id[0], city_int],
                 bldg_being_constructed - NUM_BLDGS
