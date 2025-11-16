@@ -57,8 +57,6 @@ def build_simulator(
 
         # 3. Reconstruct the GameState directly from the dict
         gamestate = GameState(**state_jax)
-        print("Success...")
-        qqq
 
         # For now, let's create the citieson the fly
         cs_cities = Cities.create(num_players=12, max_num_cities=1, game=gamestate)
@@ -237,6 +235,8 @@ def build_simulator(
         initial_state_cache = ResetGameState().replace(**{name: deepcopy(getattr(gamestate, name)) for name in ResetGameState.__dataclass_fields__})
         gamestate = gamestate.replace(initial_state_cache=initial_state_cache)
         _loaded_maps.append(gamestate)
+        print("Success.")
+        qqq
     
     loaded_maps = _loaded_maps
 
