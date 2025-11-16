@@ -2165,8 +2165,6 @@ TENET_TO_BUILDING = {
     "work_ethic": [GameBuildings["factory"]._value_]
 }
 
-print(TENET_TO_BUILDING)
-qqq
 
 def zero_out_fields_for_religion_update(pytree, names_to_zero, idx_0):
     """
