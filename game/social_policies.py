@@ -1168,9 +1168,6 @@ def add_one_to_appropriate_fields(pytree, relevant_fields, idx_0):
 player_policy_update_fn_nonmaps = make_update_fn_policies(TO_ZERO_OUT_FOR_POLICY_STEP_SAMS_MAPS, only_maps=False)
 player_policy_update_fn_maps = make_update_fn_policies(TO_ZERO_OUT_FOR_POLICY_STEP_ONLY_MAPS, only_maps=True)
 
-print(player_policy_update_fn_maps)
-qqq
-
 
 def apply_social_policies(game, player_id):
     """"""
