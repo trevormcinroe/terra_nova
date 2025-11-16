@@ -951,8 +951,6 @@ for tech in Technologies:
     fn = partial(_check_prereq, req_indices=tech.prereq)
     ALL_TECH_PREREQ_FN.append(fn)
 
-print("Success.")
-qqqq
 #import pathlib
 #import json
 #out_path = pathlib.Path(__file__).with_name("technologies.json")
