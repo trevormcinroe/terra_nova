@@ -235,8 +235,6 @@ def build_simulator(
         initial_state_cache = ResetGameState().replace(**{name: deepcopy(getattr(gamestate, name)) for name in ResetGameState.__dataclass_fields__})
         gamestate = gamestate.replace(initial_state_cache=initial_state_cache)
         _loaded_maps.append(gamestate)
-        print("Success.")
-        qqq
     
     loaded_maps = _loaded_maps
 
