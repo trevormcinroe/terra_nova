@@ -933,9 +933,6 @@ tech_list = [
 
 ALL_TECH_COST = jnp.array([x.cost for x in Technologies])
 
-print(f"ALL_TECH_COST: {ALL_TECH_COST}")
-qqq
-
 def _check_prereq(mask: jnp.ndarray, req_indices: Tuple[int, ...]) -> bool:
     """
     mask : 1-D jnp array  (len == len(Building))
@@ -953,6 +950,8 @@ for tech in Technologies:
     fn = partial(_check_prereq, req_indices=tech.prereq)
     ALL_TECH_PREREQ_FN.append(fn)
 
+print(ALL_TECH_PREREQ_FN)
+qqq
 #import pathlib
 #import json
 #out_path = pathlib.Path(__file__).with_name("technologies.json")
