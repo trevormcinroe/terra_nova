@@ -903,12 +903,8 @@ def _future_tech(game, player_id):
 
 
 ALL_TECH_FINISHERS = [do_nothing]
-ALL_TECH_NAMES = ["_" + repr(x).lower().replace("technologies.", "").replace("<", "").replace(">", "").replace(":", "").split(" ")[0] for x in Technologies]
 
 ALL_TECH_NAMES = ["_" + x.name for x in Technologies]
-print(ALL_TECH_NAMES)
-
-qqq
 
 ALL_TECH_TRADE_ROUTE_BONUS = []
 all_tech_trade_route_bonus_helper = ["_animal_husbandry", "_banking", "_railroad", "_penicilin"]
@@ -955,6 +951,8 @@ for tech in Technologies:
     fn = partial(_check_prereq, req_indices=tech.prereq)
     ALL_TECH_PREREQ_FN.append(fn)
 
+print("Success.")
+qqqq
 #import pathlib
 #import json
 #out_path = pathlib.Path(__file__).with_name("technologies.json")
