@@ -72,7 +72,7 @@ def forward_pass_distributed(params, obs):
     #actions, value = pi_v.apply(params, obs, )
     return params, obs
 
-print(obs.ownership_map.shape)
+print(obs.player_cities.ownership_map.shape)
 forward_pass_distributed(params, obs)
 print("success.")
 qqq
