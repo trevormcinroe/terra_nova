@@ -1088,6 +1088,11 @@ for policy in SocialPolicies:
 
 ALL_SOCIAL_POLICY_FINISHERS = [do_nothing]
 ALL_SOCIAL_POLICY_NAMES = ["_" + str(x).lower().replace("socialpolicies.", "") for x in SocialPolicies]
+ALL_SOCIAL_POLICY_NAMES = ["_" + x.name for x in SocialPolicies]
+print(ALL_SOCIAL_POLICY_NAMES)
+qqq
+
+
 
 for policy in ALL_SOCIAL_POLICY_NAMES:
     fn = getattr(sys.modules[__name__], policy)
