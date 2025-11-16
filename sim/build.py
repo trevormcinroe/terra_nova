@@ -36,9 +36,6 @@ def build_simulator(
     GLOBAL_MESH = Mesh(all_devices, axis_names=("gpus",))
     sharding = jax.sharding.NamedSharding(GLOBAL_MESH, P("gpus",))
 
-    print(f"axis: {GLOBAL_MESH.axis_names}")
-    qqq
-    
     print(f"Found {LOCAL_DEVICE_COUNT} XLA device(s).")
 
     if distributed_strategy == "split":

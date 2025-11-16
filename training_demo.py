@@ -2,7 +2,10 @@ import argparse
 import os
 import pickle
 import jax
+from jax.experimental.shard_map import shard_map
+from jax.sharding import PartitionSpec
 import optax
+from functools import partial
 
 from sim.build import build_simulator
 from learning.memories import Trajectories
@@ -56,6 +59,21 @@ params = jax.tree.map(
 
 tx = optax.adam(learning_rate=1e-4)
 opt_state = tx.init(params)
+
+@jax.jit
+@partial(
+    shard_map, 
+    mesh=GLOBAL_MESH, 
+    in_specs=PartitionSpec(GLOBAL_MESH.axis_names[0], GLOBAL_MESH.axis_names[0]),
+    out_specs=PartitionSpec(GLOBAL_MESH.axis_names[0], GLOBAL_MESH.axis_names[0])
+)
+def forward_pass_distributed(params, obs):
+    print(obs.ownership_map.shape)
+    #actions, value = pi_v.apply(params, obs, )
+    return params, obs
+
+print(obs.ownership_map.shape)
+forward_pass_distributed(params, obs)
 print("success.")
 qqq
 
