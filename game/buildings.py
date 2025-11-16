@@ -3146,8 +3146,6 @@ for bldg_type in ALL_BLDG_NAMES:
     
     ALL_BLDG_FINISHERS.append(fn)
 
-print("Success.")
-qqq
 
 # we must use the x=x trick in the lambda fn's args
 ALL_BLDG_COST = jnp.array([x.cost for x in GameBuildings])
