@@ -1087,12 +1087,7 @@ for policy in SocialPolicies:
     ALL_SOCIAL_POLICY_PREREQ_FN.append(fn)
 
 ALL_SOCIAL_POLICY_FINISHERS = [do_nothing]
-ALL_SOCIAL_POLICY_NAMES = ["_" + str(x).lower().replace("socialpolicies.", "") for x in SocialPolicies]
 ALL_SOCIAL_POLICY_NAMES = ["_" + x.name for x in SocialPolicies]
-print(ALL_SOCIAL_POLICY_NAMES)
-qqq
-
-
 
 for policy in ALL_SOCIAL_POLICY_NAMES:
     fn = getattr(sys.modules[__name__], policy)
@@ -1172,6 +1167,9 @@ def add_one_to_appropriate_fields(pytree, relevant_fields, idx_0):
 
 player_policy_update_fn_nonmaps = make_update_fn_policies(TO_ZERO_OUT_FOR_POLICY_STEP_SAMS_MAPS, only_maps=False)
 player_policy_update_fn_maps = make_update_fn_policies(TO_ZERO_OUT_FOR_POLICY_STEP_ONLY_MAPS, only_maps=True)
+
+print(player_policy_update_fn_maps)
+qqq
 
 
 def apply_social_policies(game, player_id):
