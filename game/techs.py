@@ -901,9 +901,6 @@ def _future_tech(game, player_id):
     game = add_technology(game, player_id, "future_tech")
     return game
 
-print(f"testing name: {__name__}")
-qqq
-
 ALL_TECH_FINISHERS = [do_nothing]
 ALL_TECH_NAMES = ["_" + str(x).lower().replace("technologies.", "") for x in Technologies]
 ALL_TECH_TRADE_ROUTE_BONUS = []
