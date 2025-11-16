@@ -13,7 +13,8 @@ import numpy as np
 from game.primitives import GameState
 from game.religion import ReligiousTenets
 from game.social_policies import SocialPolicies
-from game.resources import ALL_RESOURCES 
+from game.resources import ALL_RESOURCES
+from game.units import Units 
 from learning.goals import compute_rewards
 from learning.obs_spaces import TerraNovaObservationSpaceTracker, ObservationSpace 
 from game.termination_fns import reset_episode as termination_fn
@@ -54,14 +55,10 @@ def build_simulator(
             lambda x: jnp.array(x) if isinstance(x, np.ndarray) else x,
             gamestate,
         )
-        units_jax = jax.tree_util.tree_map(
-            lambda x: jnp.array(x) if isinstance(x, np.ndarray) else x,
-            gamestate["units"],
-        )
 
         # 3. Reconstruct the GameState directly from the dict
         gamestate = GameState(**state_jax)
-        gamestate = gamestate.replace(units=units_jax)
+        gamestate = gamestate.replace(units=Units(**gamestate.units))
 
         print(f"UNIT TEST: \n{gamestate.units}")
         qqq
