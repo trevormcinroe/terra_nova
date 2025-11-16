@@ -241,7 +241,7 @@ def build_simulator(
     loaded_maps = _loaded_maps
 
     n_games = len(loaded_maps)
-    print(f"Found {n_games} games.")
+    print(f"Found {n_games} game(s).")
     
     if distributed_strategy == "split":
         # For the distributed games, 
