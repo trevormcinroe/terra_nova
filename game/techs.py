@@ -902,7 +902,6 @@ def _future_tech(game, player_id):
     return game
 
 print(f"testing name: {__name__}")
-qqq
 
 ALL_TECH_FINISHERS = [do_nothing]
 ALL_TECH_NAMES = ["_" + str(x).lower().replace("technologies.", "") for x in Technologies]
@@ -913,8 +912,10 @@ for tech in ALL_TECH_NAMES:
         ALL_TECH_TRADE_ROUTE_BONUS.append(1)
     else:
         ALL_TECH_TRADE_ROUTE_BONUS.append(0)
-
+    
+    print(f"{tech} / {sys.modules[__name__]}")
     fn = getattr(sys.modules[__name__], tech)
+    qqq
     ALL_TECH_FINISHERS.append(fn)
 
 ALL_TECH_TRADE_ROUTE_BONUS = jnp.array(ALL_TECH_TRADE_ROUTE_BONUS)
