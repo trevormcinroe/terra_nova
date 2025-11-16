@@ -1198,7 +1198,7 @@ def apply_social_policies(game, player_id):
     # so let's mask out effectively. So now we always set those to zero, and then +1 to them **after** the sum!
     has_this_policy_bool = game.policies[player_id[0]]
 
-    out = jax.tree_map(
+    out = jax.tree.map(
         lambda x: (x * has_this_policy_bool[(...,) + (None,) * (len(x.shape) - 1)]).sum(0).astype(x.dtype), out
     )
 
