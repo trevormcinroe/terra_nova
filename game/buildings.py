@@ -3122,10 +3122,7 @@ def _conservatory(game, city_int, player_id):
 
 ALL_BLDG_FINISHERS = [no_change]
 
-ALL_BLDG_NAMES = ["_" + str(x).lower().replace("gamebuildings.", "") for x in GameBuildings]
 ALL_BLDG_NAMES = ["_" + x.name for x in GameBuildings]
-print(ALL_BLDG_NAMES)
-qqq
 
 for bldg_type in ALL_BLDG_NAMES:
     if bldg_type == "_hydro_plant":
@@ -3148,6 +3145,9 @@ for bldg_type in ALL_BLDG_NAMES:
         fn = getattr(sys.modules[__name__], bldg_type)
     
     ALL_BLDG_FINISHERS.append(fn)
+
+print("Success.")
+qqq
 
 # we must use the x=x trick in the lambda fn's args
 ALL_BLDG_COST = jnp.array([x.cost for x in GameBuildings])
