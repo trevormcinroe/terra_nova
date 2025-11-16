@@ -8,6 +8,7 @@ from jax.experimental.shard_map import shard_map as shmap
 from typing import List, Tuple, Callable
 from copy import deepcopy
 from tqdm import tqdm
+import numpy as np
 
 from game.primitives import GameState
 from game.religion import ReligiousTenets
@@ -48,6 +49,17 @@ def build_simulator(
     _loaded_maps = []
     
     for gamestate in tqdm(loaded_maps, desc="Initializing gamestates..."):
+        # First, we need to take the numpy-fied object and convert it into a GameState of jax arrays
+        state_jax = jax.tree_util.tree_map(
+            lambda x: jnp.array(x) if isinstance(x, np.ndarray) else x,
+            gamestate,
+        )
+
+        # 3. Reconstruct the GameState directly from the dict
+        gamestate = GameState(**state_jax)
+        print("Success...")
+        qqq
+
         # For now, let's create the citieson the fly
         cs_cities = Cities.create(num_players=12, max_num_cities=1, game=gamestate)
         cs_cities = cs_cities.replace(city_rowcols=gamestate.cs_cities[:, None])
