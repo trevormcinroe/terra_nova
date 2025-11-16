@@ -58,7 +58,7 @@ def build_simulator(
         # 3. Reconstruct the GameState directly from the dict
         gamestate = GameState(**state_jax)
 
-        print("UNIT TEST: \n{gamestate.units}")
+        print(f"UNIT TEST: \n{gamestate.units}")
         qqq
 
         # For now, let's create the citieson the fly
