@@ -905,6 +905,10 @@ print(f"testing name: {__name__}")
 
 ALL_TECH_FINISHERS = [do_nothing]
 ALL_TECH_NAMES = ["_" + str(x).lower().replace("technologies.", "") for x in Technologies]
+
+print(ALL_TECH_NAMES)
+qqq
+
 ALL_TECH_TRADE_ROUTE_BONUS = []
 all_tech_trade_route_bonus_helper = ["_animal_husbandry", "_banking", "_railroad", "_penicilin"]
 for tech in ALL_TECH_NAMES:
