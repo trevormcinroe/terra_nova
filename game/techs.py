@@ -917,8 +917,6 @@ for tech in ALL_TECH_NAMES:
     fn = getattr(sys.modules[__name__], tech)
     ALL_TECH_FINISHERS.append(fn)
 
-print("Success.")
-qqq
 ALL_TECH_TRADE_ROUTE_BONUS = jnp.array(ALL_TECH_TRADE_ROUTE_BONUS)
 
 # To save into a format loadable by the replay renderer
