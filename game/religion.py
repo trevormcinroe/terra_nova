@@ -2154,7 +2154,7 @@ for tenet in ALL_RELIGIOUS_TENETS_NAMES:
 TENET_TO_BUILDING = {
     "cathedrals": [GameBuildings["cathedral"]._value_],
     "gurdwaras": [GameBuildings["gurdwara"]._value_],
-    "mandirs": [GameBuildings["mandir"]._value_, GameBuildings["monastery"]],
+    "mandirs": [GameBuildings["mandir"]._value_, GameBuildings["monastery"]._value_],
     "mosques": [GameBuildings["mosque"]._value_],
     "pagodas": [GameBuildings["pagoda"]._value_],
     "synagogues": [GameBuildings["synagogue"]._value_],
