@@ -56,7 +56,7 @@ def build_simulator(
         )
         units_jax = jax.tree_util.tree_map(
             lambda x: jnp.array(x) if isinstance(x, np.ndarray) else x,
-            gamestate.units,
+            gamestate["units"],
         )
 
         # 3. Reconstruct the GameState directly from the dict
