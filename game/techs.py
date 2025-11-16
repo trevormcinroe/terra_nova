@@ -907,6 +907,7 @@ ALL_TECH_FINISHERS = [do_nothing]
 ALL_TECH_NAMES = ["_" + str(x).lower().replace("technologies.", "") for x in Technologies]
 
 print([x for x in Technologies])
+print(ALL_TECH_NAMES)
 qqq
 
 ALL_TECH_TRADE_ROUTE_BONUS = []
