@@ -50,14 +50,18 @@ def build_simulator(
     
     for gamestate in tqdm(loaded_maps, desc="Initializing gamestates..."):
         # First, we need to take the numpy-fied object and convert it into a GameState of jax arrays
-        print(f"UNIT TEST: \n{gamestate.units}")
         state_jax = jax.tree_util.tree_map(
             lambda x: jnp.array(x) if isinstance(x, np.ndarray) else x,
             gamestate,
         )
+        units_jax = jax.tree_util.tree_map(
+            lambda x: jnp.array(x) if isinstance(x, np.ndarray) else x,
+            gamestate.units,
+        )
 
         # 3. Reconstruct the GameState directly from the dict
         gamestate = GameState(**state_jax)
+        gamestate = gamestate.replace(units=units_jax)
 
         print(f"UNIT TEST: \n{gamestate.units}")
         qqq
