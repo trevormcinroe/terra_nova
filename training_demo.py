@@ -73,7 +73,7 @@ def forward_pass_distributed(params, obs):
     obs = jax.tree.map(lambda x: x[0], obs)
     print(obs.player_cities.ownership_map.shape)
 
-    actions, values = pi_v.apply(params, obs, training=False)
+    actions, values = pi_v.apply({"params": params}, obs, training=False)
     
     print(actions[1].shape, values.shape)
     qqq
