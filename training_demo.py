@@ -68,6 +68,8 @@ opt_state = tx.init(params)
     out_specs=PartitionSpec(GLOBAL_MESH.axis_names[0], GLOBAL_MESH.axis_names[0])
 )
 def forward_pass_distributed(params, obs):
+    params = jax.tree.map(lambda x: x[0], params)
+    obs = jax.tree.map(lambda x: x[0], obs)
     print(obs.player_cities.ownership_map.shape)
     #actions, value = pi_v.apply(params, obs, )
     return params, obs
