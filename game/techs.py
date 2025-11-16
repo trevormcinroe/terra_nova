@@ -906,9 +906,6 @@ print(f"testing name: {__name__}")
 ALL_TECH_FINISHERS = [do_nothing]
 ALL_TECH_NAMES = ["_" + repr(x).lower().replace("technologies.", "").replace("<", "").replace(">", "").replace(":", "").split(" ")[0] for x in Technologies]
 
-print(ALL_TECH_NAMES)
-qqq
-
 ALL_TECH_TRADE_ROUTE_BONUS = []
 all_tech_trade_route_bonus_helper = ["_animal_husbandry", "_banking", "_railroad", "_penicilin"]
 for tech in ALL_TECH_NAMES:
@@ -917,11 +914,11 @@ for tech in ALL_TECH_NAMES:
     else:
         ALL_TECH_TRADE_ROUTE_BONUS.append(0)
     
-    print(f"{tech} / {sys.modules[__name__]}")
     fn = getattr(sys.modules[__name__], tech)
-    qqq
     ALL_TECH_FINISHERS.append(fn)
 
+print("Success.")
+qqq
 ALL_TECH_TRADE_ROUTE_BONUS = jnp.array(ALL_TECH_TRADE_ROUTE_BONUS)
 
 # To save into a format loadable by the replay renderer
