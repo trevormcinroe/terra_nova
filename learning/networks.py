@@ -1,23 +1,18 @@
 import flax.linen as nn
 import jax
-from jax._src.lax.slicing import index_take
 import jax.numpy as jnp
 from typing import List, Sequence, Union, Tuple, Optional, Literal
 from game.action_space import ALL_ACTION_FUNCTIONS
-from game.constants import MAX_NUM_CITIES
 
 from game.improvements import Improvements
 from game.natural_wonders import ALL_NATURAL_WONDERS
 from game.religion import ReligiousTenets
 from game.social_policies import SocialPolicies
 
-from game.units import GameUnits, UnitActionCategories, Units
+from game.units import GameUnits
 from game.buildings import GameBuildings
-from game.resources import ALL_RESOURCES, ALL_RESOURCES_TECH
+from game.resources import ALL_RESOURCES
 from game.techs import Technologies, ALL_TECH_COST
-from learning.action_spaces import ActionSpace
-from learning.obs_spaces import TerraNovaObservation
-from utils.maths import compute_yields_and_resources_snapshot, social_policy_threshold
 
 
 ACTIVATIONS = {
@@ -26,7 +21,6 @@ ACTIVATIONS = {
     "identity": lambda x: x,
     "sigmoid": nn.sigmoid
 }
-
 
 
 def make_terra_nova_network(
