@@ -2,6 +2,7 @@ import argparse
 import os
 import pickle
 import jax
+import optax
 
 from sim.build import build_simulator
 from learning.memories import Trajectories
