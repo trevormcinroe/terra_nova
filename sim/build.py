@@ -60,9 +60,6 @@ def build_simulator(
         gamestate = GameState(**state_jax)
         gamestate = gamestate.replace(units=Units(**gamestate.units))
 
-        print(f"UNIT TEST: \n{gamestate.units}")
-        qqq
-
         # For now, let's create the citieson the fly
         cs_cities = Cities.create(num_players=12, max_num_cities=1, game=gamestate)
         cs_cities = cs_cities.replace(city_rowcols=gamestate.cs_cities[:, None])
