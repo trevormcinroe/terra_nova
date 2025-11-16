@@ -906,8 +906,7 @@ print(f"testing name: {__name__}")
 ALL_TECH_FINISHERS = [do_nothing]
 ALL_TECH_NAMES = ["_" + str(x).lower().replace("technologies.", "") for x in Technologies]
 
-print([x for x in Technologies])
-print(ALL_TECH_NAMES)
+print(str([x for x in Technologies][0]))
 qqq
 
 ALL_TECH_TRADE_ROUTE_BONUS = []
