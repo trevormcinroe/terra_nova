@@ -2142,11 +2142,8 @@ def _work_ethic(religion_info, game, player_id):
 
 
 ALL_RELIGIOUS_TENETS_FNS = [do_nothing]
-ALL_RELIGIOUS_TENETS_NAMES = ["_" + str(x).lower().replace("religioustenets.", "") for x in ReligiousTenets]
 ALL_RELIGIOUS_TENETS_NAMES = ["_" + x.name for x in ReligiousTenets]
 
-print(ALL_RELIGIOUS_TENETS_NAMES)
-qqq
 
 for tenet in ALL_RELIGIOUS_TENETS_NAMES:
     fn = getattr(sys.modules[__name__], tenet)
@@ -2168,6 +2165,8 @@ TENET_TO_BUILDING = {
     "work_ethic": [GameBuildings["factory"]._value_]
 }
 
+print(TENET_TO_BUILDING)
+qqq
 
 def zero_out_fields_for_religion_update(pytree, names_to_zero, idx_0):
     """
