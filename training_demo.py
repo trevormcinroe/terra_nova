@@ -39,10 +39,10 @@ env_step_fn, games, obs_spaces, episode_metrics, players_turn_id, obs, GLOBAL_ME
 trajectories = Trajectories.create(obs, args.memory_length)
 
 pi_v = make_terra_nova_network(me_n_pma_seeds=16)
-variables = pi_v.init({"params": jax.random.PRNGKey(args.seed)}, jax.tree_map(lambda x: x[0], obs), False)
+variables = pi_v.init({"params": jax.random.PRNGKey(args.seed)}, jax.tree.map(lambda x: x[0], obs), False)
 params = variables["params"]
 
-params = jax.tree_map(
+params = jax.tree.map(
     lambda x: jax.make_array_from_single_device_arrays(
         (len(GLOBAL_MESH.devices),) + x.shape,
         sharding,
