@@ -2,6 +2,7 @@ import argparse
 import os
 import pickle
 import jax
+from tqdm import tqdm
 
 from sim.build import build_simulator
 from game.recorder import GameStateRecorder
@@ -46,7 +47,7 @@ recorder = GameStateRecorder.create(reference_gamestate=gamestate, num_steps=arg
 recorder = recorder.record(gamestate)
 
 
-for recording_int in range(args.num_steps):
+for recording_int in tqdm(range(args.num_steps)):
     for agent_step in range(6):
         # NOTE: replace the following random action sampling with whatever you like. E.g., the action sampling
         # process for your control policy.
