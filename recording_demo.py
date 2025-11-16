@@ -41,7 +41,7 @@ env_step_fn, games, obs_spaces, episode_metrics, players_turn_id, obs, GLOBAL_ME
 # To initialize the recorder, we need to extract a single game from the bundle. This requires indexing 
 # within *both* the device and game axis => games[device_idx][games_idx]
 # This exact process will need to be repeated after each player takes its step within each game turn.
-gamestate = jax.tree_map(lambda x: x[args.device_idx][args.games_idx], games)
+gamestate = jax.tree.map(lambda x: x[args.device_idx][args.games_idx], games)
 recorder = GameStateRecorder.create(reference_gamestate=gamestate, num_steps=args.num_steps)
 recorder = recorder.record(gamestate)
 
@@ -55,7 +55,7 @@ for recording_int in range(args.num_steps):
             games, random_actions, obs_spaces, episode_metrics, players_turn_id
         )
 
-    gamestate = jax.tree_map(lambda x: x[args.device_idx][args.games_idx], games)
+    gamestate = jax.tree.map(lambda x: x[args.device_idx][args.games_idx], games)
     recorder = recorder.record(gamestate)
 
 recorder.save_replay(f"./renderer/saved_games/{args.save_filename}")
