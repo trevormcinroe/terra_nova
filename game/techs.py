@@ -901,7 +901,6 @@ def _future_tech(game, player_id):
     game = add_technology(game, player_id, "future_tech")
     return game
 
-print(f"testing name: {__name__}")
 
 ALL_TECH_FINISHERS = [do_nothing]
 ALL_TECH_NAMES = ["_" + repr(x).lower().replace("technologies.", "").replace("<", "").replace(">", "").replace(":", "").split(" ")[0] for x in Technologies]
@@ -933,6 +932,9 @@ tech_list = [
 ]
 
 ALL_TECH_COST = jnp.array([x.cost for x in Technologies])
+
+print(f"ALL_TECH_COST: {ALL_TECH_COST}")
+qqq
 
 def _check_prereq(mask: jnp.ndarray, req_indices: Tuple[int, ...]) -> bool:
     """
