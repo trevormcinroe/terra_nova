@@ -45,6 +45,9 @@ pi_v = make_terra_nova_network(me_n_pma_seeds=16)
 variables = pi_v.init({"params": jax.random.PRNGKey(args.seed)}, jax.tree.map(lambda x: x[0], obs), False)
 params = variables["params"]
 
+tx = optax.adam(learning_rate=1e-4)
+opt_state = tx.init(params)
+
 params = jax.tree.map(
     lambda x: jax.make_array_from_single_device_arrays(
         (len(GLOBAL_MESH.devices),) + x.shape,
@@ -57,8 +60,6 @@ params = jax.tree.map(
     params
 )
 
-tx = optax.adam(learning_rate=1e-4)
-opt_state = tx.init(params)
 
 @jax.jit
 @partial(
@@ -71,8 +72,15 @@ def forward_pass_distributed(params, obs):
     params = jax.tree.map(lambda x: x[0], params)
     obs = jax.tree.map(lambda x: x[0], obs)
     print(obs.player_cities.ownership_map.shape)
+
+    actions, values = pi_v.apply(params, obs)
+    
+    print(actions[1].shape, values.shape)
+    qqq
     #actions, value = pi_v.apply(params, obs, )
-    return params, obs
+    params = jax.tree.map(lambda x: x[None], params)
+    obs = jax.tree.map(lambda x: x[None], obs)
+    return actions, values
 
 print(obs.player_cities.ownership_map.shape)
 forward_pass_distributed(params, obs)
