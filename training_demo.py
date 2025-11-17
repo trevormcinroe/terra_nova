@@ -80,7 +80,6 @@ def forward_pass_distributed(params, obs):
     values = jax.tree.map(lambda x: x[None], values)
     return actions, values
 
-actions, values = forward_pass_distributed(params, obs)
 
 # Perhaps here you can initiailize your network and load your saved parameters via your custom code. 
 # You can use one of the arrays from `trajectories` as your sharding reference for the parameters
@@ -90,27 +89,9 @@ for recording_int in range(args.num_steps):
     for agent_step in range(6):
         # NOTE: replace the following random action sampling with whatever you like. E.g., the action sampling
         # process for your control policy.
-        random_actions = games.sample_actions_uniformly(games.key[0, 0])
+        actions = games.sample_actions_uniformly(games.key[0, 0])
+        #actions, values = forward_pass_distributed(params, obs)
 
-        print("Network:")
-        test = actions
-        print(f"Trade:\n\tResponse: {test[0][0].shape}\n\tAsk: {test[0][1].shape}\n\tOffer: {test[0][2].shape}\n\tCounterparty: {test[0][3].shape}")
-        print(f"Social policy: {test[1].shape}")
-        print(f"Religion: {test[2].shape}")
-        print(f"Tech: {test[3].shape}")
-        print(f"Units:\n\tCat: {test[4][0].shape}\n\tMap: {test[4][1].shape}")
-        print(f"City:\n\tPop: {test[5][0].shape}\n\tBldgs: {test[5][1].shape}")
-        
-        print("Primitive:")
-        test = random_actions
-        print(f"Trade:\n\tResponse: {test[0][0].shape}\n\tAsk: {test[0][1].shape}\n\tOffer: {test[0][2].shape}\n\tCounterparty: {test[0][3].shape}")
-        print(f"Social policy: {test[1].shape}")
-        print(f"Religion: {test[2].shape}")
-        print(f"Tech: {test[3].shape}")
-        print(f"Units:\n\tCat: {test[4][0].shape}\n\tMap: {test[4][1].shape}")
-        print(f"City:\n\tPop: {test[5][0].shape}\n\tBldgs: {test[5][1].shape}")
-        qqq
-        
         games, obs_spaces, episode_metrics, new_players_turn_id, next_obs, rewards, done_flags, selected_actions = env_step_fn(
             games, random_actions, obs_spaces, episode_metrics, players_turn_id
         )
