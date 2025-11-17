@@ -6,8 +6,7 @@
   <img src="./assets/viewer_demo.gif" width=90% />
 </p>
 
-Terra Nova is a comprehensive challenge environment for reinforcement learning research.
-Terra Nova is based on and contains the challenges of Civilization V.
+Terra Nova is a comprehensive challenge environment for reinforcement learning research inspired by Civilization V.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -23,9 +22,8 @@ We provide a short requirements file that will auto-install everything all prere
 Terra Nova is compatible with both older and newer combinations of Python and JAX. 
 
 We've tested Terra Nova with the following combinations:
-- Pyhton 3.9.18 + JAX 0.4.30 and 
+- Pyhton 3.9.18 + JAX 0.4.30 
 - Python 3.13.9 + JAX 0.8.0
-
 
 For example, with `mamba`:
 ```bash
@@ -42,10 +40,26 @@ mamba activate terra_nova
 pip install -r requirements_311.txt
 ```
 
-
-
 ## Quickstart
-Terra Nova comes with utilities to automatically distribute environments across any arbitrary mesh of GPUs, allowing for increased throughput via horizontal scaling.
+Terra Nova comes with utilities to automatically distribute environments across an arbitrary mesh of GPUs, allowing for increased throughput via horizontal scaling.
+
+We also provide a draft neural network and FIFO buffer. 
+
+To ensure your machine is running properly, perform the following steps:
+(1) Clone this repo and install the software prerequisites under [Installation](#installation).
+
+(2) Download the 10k procedurally generated maps:
+```bash
+git clone https://huggingface.co/datasets/trevormcinroe/terra_nova_maps
+```
+
+(3) Make a folder for testing and copy a few maps into the folder:
+```bash
+mkdir ./terra_nova_testing
+cp ./terra_nove_maps/initial_release/100000_turn0.gamestate ./terra_nova_testing
+cp ./terra_nove_maps/initial_release/100001_turn0.gamestate ./terra_nova_testing
+cp ./terra_nove_maps/initial_release/100002_turn0.gamestate ./terra_nova_testing
+```
 
 ## Maps
 Terra Nova games take place on procedurally-generated maps. We provide 10k maps you can download [here](https://huggingface.co/datasets/trevormcinroe/terra_nova_maps).

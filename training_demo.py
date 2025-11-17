@@ -39,6 +39,9 @@ env_step_fn, games, obs_spaces, episode_metrics, players_turn_id, obs, GLOBAL_ME
     jax.random.PRNGKey(args.seed),
 )
 
+# Perhaps here you can initiailize your network and load your saved parameters via your custom code. 
+# You can use one of the arrays from `trajectories` as your sharding reference for the parameters
+# of your network.
 trajectories = Trajectories.create(obs, args.memory_length)
 
 pi_v = make_terra_nova_network(me_n_pma_seeds=16)
@@ -60,7 +63,6 @@ params = jax.tree.map(
     params
 )
 
-
 gpu_axis = GLOBAL_MESH.axis_names[0]
 
 @jax.jit
@@ -80,17 +82,12 @@ def forward_pass_distributed(params, obs):
     values = jax.tree.map(lambda x: x[None], values)
     return actions, values
 
-
-# Perhaps here you can initiailize your network and load your saved parameters via your custom code. 
-# You can use one of the arrays from `trajectories` as your sharding reference for the parameters
-# of your network.
-
 for recording_int in range(args.num_steps):
     for agent_step in range(6):
         # NOTE: replace the following random action sampling with whatever you like. E.g., the action sampling
         # process for your control policy.
-        actions = games.sample_actions_uniformly(games.key[0, 0])
-        #actions, values = forward_pass_distributed(params, obs)
+        #actions = games.sample_actions_uniformly(games.key[0, 0])
+        actions, values = forward_pass_distributed(params, obs)
 
         games, obs_spaces, episode_metrics, new_players_turn_id, next_obs, rewards, done_flags, selected_actions = env_step_fn(
             games, random_actions, obs_spaces, episode_metrics, players_turn_id
