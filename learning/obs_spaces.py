@@ -418,7 +418,7 @@ class TerraNovaObservationSpaceTracker:
             player_cities__city_rowcols=jnp.zeros(shape=(n_devices, n_games, 6, 6, *games.player_cities.city_rowcols.shape[-2:]), dtype=jnp.int32) - 1,
         )
 
-        return  jax.tree_map(lambda x: jax.device_put(x, sharding_ref.sharding), _cls)
+        return  jax.tree.map(lambda x: jax.device_put(x, sharding_ref.sharding), _cls)
 
     def reset(self):
         """Reset all fields to -1 while preserving their shapes and dtypes."""

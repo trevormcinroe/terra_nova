@@ -1,23 +1,18 @@
 import flax.linen as nn
 import jax
-from jax._src.lax.slicing import index_take
 import jax.numpy as jnp
 from typing import List, Sequence, Union, Tuple, Optional, Literal
 from game.action_space import ALL_ACTION_FUNCTIONS
-from game.constants import MAX_NUM_CITIES
 
 from game.improvements import Improvements
 from game.natural_wonders import ALL_NATURAL_WONDERS
 from game.religion import ReligiousTenets
 from game.social_policies import SocialPolicies
 
-from game.units import GameUnits, UnitActionCategories, Units
-from game.buildings import GameBuildings
-from game.resources import ALL_RESOURCES, ALL_RESOURCES_TECH
+from game.units import NUM_UNITS, GameUnits
+from game.buildings import NUM_BLDGS, GameBuildings
+from game.resources import ALL_RESOURCES
 from game.techs import Technologies, ALL_TECH_COST
-from learning.action_spaces import ActionSpace
-from learning.obs_spaces import TerraNovaObservation
-from utils.maths import compute_yields_and_resources_snapshot, social_policy_threshold
 
 
 ACTIVATIONS = {
@@ -26,7 +21,6 @@ ACTIVATIONS = {
     "identity": lambda x: x,
     "sigmoid": nn.sigmoid
 }
-
 
 
 def make_terra_nova_network(
@@ -464,7 +458,7 @@ def make_terra_nova_network(
 
     class PatchEmbed(nn.Module):
         mode: Literal["conv", "dense", "none"] = "conv"
-        dim: Optional[int] = 128             # ignored in mode="none" if add_pos=False
+        dim: Optional[int] = 128  # ignored in mode="none" if add_pos=False
         patch: Tuple[int, int] = (6, 6)
         add_pos: bool = False
         param_dtype: any = jnp.bfloat16
@@ -480,8 +474,7 @@ def make_terra_nova_network(
 
             if self.mode == "conv":
                 # collapse leading dims to one big batch for a single conv
-                B = int(jnp.prod(jnp.array(lead))) if lead else 1
-                x_b = x.reshape((B, H, W, C))
+                x_b = x.reshape((-1, H, W, C))
                 y = nn.Conv(
                     features=int(self.dim),
                     kernel_size=(ph, pw),
@@ -496,9 +489,9 @@ def make_terra_nova_network(
                 tokens = y
 
             elif self.mode == "dense":
-                # (..., nh, ph, nw, pw, C) → (..., nh, nw, ph, pw, C) → (..., N, ph*pw*C)
+                # (..., nh, ph, nw, pw, C) -> (..., nh, nw, ph, pw, C) -> (..., N, ph*pw*C)
                 y = x.reshape(*lead, nh, ph, nw, pw, C)
-                perm = (*range(len(lead)), len(lead), len(lead)+2, len(lead)+1, len(lead)+3, len(lead)+4, len(lead)+5)
+                perm = (*range(len(lead)), len(lead), len(lead) + 2, len(lead) + 1, len(lead) + 3, len(lead) + 4)
                 y = y.transpose(perm).reshape(*lead, nh * nw, ph * pw * C)
                 tokens = nn.Dense(
                     int(self.dim),
@@ -509,7 +502,7 @@ def make_terra_nova_network(
 
             elif self.mode == "none":
                 y = x.reshape(*lead, nh, ph, nw, pw, C)
-                perm = (*range(len(lead)), len(lead), len(lead)+2, len(lead)+1, len(lead)+3, len(lead)+4, len(lead)+5)
+                perm = (*range(len(lead)), len(lead), len(lead) + 2, len(lead) + 1, len(lead) + 3, len(lead) + 4)
                 tokens = y.transpose(perm).reshape(*lead, nh * nw, ph * pw * C)
                 # dim is ph*pw*C here; no learned projection
                 if self.add_pos:
@@ -1292,14 +1285,24 @@ def make_terra_nova_network(
 
             # 2) Vectorized type IDs (offers=0, ledger=1, res=2, gpt=3)
             B, L_total, E = trade_seq.shape
-            sizes = jnp.array([
-                z_trade_offers_tokens.shape[1],
-                z_trade_ledger_tokens.shape[1],
-                z_res_adj_pooled.shape[1],
-                1,
-            ], dtype=jnp.int32)                                      # (4,)
+            L_offers = z_trade_offers_tokens.shape[1]
+            L_ledger = z_trade_ledger_tokens.shape[1]
+            L_res = z_res_adj_pooled.shape[1]
 
-            type_ids_1d = jnp.repeat(jnp.arange(4, dtype=jnp.int32), sizes)   # (L_total,)
+            type_ids_1d = jnp.concatenate([
+                jnp.full((L_offers,), 0, dtype=jnp.int32),  # offers
+                jnp.full((L_ledger,), 1, dtype=jnp.int32),  # ledger
+                jnp.full((L_res,), 2, dtype=jnp.int32),  # res
+                jnp.full((1,), 3, dtype=jnp.int32),  # gpt
+            ], axis=0)  # (L_total,)
+            #sizes = jnp.array([
+            #    z_trade_offers_tokens.shape[1],
+            #    z_trade_ledger_tokens.shape[1],
+            #    z_res_adj_pooled.shape[1],
+            #    1,
+            #], dtype=jnp.int32)  # (4,)
+
+            #type_ids_1d = jnp.repeat(jnp.arange(4, dtype=jnp.int32), sizes)   # (L_total,)
             type_ids = jnp.broadcast_to(type_ids_1d[None, :], (B, L_total))   # (B, L_total)
 
             trade_seq = trade_seq + nn.Embed(4, E, name="trade_fuse_type_id")(type_ids)
@@ -2769,14 +2772,24 @@ def make_terra_nova_network(
 
             # 2) Vectorized type IDs (offers=0, ledger=1, res=2, gpt=3)
             B, L_total, E = trade_seq.shape
-            sizes = jnp.array([
-                z_trade_offers_tokens.shape[1],
-                z_trade_ledger_tokens.shape[1],
-                z_res_adj_pooled.shape[1],
-                1,
-            ], dtype=jnp.int32)  # (4,)
+            L_offers = z_trade_offers_tokens.shape[1]
+            L_ledger = z_trade_ledger_tokens.shape[1]
+            L_res = z_res_adj_pooled.shape[1]
 
-            type_ids_1d = jnp.repeat(jnp.arange(4, dtype=jnp.int32), sizes)   # (L_total,)
+            type_ids_1d = jnp.concatenate([
+                jnp.full((L_offers,), 0, dtype=jnp.int32),  # offers
+                jnp.full((L_ledger,), 1, dtype=jnp.int32),  # ledger
+                jnp.full((L_res,), 2, dtype=jnp.int32),  # res
+                jnp.full((1,), 3, dtype=jnp.int32),  # gpt
+            ], axis=0)  # (L_total,)
+            #sizes = jnp.array([
+            #    z_trade_offers_tokens.shape[1],
+            #    z_trade_ledger_tokens.shape[1],
+            #    z_res_adj_pooled.shape[1],
+            #    1,
+            #], dtype=jnp.int32)  # (4,)
+
+            #type_ids_1d = jnp.repeat(jnp.arange(4, dtype=jnp.int32), sizes)   # (L_total,)
             type_ids = jnp.broadcast_to(type_ids_1d[None, :], (B, L_total))   # (B, L_total)
 
             trade_seq = trade_seq + nn.Embed(4, E, name="trade_fuse_type_id")(type_ids)
@@ -4270,9 +4283,10 @@ def make_terra_nova_network(
                 deterministic=not training,
             )
             z_city_my_buildings = z_city_my_buildings.reshape(B, C, Bl, E)
-            actions_city_my_buildings = nn.Dense(1)(z_city_my_buildings)
-
-            return (actions_city_worked_slots, actions_city_my_buildings.squeeze(-1))
+            actions_city_my_buildings = nn.Dense(1)(z_city_my_buildings).squeeze(-1)
+            actions_city_my_buildings = nn.Dense(NUM_BLDGS + NUM_UNITS)(nn.silu(actions_city_my_buildings))
+            
+            return (actions_city_worked_slots, actions_city_my_buildings)
 
 
     class TerraNovaModel(nn.Module):

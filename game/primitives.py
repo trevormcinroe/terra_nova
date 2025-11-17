@@ -5,11 +5,13 @@ read it, as it would not aide in your understanding of the code nor the gameplay
 """
 from functools import partial
 from flax.struct import dataclass
+from flax import serialization
 import jax.numpy as jnp
 import jax
 import numpy as np
 from typing import Tuple, Union
 import pickle
+from pathlib import Path
 
 from game.action_space import ALL_ACTION_ENGAGEMENT_TURNS, ALL_ACTION_FUNCTIONS, apply_minimal_update_game_actions
 from game.constants import CULTURE_IDX, DESERT_IDX, FAITH_IDX, FORT_DEFENSE_BONUS, GOLD_IDX, PROD_IDX, FLOODPLAINS_IDX, FOREST_IDX, FUTURE_ERA_IDX, GRASSLAND_IDX, GREAT_PROPHET_THRESHOLD, HILLS_IDX, JUNGLE_IDX, MARSH_IDX, NEIGHBOR_COLS, NEIGHBOR_ROWS, PLAINS_IDX, RELIGIOUS_PRESSURE_THRESHOLD, SCIENCE_IDX, SECOND_GREAT_PROPHET_THRESHOLD, TO_ZERO_OUT_FOR_BUILDINGS_STEP, TUNDRA_IDX, make_update_fn, SPECIALIST_YIELDS, SPECIALIST_GPPS, GOLDEN_AGE_TURNS, GOLDEN_AGE_YIELD_ACCEL, TOURISM_IDX, CS_BORDER_GROWTH_THRESHOLD, INFLUECE_DEGRADE_PER_TURN, INFLUENCE_LEVEL_FRIEND,  INFLUENCE_LEVEL_ALLY, QUEST_CHANGE_TIMER, QUEST_WINNER_INFLUENCE, FRIEND_BONUSES, ALLY_BONUSES, COMBAT_ACCEL_BONUS, TRADE_DEAL_LENGTH, TRADE_DEAL_GPT_AMT, BASE_COMBAT_DAMAGE, HILL_DEFENSE_BONUS, JUNGLE_OR_FOREST_DEFENSE_BONUS, CITY_BASE_COMBAT, ERA_TO_INT_CITY_COMBAT_BONUS, CITY_COMBAT_BONUS_PER_5_POP, CITY_IS_CAP_COMBAT_BONUS, HAPPINESS_IDX, TECH_STEAL_CHANCE, ARTIST_IDX, MUSICIAN_IDX, WRITER_IDX, MERCHANT_IDX, ERA_TO_NUM_SPIES, ERA_INT_TO_GREAT_MERCHANT_GOLD, ROAD_MOVEMENT_DISCOUNT, MAX_NUM_UNITS
@@ -23,6 +25,14 @@ from utils.maths import border_growth_threshold, get_surrounding_hexes_in_gamest
 from game.buildings import ALL_BLDG_COST, ALL_BLDG_PREREQ_FN, BLDG_IS_NAT_OR_WORLD_WONDER, BLDG_IS_NAT_WONDER, BLDG_IS_WORLD_WONDER, NUM_BLDGS, GameBuildings, add_building_indicator_minimal, add_one_to_appropriate_fields, apply_buildings_per_city_minimal, ALL_BLDG_TYPES, BLDG_CULTURE
 from game.social_policies import ALL_SOCIAL_POLICY_PREREQ_FN, SocialPolicies, add_policy, apply_social_policies
 from utils.misc import improvement_mask_for_batch
+
+
+def _to_numpy_tree(tree):
+    """Convert all JAX arrays in a pytree to NumPy arrays."""
+    return jax.tree_util.tree_map(
+        lambda x: np.asarray(x) if isinstance(x, (jnp.ndarray, jax.Array)) else x,
+        tree,
+    )
 
 
 @dataclass
@@ -948,8 +958,8 @@ class GameState:
         sp_logits = jax.device_put(sp_logits, sharding_ref)
         religion_logits = jax.device_put(religion_logits, sharding_ref)
         tech_logits = jax.device_put(tech_logits, sharding_ref)
-        unit_logits = jax.tree_map(lambda x: jax.device_put(x, sharding_ref), unit_logits)
-        city_logits = jax.tree_map(lambda x: jax.device_put(x, sharding_ref), city_logits)
+        unit_logits = jax.tree.map(lambda x: jax.device_put(x, sharding_ref), unit_logits)
+        city_logits = jax.tree.map(lambda x: jax.device_put(x, sharding_ref), city_logits)
         
         return (trade_logits, sp_logits, religion_logits, tech_logits, unit_logits, city_logits)
 
@@ -2475,7 +2485,7 @@ class GameState:
             _military, _unit_type, _unit_rowcol, _unit_ap, _player_trade_routes = jax.lax.switch(
                 (completed_unit).astype(jnp.int32), 
                 ALL_UNIT_INDICATOR_FNS,
-                jax.tree_map(lambda x: x[player_id[0]], _self.units),
+                jax.tree.map(lambda x: x[player_id[0]], _self.units),
                 _self.num_trade_routes[player_id[0]],
                 _self.player_cities.city_rowcols[player_id[0], city_int],
                 bldg_being_constructed - NUM_BLDGS
@@ -5705,5 +5715,8 @@ class GameState:
         return self
 
     def save(self, filename):
-        with open(filename, "wb") as f:
-            pickle.dump(self, f)
+        filename = Path(filename)
+        state = serialization.to_state_dict(self)
+        state_np = _to_numpy_tree(state)
+        with filename.open("wb") as f:
+            pickle.dump(state_np, f, protocol=pickle.HIGHEST_PROTOCOL)

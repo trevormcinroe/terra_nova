@@ -20,12 +20,29 @@ Terra Nova is based on and contains the challenges of Civilization V.
 ## Installation
 We provide a short requirements file that will auto-install everything all prerequisites using your preferred package manager.
 
+Terra Nova is compatible with both older and newer combinations of Python and JAX. 
+
+We've tested Terra Nova with the following combinations:
+- Pyhton 3.9.18 + JAX 0.43.0 and 
+- Python 3.13.9 + JAX 0.8.0
+
+
 For example, with `mamba`:
 ```bash
 mamba create -n terra_nova python=3.9.18
 mamba activate terra_nova
 pip install -r requirements.txt
 ```
+
+or
+
+```bash
+mamba create -n terra_nova python=3.13.9
+mamba activate terra_nova
+pip install -r requirements_311.txt
+```
+
+
 
 ## Quickstart
 Terra Nova comes with utilities to automatically distribute environments across any arbitrary mesh of GPUs, allowing for increased throughput via horizontal scaling.

@@ -901,8 +901,11 @@ def _future_tech(game, player_id):
     game = add_technology(game, player_id, "future_tech")
     return game
 
+
 ALL_TECH_FINISHERS = [do_nothing]
-ALL_TECH_NAMES = ["_" + str(x).lower().replace("technologies.", "") for x in Technologies]
+
+ALL_TECH_NAMES = ["_" + x.name for x in Technologies]
+
 ALL_TECH_TRADE_ROUTE_BONUS = []
 all_tech_trade_route_bonus_helper = ["_animal_husbandry", "_banking", "_railroad", "_penicilin"]
 for tech in ALL_TECH_NAMES:
@@ -910,7 +913,7 @@ for tech in ALL_TECH_NAMES:
         ALL_TECH_TRADE_ROUTE_BONUS.append(1)
     else:
         ALL_TECH_TRADE_ROUTE_BONUS.append(0)
-
+    
     fn = getattr(sys.modules[__name__], tech)
     ALL_TECH_FINISHERS.append(fn)
 

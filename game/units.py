@@ -352,7 +352,7 @@ def kill_units(game):
     """
     health_mask = game.units.health <= 0
 
-    updated_units = jax.tree_map(
+    updated_units = jax.tree.map(
         lambda x: x * jnp.reshape(~health_mask, health_mask.shape + (1,) * (x.ndim - health_mask.ndim)),
         game.units,
     )

@@ -2142,7 +2142,8 @@ def _work_ethic(religion_info, game, player_id):
 
 
 ALL_RELIGIOUS_TENETS_FNS = [do_nothing]
-ALL_RELIGIOUS_TENETS_NAMES = ["_" + str(x).lower().replace("religioustenets.", "") for x in ReligiousTenets]
+ALL_RELIGIOUS_TENETS_NAMES = ["_" + x.name for x in ReligiousTenets]
+
 
 for tenet in ALL_RELIGIOUS_TENETS_NAMES:
     fn = getattr(sys.modules[__name__], tenet)
@@ -2153,7 +2154,7 @@ for tenet in ALL_RELIGIOUS_TENETS_NAMES:
 TENET_TO_BUILDING = {
     "cathedrals": [GameBuildings["cathedral"]._value_],
     "gurdwaras": [GameBuildings["gurdwara"]._value_],
-    "mandirs": [GameBuildings["mandir"]._value_, GameBuildings["monastery"]],
+    "mandirs": [GameBuildings["mandir"]._value_, GameBuildings["monastery"]._value_],
     "mosques": [GameBuildings["mosque"]._value_],
     "pagodas": [GameBuildings["pagoda"]._value_],
     "synagogues": [GameBuildings["synagogue"]._value_],
@@ -2381,7 +2382,7 @@ def apply_religion_per_city(game, player_id, maj_religion_idx_per_city):
     has_maj_religion = game.player_cities.religion_info.religious_population[player_id[0]] > city_pop_halved[:, None]
     
     religion_info = _religion_per_city_vmap(
-        jax.tree_map(lambda x: x[player_id[0]], game.player_cities.religion_info), 
+        jax.tree.map(lambda x: x[player_id[0]], game.player_cities.religion_info), 
         player_id,   # it may seem we do not need player_id due to arg 0 form. However, need for Founder tenet 
         maj_religion_idx_per_city, 
         game.religious_tenets,
@@ -2392,11 +2393,11 @@ def apply_religion_per_city(game, player_id, maj_religion_idx_per_city):
     city_exists = game.player_cities.city_ids[player_id[0]] > 0
     
     # zero-out any contribution within cities that do not exist!
-    religion_info = jax.tree_map(
+    religion_info = jax.tree.map(
         lambda x: (x * city_exists[(...,) + (None,) * (len(x.shape) - 1)]), religion_info
     )
     # Now everything has the leading (max_num_cities,...) axis
-    new_religion_info = jax.tree_map(lambda x, y: x.at[player_id[0]].set(y), game.player_cities.religion_info, religion_info)
+    new_religion_info = jax.tree.map(lambda x, y: x.at[player_id[0]].set(y), game.player_cities.religion_info, religion_info)
     new_religion_info = add_one_to_appropriate_fields(new_religion_info, TO_ZERO_OUT_FOR_RELIGION_STEP, player_id)
     game = game.replace(player_cities=game.player_cities.replace(religion_info=new_religion_info))
     

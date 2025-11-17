@@ -1087,7 +1087,7 @@ for policy in SocialPolicies:
     ALL_SOCIAL_POLICY_PREREQ_FN.append(fn)
 
 ALL_SOCIAL_POLICY_FINISHERS = [do_nothing]
-ALL_SOCIAL_POLICY_NAMES = ["_" + str(x).lower().replace("socialpolicies.", "") for x in SocialPolicies]
+ALL_SOCIAL_POLICY_NAMES = ["_" + x.name for x in SocialPolicies]
 
 for policy in ALL_SOCIAL_POLICY_NAMES:
     fn = getattr(sys.modules[__name__], policy)
@@ -1198,7 +1198,7 @@ def apply_social_policies(game, player_id):
     # so let's mask out effectively. So now we always set those to zero, and then +1 to them **after** the sum!
     has_this_policy_bool = game.policies[player_id[0]]
 
-    out = jax.tree_map(
+    out = jax.tree.map(
         lambda x: (x * has_this_policy_bool[(...,) + (None,) * (len(x.shape) - 1)]).sum(0).astype(x.dtype), out
     )
 

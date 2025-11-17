@@ -2,6 +2,7 @@ import argparse
 import os
 import pickle
 import jax
+from tqdm import tqdm
 
 from sim.build import build_simulator
 from game.recorder import GameStateRecorder
@@ -41,12 +42,12 @@ env_step_fn, games, obs_spaces, episode_metrics, players_turn_id, obs, GLOBAL_ME
 # To initialize the recorder, we need to extract a single game from the bundle. This requires indexing 
 # within *both* the device and game axis => games[device_idx][games_idx]
 # This exact process will need to be repeated after each player takes its step within each game turn.
-gamestate = jax.tree_map(lambda x: x[args.device_idx][args.games_idx], games)
+gamestate = jax.tree.map(lambda x: x[args.device_idx][args.games_idx], games)
 recorder = GameStateRecorder.create(reference_gamestate=gamestate, num_steps=args.num_steps)
 recorder = recorder.record(gamestate)
 
 
-for recording_int in range(args.num_steps):
+for recording_int in tqdm(range(args.num_steps)):
     for agent_step in range(6):
         # NOTE: replace the following random action sampling with whatever you like. E.g., the action sampling
         # process for your control policy.
@@ -55,7 +56,7 @@ for recording_int in range(args.num_steps):
             games, random_actions, obs_spaces, episode_metrics, players_turn_id
         )
 
-    gamestate = jax.tree_map(lambda x: x[args.device_idx][args.games_idx], games)
+    gamestate = jax.tree.map(lambda x: x[args.device_idx][args.games_idx], games)
     recorder = recorder.record(gamestate)
 
 recorder.save_replay(f"./renderer/saved_games/{args.save_filename}")
