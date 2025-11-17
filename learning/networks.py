@@ -9,8 +9,8 @@ from game.natural_wonders import ALL_NATURAL_WONDERS
 from game.religion import ReligiousTenets
 from game.social_policies import SocialPolicies
 
-from game.units import GameUnits
-from game.buildings import GameBuildings
+from game.units import NUM_UNITS, GameUnits
+from game.buildings import NUM_BLDGS, GameBuildings
 from game.resources import ALL_RESOURCES
 from game.techs import Technologies, ALL_TECH_COST
 
@@ -4283,9 +4283,10 @@ def make_terra_nova_network(
                 deterministic=not training,
             )
             z_city_my_buildings = z_city_my_buildings.reshape(B, C, Bl, E)
-            actions_city_my_buildings = nn.Dense(1)(z_city_my_buildings)
-
-            return (actions_city_worked_slots, actions_city_my_buildings.squeeze(-1))
+            actions_city_my_buildings = nn.Dense(1)(z_city_my_buildings).squeeze(-1)
+            actions_city_my_buildings = nn.Dense(NUM_BLDGS + NUM_UNITS)(nn.silu(actions_city_my_buildings))
+            
+            return (actions_city_worked_slots, actions_city_my_buildings)
 
 
     class TerraNovaModel(nn.Module):

@@ -94,7 +94,7 @@ for recording_int in range(args.num_steps):
 
         print("Network:")
         test = actions
-        print("Trade:\n\tResponse: {test[0][0].shape}\n\tAsk: {test[0][1].shape}\n\tOffer: {test[0][2].shape}\n\tCounterparty: {test[0][3].shape}")
+        print(f"Trade:\n\tResponse: {test[0][0].shape}\n\tAsk: {test[0][1].shape}\n\tOffer: {test[0][2].shape}\n\tCounterparty: {test[0][3].shape}")
         print(f"Social policy: {test[1].shape}")
         print(f"Religion: {test[2].shape}")
         print(f"Tech: {test[3].shape}")
@@ -103,7 +103,7 @@ for recording_int in range(args.num_steps):
         
         print("Primitive:")
         test = random_actions
-        print("Trade:\n\tResponse: {test[0][0].shape}\n\tAsk: {test[0][1].shape}\n\tOffer: {test[0][2].shape}\n\tCounterparty: {test[0][3].shape}")
+        print(f"Trade:\n\tResponse: {test[0][0].shape}\n\tAsk: {test[0][1].shape}\n\tOffer: {test[0][2].shape}\n\tCounterparty: {test[0][3].shape}")
         print(f"Social policy: {test[1].shape}")
         print(f"Religion: {test[2].shape}")
         print(f"Tech: {test[3].shape}")
