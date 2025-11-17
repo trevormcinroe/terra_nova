@@ -22,7 +22,7 @@ We provide a short requirements file that will auto-install all prerequisites us
 Terra Nova is compatible with both older and newer combinations of Python and JAX. 
 
 We've tested Terra Nova with the following combinations:
-- Pyhton 3.9.18 + JAX 0.4.30 
+- Python 3.9.18 + JAX 0.4.30 
 - Python 3.13.9 + JAX 0.8.0
 
 For example, with `mamba`:
@@ -87,6 +87,8 @@ You can accomplish this by using the following preamble:
 ```bash
 CUDA_VISIBLE_DEVICES= python3 your_recording_script.py
 ```
+
+NOTE: newer versions of jax may require the additional preamble `JAX_PLATFORMS=cpu`. 
 
 ## Replay Viewer
 After a game has been recorded, you can watch the recording in your browser of choice. We recommend Chrome.
