@@ -474,7 +474,7 @@ def make_terra_nova_network(
 
             if self.mode == "conv":
                 # collapse leading dims to one big batch for a single conv
-                B = int(jnp.prod(jnp.array(lead))) if lead else 1
+                B = int(jnp.prod(jnp.array(lead)))
                 x_b = x.reshape((B, H, W, C))
                 y = nn.Conv(
                     features=int(self.dim),
