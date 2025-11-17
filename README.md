@@ -99,6 +99,8 @@ The Viewer uses node, which can be installed on Linux systems like:
 sudo apt install nodejs
 ```
 
+The Viewer allows the user to see the entire game map and every agent's units, cities, technologies, and more.
+
 The Viewer also provides plots of various metrics over the course of the game:
 
 <p align="center">
