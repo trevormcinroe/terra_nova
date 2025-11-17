@@ -23,7 +23,7 @@ We provide a short requirements file that will auto-install everything all prere
 Terra Nova is compatible with both older and newer combinations of Python and JAX. 
 
 We've tested Terra Nova with the following combinations:
-- Pyhton 3.9.18 + JAX 0.43.0 and 
+- Pyhton 3.9.18 + JAX 0.4.30 and 
 - Python 3.13.9 + JAX 0.8.0
 
 
