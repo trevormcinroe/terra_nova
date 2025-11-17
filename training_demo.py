@@ -61,12 +61,24 @@ params = jax.tree.map(
 )
 
 
+gpu_axis = GLOBAL_MESH.axis_names[0]
+
 @jax.jit
 @partial(
     shard_map, 
     mesh=GLOBAL_MESH, 
-    in_specs=PartitionSpec(GLOBAL_MESH.axis_names[0], GLOBAL_MESH.axis_names[0]),
-    out_specs=PartitionSpec(GLOBAL_MESH.axis_names[0], GLOBAL_MESH.axis_names[0])
+    in_specs=PartitionSpec(gpu_axis, gpu_axis),
+    out_specs=PartitionSpec(
+        (
+            (gpu_axis, gpu_axis, gpu_axis, gpu_axis),
+            gpu_axis,
+            gpu_axis,
+            gpu_axis,
+            (gpu_axis, gpu_axis),
+            (gpu_axis, gpu_axis)
+        ),
+        gpu_axis
+    )
 )
 def forward_pass_distributed(params, obs):
     params = jax.tree.map(lambda x: x[0], params)
