@@ -1,6 +1,7 @@
 import argparse
 import os
 import pickle
+from tqdm import tqdm
 import jax
 from jax.experimental.shard_map import shard_map
 from jax.sharding import PartitionSpec as P
@@ -82,7 +83,7 @@ def forward_pass_distributed(params, obs):
     values = jax.tree.map(lambda x: x[None], values)
     return actions, values
 
-for recording_int in range(args.num_steps):
+for recording_int in tqdm(range(args.num_steps)):
     for agent_step in range(6):
         # NOTE: replace the following random action sampling with whatever you like. E.g., the action sampling
         # process for your control policy.
@@ -90,7 +91,7 @@ for recording_int in range(args.num_steps):
         actions, values = forward_pass_distributed(params, obs)
 
         games, obs_spaces, episode_metrics, new_players_turn_id, next_obs, rewards, done_flags, selected_actions = env_step_fn(
-            games, random_actions, obs_spaces, episode_metrics, players_turn_id
+            games, actions, obs_spaces, episode_metrics, players_turn_id
         )
         
         trajectories = trajectories.add_data(players_turn_id, obs, selected_actions, rewards, done_flags)
