@@ -3,7 +3,7 @@ import os
 import pickle
 import jax
 from jax.experimental.shard_map import shard_map
-from jax.sharding import PartitionSpec
+from jax.sharding import PartitionSpec as P
 import optax
 from functools import partial
 
@@ -67,18 +67,8 @@ gpu_axis = GLOBAL_MESH.axis_names[0]
 @partial(
     shard_map, 
     mesh=GLOBAL_MESH, 
-    in_specs=PartitionSpec(gpu_axis, gpu_axis),
-    out_specs=PartitionSpec(
-        (
-            (gpu_axis, gpu_axis, gpu_axis, gpu_axis),
-            gpu_axis,
-            gpu_axis,
-            gpu_axis,
-            (gpu_axis, gpu_axis),
-            (gpu_axis, gpu_axis)
-        ),
-        gpu_axis
-    )
+    in_specs=(P(gpu_axis), P(gpu_axis)),
+    out_specs=(P(gpu_axis), P(gpu_axis))
 )
 def forward_pass_distributed(params, obs):
     params = jax.tree.map(lambda x: x[0], params)
