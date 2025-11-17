@@ -71,21 +71,14 @@ params = jax.tree.map(
 def forward_pass_distributed(params, obs):
     params = jax.tree.map(lambda x: x[0], params)
     obs = jax.tree.map(lambda x: x[0], obs)
-    print(obs.player_cities.ownership_map.shape)
 
     actions, values = pi_v.apply({"params": params}, obs, training=False)
     
-    print(actions[1].shape, values.shape)
-    qqq
-    #actions, value = pi_v.apply(params, obs, )
-    params = jax.tree.map(lambda x: x[None], params)
-    obs = jax.tree.map(lambda x: x[None], obs)
+    actions = jax.tree.map(lambda x: x[None], actions)
+    values = jax.tree.map(lambda x: x[None], values)
     return actions, values
 
-print(obs.player_cities.ownership_map.shape)
-forward_pass_distributed(params, obs)
-print("success.")
-qqq
+actions, values = forward_pass_distributed(params, obs)
 
 # Perhaps here you can initiailize your network and load your saved parameters via your custom code. 
 # You can use one of the arrays from `trajectories` as your sharding reference for the parameters
@@ -96,6 +89,25 @@ for recording_int in range(args.num_steps):
         # NOTE: replace the following random action sampling with whatever you like. E.g., the action sampling
         # process for your control policy.
         random_actions = games.sample_actions_uniformly(games.key[0, 0])
+
+        print("Network:")
+        test = actions
+        print("Trade:\n\tResponse: {test[0][0].shape}\n\tAsk: {test[0][1].shape}\n\tOffer: {test[0][2].shape}\n\tCounterparty: {test[0][3].shape}")
+        print(f"Social policy: {test[1].shape}")
+        print(f"Religion: {test[2].shape}")
+        print(f"Tech: {test[3].shape}")
+        print(f"Units:\n\tCat: {test[4][0].shape}\n\tMap: {test[4][1].shape}")
+        print(f"City:\n\tPop: {test[5][0].shape}\n\tBldgs: {test[5][1].shape}")
+        
+        print("Primitive:")
+        test = random_actions
+        print("Trade:\n\tResponse: {test[0][0].shape}\n\tAsk: {test[0][1].shape}\n\tOffer: {test[0][2].shape}\n\tCounterparty: {test[0][3].shape}")
+        print(f"Social policy: {test[1].shape}")
+        print(f"Religion: {test[2].shape}")
+        print(f"Tech: {test[3].shape}")
+        print(f"Units:\n\tCat: {test[4][0].shape}\n\tMap: {test[4][1].shape}")
+        print(f"City:\n\tPop: {test[5][0].shape}\n\tBldgs: {test[5][1].shape}")
+        qqq
         
         games, obs_spaces, episode_metrics, new_players_turn_id, next_obs, rewards, done_flags, selected_actions = env_step_fn(
             games, random_actions, obs_spaces, episode_metrics, players_turn_id
