@@ -49,7 +49,7 @@ To ensure your machine is running Terra Nova properly, perform the following ste
 
 (1) Clone this repo and install the software prerequisites under [Installation](#installation).
 
-(2) Download the 10k procedurally generated maps:
+(2) Download the 10k procedurally generated maps (requires `git-lfs`):
 ```bash
 git clone https://huggingface.co/datasets/trevormcinroe/terra_nova_maps
 ```
