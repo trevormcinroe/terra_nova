@@ -57,9 +57,9 @@ git clone https://huggingface.co/datasets/trevormcinroe/terra_nova_maps
 (3) Make a folder for testing and copy a few maps into the folder:
 ```bash
 mkdir ./terra_nova_testing
-cp ./terra_nove_maps/initial_release/100000_turn0.gamestate ./terra_nova_testing
-cp ./terra_nove_maps/initial_release/100001_turn0.gamestate ./terra_nova_testing
-cp ./terra_nove_maps/initial_release/100002_turn0.gamestate ./terra_nova_testing
+cp ./terra_nova_maps/initial_release/100000_turn0.gamestate ./terra_nova_testing
+cp ./terra_nova_maps/initial_release/100001_turn0.gamestate ./terra_nova_testing
+cp ./terra_nova_maps/initial_release/100002_turn0.gamestate ./terra_nova_testing
 ```
 
 (4) Run the demo training script (replace `CUDA_VISIBLE_DEVICES=3,4` with your preferred XLA device arrangement):
