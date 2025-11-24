@@ -52,18 +52,17 @@ def build_simulator(
                 f"The number of maps ({_n_games}) cannot be split equally across the number of visible XLA devices ({LOCAL_DEVICE_COUNT})"
             )
 
-
-    # Step 0: taking the raw map data and adding all of the relevant things!
+    # 0: taking the raw map data and adding all of the relevant things!
     _loaded_maps = []
     
     for gamestate in tqdm(loaded_maps, desc="Initializing gamestates..."):
-        # First, we need to take the numpy-fied object and convert it into a GameState of jax arrays
+        # 1: we need to take the numpy-fied object and convert it into a GameState of jax arrays
         state_jax = jax.tree_util.tree_map(
             lambda x: jnp.array(x) if isinstance(x, np.ndarray) else x,
             gamestate,
         )
 
-        # 3. Reconstruct the GameState directly from the dict
+        # 2: Reconstruct the GameState directly from the dict
         gamestate = GameState(**state_jax)
         gamestate = gamestate.replace(units=Units(**gamestate.units))
 
@@ -81,6 +80,7 @@ def build_simulator(
         techs = jnp.zeros(shape=(6, len(Technologies)), dtype=jnp.uint8)
         is_researching = jnp.zeros(shape=(6,), dtype=jnp.int32) - 1
         
+        # Everyone begins with Agriculture
         techs = techs.at[jnp.arange(6), 0].set(1)
         policies = jnp.zeros(shape=(6, len(SocialPolicies)), dtype=jnp.uint8)
         science_reserves = jnp.zeros(shape=(6,), dtype=jnp.float32)
