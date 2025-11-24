@@ -19,6 +19,7 @@ parser.add_argument("--num_steps", type=int, default=300)
 parser.add_argument("--map_folder", type=str)
 parser.add_argument("--distributed_strategy", type=str)
 parser.add_argument("--memory_length", type=int, default=1)
+parser.add_argument("--env_devices", type=int, default=-1, help="The number of devices across which to distribute the environments. If -1, then will use all available.")
 args = parser.parse_args()
 
 all_maps = os.listdir(args.map_folder)
@@ -38,7 +39,11 @@ env_step_fn, games, obs_spaces, episode_metrics, players_turn_id, obs, GLOBAL_ME
     games, 
     args.distributed_strategy,
     jax.random.PRNGKey(args.seed),
+    args.env_devices
 )
+
+print(f"GLOBAL_MESH: {GLOBAL_MESH}")
+qqq
 
 # Perhaps here you can initiailize your network and load your saved parameters via your custom code. 
 # You can use one of the arrays from `trajectories` as your sharding reference for the parameters

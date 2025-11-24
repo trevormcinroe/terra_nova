@@ -27,12 +27,19 @@ def build_simulator(
         loaded_maps: List[GameState],
         distributed_strategy: str,
         key: jnp.ndarray,
+        env_devices: int
     ):
     assert distributed_strategy in ["split", "duplicate"], f"Do not currently support provided distributed_strategy={distributed_strategy}"
-    
+    assert env_devices != 0, "env_devices cannot be set to 0."
+
     # First some hardware bookkeeping.
-    LOCAL_DEVICE_COUNT = jax.local_device_count()
-    all_devices = mesh_utils.create_device_mesh((LOCAL_DEVICE_COUNT,))
+    if env_devices > 0:
+        LOCAL_DEVICE_COUNT = env_devices
+        all_devices = mesh_utils.create_device_mesh((LOCAL_DEVICE_COUNT,), jax.devices()[:LOCAL_DEVICE_COUNT])
+    else:
+        LOCAL_DEVICE_COUNT = jax.local_device_count()
+        all_devices = mesh_utils.create_device_mesh((LOCAL_DEVICE_COUNT,))
+
     GLOBAL_MESH = Mesh(all_devices, axis_names=("gpus",))
     sharding = jax.sharding.NamedSharding(GLOBAL_MESH, P("gpus",))
 
