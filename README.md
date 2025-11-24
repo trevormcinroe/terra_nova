@@ -15,6 +15,7 @@ Terra Nova is a comprehensive challenge environment for reinforcement learning r
 - [Documentation](#documentation)
 - [Recording Games](#recording-games)
 - [Replay Viewer](#replay-viewer)
+- [Cite](#cite)
 
 ## Installation
 We provide a short requirements file that will auto-install all prerequisites using your preferred package manager.
@@ -112,3 +113,15 @@ The Viewer also provides plots of various metrics over the course of the game:
 <p align="center">
   <img src="./assets/gold_demos.png" width=75% />
 </p>
+
+## Cite
+To cite Terra Nova in your research, please use
+
+```bibtex
+@article{terra_nova_mcinroe2025,
+  title={Terra Nova: A Comprehensive Challenge Environment for Intelligent Agents},
+  author={Trevor McInroe},
+  journal={arXiv preprint: arXiv:2511.15378},
+  year={2025},
+}
+```
