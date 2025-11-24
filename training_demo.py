@@ -43,6 +43,7 @@ env_step_fn, games, obs_spaces, episode_metrics, players_turn_id, obs, GLOBAL_ME
 )
 
 print(f"GLOBAL_MESH: {GLOBAL_MESH}")
+print(f"Env: {games.landmask_map.shape}")
 qqq
 
 # Perhaps here you can initiailize your network and load your saved parameters via your custom code. 
